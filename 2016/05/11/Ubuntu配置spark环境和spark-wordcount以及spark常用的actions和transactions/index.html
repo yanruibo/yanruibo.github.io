@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="1. spark开发环境配置 1.1 下载所需文件 下载spark-1.5.1-bin-hadoop2.6.tgz，支持hadoop2.6.0 or later,故可支持hadoop2.7.1。下载scala-2.11.7。如果不使用scala语言，就不用下载scala语言的编译器和解释环境。">
+<meta name="keywords" content="bigdata system,spark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu配置spark环境和spark-wordcount以及spark常用的actions和transactions">
+<meta property="og:url" content="https://yanruibo.github.io/2016/05/11/Ubuntu配置spark环境和spark-wordcount以及spark常用的actions和transactions/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="1. spark开发环境配置 1.1 下载所需文件 下载spark-1.5.1-bin-hadoop2.6.tgz，支持hadoop2.6.0 or later,故可支持hadoop2.7.1。下载scala-2.11.7。如果不使用scala语言，就不用下载scala语言的编译器和解释环境。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2016-11-23T09:15:36.071Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu配置spark环境和spark-wordcount以及spark常用的actions和transactions">
+<meta name="twitter:description" content="1. spark开发环境配置 1.1 下载所需文件 下载spark-1.5.1-bin-hadoop2.6.tgz，支持hadoop2.6.0 or later,故可支持hadoop2.7.1。下载scala-2.11.7。如果不使用scala语言，就不用下载scala语言的编译器和解释环境。">
+  <link rel="canonical" href="https://yanruibo.github.io/2016/05/11/Ubuntu配置spark环境和spark-wordcount以及spark常用的actions和transactions/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Ubuntu配置spark环境和spark-wordcount以及spark常用的actions和transactions | Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Summary for Comprehensive Learning</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://yanruibo.github.io/2016/05/11/Ubuntu配置spark环境和spark-wordcount以及spark常用的actions和transactions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yrb">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Ubuntu配置spark环境和spark-wordcount以及spark常用的actions和transactions
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2016-05-11 21:21:12" itemprop="dateCreated datePublished" datetime="2016-05-11T21:21:12+08:00">2016-05-11</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2016-11-23 17:15:36" itemprop="dateModified" datetime="2016-11-23T17:15:36+08:00">2016-11-23</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/data-mining/" itemprop="url" rel="index"><span itemprop="name">data mining</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="spark开发环境配置">1. spark开发环境配置</h2>
+<h3 id="下载所需文件">1.1 下载所需文件</h3>
+<p>下载spark-1.5.1-bin-hadoop2.6.tgz，支持hadoop2.6.0 or later,故可支持hadoop2.7.1。下载scala-2.11.7。如果不使用scala语言，就不用下载scala语言的编译器和解释环境。</p>
+<a id="more"></a>
+<h3 id="配置环境变量">1.2 配置环境变量</h3>
+<p>我配在/etc/profile文件中了 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/home/yanruibo/software/jdk/jdk1.7.0_80</span><br><span class="line">export JRE_HOME=$&#123;JAVA_HOME&#125;/jre</span><br><span class="line">export CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib</span><br><span class="line">export JAVA_PATH=$&#123;JAVA_HOME&#125;/bin</span><br><span class="line"></span><br><span class="line">export HADOOP_HOME=/home/yanruibo/software/hadoop-2.7.1</span><br><span class="line">export HADOOP_PATH=$&#123;HADOOP_HOME&#125;/bin:$&#123;HADOOP_HOME&#125;/sbin</span><br><span class="line"></span><br><span class="line">export M2_HOME=/home/yanruibo/software/apache-maven-3.3.3</span><br><span class="line">export M2=$&#123;M2_HOME&#125;/bin</span><br><span class="line"></span><br><span class="line">export SCALA_HOME=/home/yanruibo/software/scala-2.11.7</span><br><span class="line">export SCALA_PATH=$&#123;SCALA_HOME&#125;/bin</span><br><span class="line"></span><br><span class="line">export SPARK_HOME=/home/yanruibo/software/spark-1.5.1-bin-without-hadoop</span><br><span class="line">export SPARK_PATH=$&#123;SPARK_HOME&#125;/bin</span><br><span class="line">export PATH=$PATH:$&#123;JAVA_PATH&#125;:$&#123;HADOOP_PATH&#125;:$&#123;M2&#125;:$&#123;SCALA_PATH&#125;:$&#123;SPARK_PATH&#125;</span><br></pre></td></tr></table></figure></p>
+<p>scala直接解压就行了不需要修改，spark需要在spark_home下的conf文件夹下配置一下spark-env.sh <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp spark-env.sh.template spark-env.sh</span><br></pre></td></tr></table></figure></p>
+<p>在spark-env.sh中添加如下的内容。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">export SCALA_HOME=/home/yanruibo/software/scala-2.11.7</span><br><span class="line">export JAVA_HOME=/home/yanruibo/software/jdk/jdk1.7.0_80</span><br><span class="line">export HADOOP_HOME=/home/yanruibo/software/hadoop-2.7.1</span><br><span class="line">export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop</span><br><span class="line">SPARK_MASTER_IP=localhost</span><br><span class="line">SPARK_LOCAL_DIRS=/home/yanruibo/software/spark-1.5.1-bin-hadoop2.6</span><br><span class="line">SPARK_DRIVER_MEMORY=512M</span><br></pre></td></tr></table></figure></p>
+<p>这样spark的开发环境就配好了。在命令行输入pyspark，spark-shell都可以进入。 为什么配置本地环境呢？主要是可以在本机调试，调试好了再上传服务器，在服务器上执行。 注意：一定要下载正确spark的版本，刚一开始下载的spark-1.5.1-bin-without-hadoop.tgz，配置不成功，理解错意思了，以为without-hadoop是不自带hadoop的意思。网上一搜看别人都下载的spark-x.y.z-bin-hadoop.tgz于是就换了一个。</p>
+<h2 id="实验过程">2. 实验过程</h2>
+<h3 id="使用pyspark">2.1 使用pyspark</h3>
+<h4 id="向pyspark传递函数实现wordcount">2.1.1 向pyspark传递函数实现wordcount</h4>
+<p>首先我自己写了一个函数，对每个单词进行过滤操作，过滤掉每个单词首尾的特殊字符，把首尾的非字母的子字符串都去掉，但是单词中间的标点符号不去掉，像<code>"''won't:</code>这样的单词经过过滤之后变为<code>won't</code>。代码如下： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">去掉执行map函数时每个word中首尾的非字母的特殊字符，并将不为空的置为１，</span></span><br><span class="line"><span class="string">为空的置为('', 0)</span></span><br><span class="line"><span class="string">因为spark接口必须要求返回一个数据，所以就返回('', 0)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">map_filter</span><span class="params">(s)</span>:</span></span><br><span class="line">    <span class="comment">#定义正则表达式匹配以非字母开头的字符串</span></span><br><span class="line">    p = re.compile(<span class="string">'(?i)^[^a-zA-Z]+'</span>)</span><br><span class="line">    m = p.match(s)</span><br><span class="line">    end = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span>(m):</span><br><span class="line">        <span class="comment">#如果匹配上，获得匹配位置的最后一个字符位置</span></span><br><span class="line">        end = m.end()</span><br><span class="line">    s = s[end:]</span><br><span class="line">    <span class="comment">#字符串反转</span></span><br><span class="line">    s = s[::<span class="number">-1</span>]</span><br><span class="line">    <span class="comment">#去掉末尾的特殊字符</span></span><br><span class="line">    m = p.match(s)</span><br><span class="line">    end = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span>(m):</span><br><span class="line">        end = m.end()</span><br><span class="line">    s = s[end:]</span><br><span class="line">    <span class="comment">#最后再反转回来</span></span><br><span class="line">    s = s[::<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">if</span>(len(s) == <span class="number">0</span>):</span><br><span class="line">		<span class="comment">#如果字符串为空返回('', 0)</span></span><br><span class="line">        <span class="keyword">return</span> (<span class="string">''</span>, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> (s, <span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
+<p>这段函数的思路与第一次作业的思路相同，这里就不赘述了。将该函数保存在mapfilter.py中，然后将mapfilter.py放在服务器的主目录下（为什么放在主目录下是因为指定下面的--py-files比较简便，其实放在哪儿都可以，只要知道指定的路径就行），执行如下的命令： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pyspark --master yarn-client --num-executors 4 --conf spark.ui.port=8015 --py-files mapfilter.py</span><br></pre></td></tr></table></figure></p>
+<p>然后就能调用自己写的函数了。以下是实现的过程 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>textFile = sc.textFile(<span class="string">"/tmp/bigdata/2015/english_novel/*"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd = textFile.flatMap(<span class="keyword">lambda</span> s : s.split()) <span class="comment">#Transformation</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> mapfilter</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>maprdd = wordsrdd.map(mapfilter.map_filter) <span class="comment">#Transformation</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> operator <span class="keyword">import</span> add</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reducerdd =  maprdd.reduceByKey(add)<span class="comment">#Transformation</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reducerdd.repartition(<span class="number">20</span>)<span class="comment">#Transformation</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reducerdd.saveAsTextFile(<span class="string">'hdfs:/user/2015210978/hw2-output2'</span>) <span class="comment">#Action</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="用其他rdd函数实现wordcount">2.1.2 用其他RDD函数实现wordcount</h4>
+<p>在服务器上练习执行命令： pyspark --master yarn-client --num-executors 4 --conf spark.ui.port=8015 --py-files mapfilter.py <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#以下是练习的内容 也通过另外的一些函数实现了wordcount</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>textFile = sc.textFile(<span class="string">"/tmp/bigdata/2015/english_novel/*"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>textFile.repartition(<span class="number">20</span>)　<span class="comment">#Transformation 1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd = textFile.flatMap(<span class="keyword">lambda</span> s : s.split())</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> mapfilter</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>maprdd = wordsrdd.map(mapfilter.map_filter)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment">#通过以下的方法也是能统计出词频的</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>maprdd.repartition(<span class="number">50</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>countdict = maprdd.countByKey()　<span class="comment">#Action 1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> item <span class="keyword">in</span> countdict:</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">print</span> <span class="string">"%s:%d"</span>%(item,countdict[item])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fp =open(<span class="string">"countdict.txt"</span>,<span class="string">'w'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> item <span class="keyword">in</span> countdict:</span><br><span class="line"><span class="meta">... </span>    fp.write(item+<span class="string">' '</span>+str(countdict[item])+<span class="string">"\n"</span>)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fp.close()</span><br></pre></td></tr></table></figure></p>
+<p>主要用到了countByKey()这个函数，这个函数返回python的dict然后自己按规定的格式写入文件中。这时写入文件的内容是无序的，可以用linux的<code>cat countdict.txt | sort -t' ' -k 1,1df &gt; sorted_result.txt</code>命令进行不区分大小写排序。<strong>注意这里是将结果保存在本地文件中了,如果需要将文件保存在hdfs中还需要调用saveAsTextFile函数</strong>，除了利用linux的sort命令达到最后不去分大小写的效果，还可以利用下面的python语言的不区分大小写排序的策略进行排序。</p>
+<p>下面利用python对字典按key不区分大小写排序，用元组列表的形式返回，遇到了服务器上python编码的问题，修改成utf-8编码，就能正常写入文件了 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#不区分大小写排序返回一个元组的列表</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>listcount = sorted(countdict.items(),key=<span class="keyword">lambda</span> countdict:countdict[<span class="number">0</span>].lower())</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>fp = open(<span class="string">"sorted_result.txt"</span>,<span class="string">'w'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> item <span class="keyword">in</span> listcount:</span><br><span class="line"><span class="meta">... </span>    fp.write(item[<span class="number">0</span>]+<span class="string">' '</span>+str(item[<span class="number">1</span>])+<span class="string">'\n'</span>)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">2</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeEncodeError: <span class="string">'ascii'</span> codec can<span class="string">'t encode character u'</span>\ufffd<span class="string">' in position 3: ordinal not in range(128)</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; import sys</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; reload(sys)</span></span><br><span class="line"><span class="string">&lt;module '</span>sys<span class="string">' (built-in)&gt;</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; sys.setdefaultencoding('</span>utf<span class="number">-8</span><span class="string">')</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; for item in listcount:</span></span><br><span class="line"><span class="string">...     fp.write(item[0]+'</span> <span class="string">'+str(item[1])+'</span>\n<span class="string">')</span></span><br><span class="line"><span class="string">... </span></span><br><span class="line"><span class="string">&gt;&gt;&gt; fp.close()</span></span><br></pre></td></tr></table></figure></p>
+<p>这样保存的sorted_result.txt就是不区分大小写排好序的了。同样也是保存在本地文件中了。</p>
+<h4 id="练习使用pyspark交互式分析">2.1.3 练习使用pyspark交互式分析</h4>
+<p>要求:transformation和action函数每种至少五个<br>
+本地执行命令：pyspark --num-executors 1 --py-files mapfilter.py<br>
+以下是针对rdd进行练习拿testrdd.txt这个文件进行练习，其内容为： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a b c d e f g h i g k l m n</span><br><span class="line">ab ac d e ff gf ha heihei Ab AB ac A</span><br><span class="line">I am You are he is she is that</span><br></pre></td></tr></table></figure></p>
+<p>数据量少的话便于查看结果<br>
+<strong>下面是Transformations练习:</strong> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>textFile = sc.textFile(<span class="string">"hdfs:/usr/yanruibo/testrdd.txt"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>textFile.collect()</span><br><span class="line">[<span class="string">u'a b c d e f g h i g k l m n'</span>, <span class="string">u'ab ac d e ff gf ha heihei Ab AB ac A'</span>, <span class="string">u'I am You are he is she is that'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd = textFile.flatMap(<span class="keyword">lambda</span> s : s.split())</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd.collect()</span><br><span class="line">[<span class="string">u'a'</span>, <span class="string">u'b'</span>, <span class="string">u'c'</span>, <span class="string">u'd'</span>, <span class="string">u'e'</span>, <span class="string">u'f'</span>, <span class="string">u'g'</span>, <span class="string">u'h'</span>, <span class="string">u'i'</span>, <span class="string">u'g'</span>, <span class="string">u'k'</span>, <span class="string">u'l'</span>, <span class="string">u'm'</span>, <span class="string">u'n'</span>, <span class="string">u'ab'</span>, <span class="string">u'ac'</span>, <span class="string">u'd'</span>, <span class="string">u'e'</span>, <span class="string">u'ff'</span>, <span class="string">u'gf'</span>, <span class="string">u'ha'</span>, <span class="string">u'heihei'</span>, <span class="string">u'Ab'</span>, <span class="string">u'AB'</span>, <span class="string">u'ac'</span>, <span class="string">u'A'</span>, <span class="string">u'I'</span>, <span class="string">u'am'</span>, <span class="string">u'You'</span>, <span class="string">u'are'</span>, <span class="string">u'he'</span>, <span class="string">u'is'</span>, <span class="string">u'she'</span>, <span class="string">u'is'</span>, <span class="string">u'that'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>maprdd = wordsrdd.map(<span class="keyword">lambda</span> s : (s,<span class="number">1</span>))</span><br><span class="line">[(<span class="string">u'a'</span>, <span class="number">1</span>), (<span class="string">u'b'</span>, <span class="number">1</span>), (<span class="string">u'c'</span>, <span class="number">1</span>), (<span class="string">u'd'</span>, <span class="number">1</span>), (<span class="string">u'e'</span>, <span class="number">1</span>), (<span class="string">u'f'</span>, <span class="number">1</span>), (<span class="string">u'g'</span>, <span class="number">1</span>), (<span class="string">u'h'</span>, <span class="number">1</span>), (<span class="string">u'i'</span>, <span class="number">1</span>), (<span class="string">u'g'</span>, <span class="number">1</span>), (<span class="string">u'k'</span>, <span class="number">1</span>), (<span class="string">u'l'</span>, <span class="number">1</span>), (<span class="string">u'm'</span>, <span class="number">1</span>), (<span class="string">u'n'</span>, <span class="number">1</span>), (<span class="string">u'ab'</span>, <span class="number">1</span>), (<span class="string">u'ac'</span>, <span class="number">1</span>), (<span class="string">u'd'</span>, <span class="number">1</span>), (<span class="string">u'e'</span>, <span class="number">1</span>), (<span class="string">u'ff'</span>, <span class="number">1</span>), (<span class="string">u'gf'</span>, <span class="number">1</span>), (<span class="string">u'ha'</span>, <span class="number">1</span>), (<span class="string">u'heihei'</span>, <span class="number">1</span>), (<span class="string">u'Ab'</span>, <span class="number">1</span>), (<span class="string">u'AB'</span>, <span class="number">1</span>), (<span class="string">u'ac'</span>, <span class="number">1</span>), (<span class="string">u'A'</span>, <span class="number">1</span>), (<span class="string">u'I'</span>, <span class="number">1</span>), (<span class="string">u'am'</span>, <span class="number">1</span>), (<span class="string">u'You'</span>, <span class="number">1</span>), (<span class="string">u'are'</span>, <span class="number">1</span>), (<span class="string">u'he'</span>, <span class="number">1</span>), (<span class="string">u'is'</span>, <span class="number">1</span>), (<span class="string">u'she'</span>, <span class="number">1</span>), (<span class="string">u'is'</span>, <span class="number">1</span>), (<span class="string">u'that'</span>, <span class="number">1</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>maprdd.repartition(<span class="number">1</span>) <span class="comment">#Transformation 1</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">之前partition为２</span></span><br><span class="line"><span class="string">repartition(numPartitions):Reshuffle the data in the RDD randomly to create either more or fewer partitions and balance it across them. This always shuffles all data over the network.很容易懂，就不翻译了。</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> operator <span class="keyword">import</span> add</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reducerdd =  maprdd.reduceByKey(add)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reducerdd.collect()</span><br><span class="line">[(<span class="string">u'A'</span>, <span class="number">1</span>), (<span class="string">u'a'</span>, <span class="number">1</span>), (<span class="string">u'ac'</span>, <span class="number">2</span>), (<span class="string">u'e'</span>, <span class="number">2</span>), (<span class="string">u'heihei'</span>, <span class="number">1</span>), (<span class="string">u'g'</span>, <span class="number">2</span>), (<span class="string">u'i'</span>, <span class="number">1</span>), (<span class="string">u'am'</span>, <span class="number">1</span>), (<span class="string">u'k'</span>, <span class="number">1</span>), (<span class="string">u'm'</span>, <span class="number">1</span>), (<span class="string">u'c'</span>, <span class="number">1</span>), (<span class="string">u'I'</span>, <span class="number">1</span>), (<span class="string">u'ff'</span>, <span class="number">1</span>), (<span class="string">u'You'</span>, <span class="number">1</span>), (<span class="string">u'is'</span>, <span class="number">2</span>), (<span class="string">u'are'</span>, <span class="number">1</span>), (<span class="string">u'he'</span>, <span class="number">1</span>), (<span class="string">u'ab'</span>, <span class="number">1</span>), (<span class="string">u'd'</span>, <span class="number">2</span>), (<span class="string">u'f'</span>, <span class="number">1</span>), (<span class="string">u'h'</span>, <span class="number">1</span>), (<span class="string">u'that'</span>, <span class="number">1</span>), (<span class="string">u'l'</span>, <span class="number">1</span>), (<span class="string">u'n'</span>, <span class="number">1</span>), (<span class="string">u'gf'</span>, <span class="number">1</span>), (<span class="string">u'b'</span>, <span class="number">1</span>), (<span class="string">u'she'</span>, <span class="number">1</span>), (<span class="string">u'ha'</span>, <span class="number">1</span>), (<span class="string">u'AB'</span>, <span class="number">1</span>), (<span class="string">u'Ab'</span>, <span class="number">1</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>filterrdd = reducerdd.filter(<span class="keyword">lambda</span> (k,v): k == <span class="string">'Ab'</span>) <span class="comment">#Transformation 2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>filterrdd.collect()</span><br><span class="line">[(<span class="string">u'Ab'</span>, <span class="number">1</span>)]</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">过滤出key为'Ab'的词组</span></span><br><span class="line"><span class="string">filter(func)：Return a new dataset formed by selecting those elements of the source on which func returns true.</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sortedrdd = reducerdd.sortByKey() <span class="comment">#Transformation 3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sortedrdd.collect()</span><br><span class="line">[(<span class="string">u'A'</span>, <span class="number">1</span>), (<span class="string">u'AB'</span>, <span class="number">1</span>), (<span class="string">u'Ab'</span>, <span class="number">1</span>), (<span class="string">u'I'</span>, <span class="number">1</span>), (<span class="string">u'You'</span>, <span class="number">1</span>), (<span class="string">u'a'</span>, <span class="number">1</span>), (<span class="string">u'ab'</span>, <span class="number">1</span>), (<span class="string">u'ac'</span>, <span class="number">2</span>), (<span class="string">u'am'</span>, <span class="number">1</span>), (<span class="string">u'are'</span>, <span class="number">1</span>), (<span class="string">u'b'</span>, <span class="number">1</span>), (<span class="string">u'c'</span>, <span class="number">1</span>), (<span class="string">u'd'</span>, <span class="number">2</span>), (<span class="string">u'e'</span>, <span class="number">2</span>), (<span class="string">u'f'</span>, <span class="number">1</span>), (<span class="string">u'ff'</span>, <span class="number">1</span>), (<span class="string">u'g'</span>, <span class="number">2</span>), (<span class="string">u'gf'</span>, <span class="number">1</span>), (<span class="string">u'h'</span>, <span class="number">1</span>), (<span class="string">u'ha'</span>, <span class="number">1</span>), (<span class="string">u'he'</span>, <span class="number">1</span>), (<span class="string">u'heihei'</span>, <span class="number">1</span>), (<span class="string">u'i'</span>, <span class="number">1</span>), (<span class="string">u'is'</span>, <span class="number">2</span>), (<span class="string">u'k'</span>, <span class="number">1</span>), (<span class="string">u'l'</span>, <span class="number">1</span>), (<span class="string">u'm'</span>, <span class="number">1</span>), (<span class="string">u'n'</span>, <span class="number">1</span>), (<span class="string">u'she'</span>, <span class="number">1</span>), (<span class="string">u'that'</span>, <span class="number">1</span>)]</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">按key进行排序，先排大写字母再排小写字母</span></span><br><span class="line"><span class="string">sortByKey([ascending], [numTasks])：When called on a dataset of (K, V) pairs where K implements Ordered, returns a dataset of (K, V) pairs sorted by keys in ascending or descending order, as specified in the boolean ascending argument.</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>grouprdd = maprdd.groupByKey() <span class="comment">#Transformation 4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>grouprdd.collect()</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">groupByKey([numTasks]) 在一个（K,V）对的数据集上调用，返回一个（K，Seq[V])对的数据集</span></span><br><span class="line"><span class="string">注意：默认情况下，只有8个并行任务来做操作，但是你可以传入一个可选的numTasks参数来改变它</span></span><br><span class="line"><span class="string">结果有点抽象没有粘贴。</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd.distinct().collect()　<span class="comment">#Transformation 5</span></span><br><span class="line">[<span class="string">u'A'</span>, <span class="string">u'a'</span>, <span class="string">u'ac'</span>, <span class="string">u'e'</span>, <span class="string">u'heihei'</span>, <span class="string">u'g'</span>, <span class="string">u'i'</span>, <span class="string">u'am'</span>, <span class="string">u'k'</span>, <span class="string">u'm'</span>, <span class="string">u'c'</span>, <span class="string">u'I'</span>, <span class="string">u'ff'</span>, <span class="string">u'You'</span>, <span class="string">u'is'</span>, <span class="string">u'are'</span>, <span class="string">u'he'</span>, <span class="string">u'ab'</span>, <span class="string">u'd'</span>, <span class="string">u'f'</span>, <span class="string">u'h'</span>, <span class="string">u'that'</span>, <span class="string">u'l'</span>, <span class="string">u'n'</span>, <span class="string">u'gf'</span>, <span class="string">u'b'</span>, <span class="string">u'she'</span>, <span class="string">u'ha'</span>, <span class="string">u'AB'</span>, <span class="string">u'Ab'</span>]</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">这里为了方便就不另外声明一个rdd变量了，相当于唯一化操作</span></span><br><span class="line"><span class="string">distinct([numTasks]))：Return a new dataset that contains the distinct elements of the source dataset.</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd.sample(<span class="literal">False</span>,<span class="number">0.1</span>,<span class="number">2</span>).collect() <span class="comment">#Transformation 6</span></span><br><span class="line">[<span class="string">u'k'</span>, <span class="string">u'l'</span>, <span class="string">u'gf'</span>]</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">根据随机数种子２按0.1的比例不替换不足部分取样本</span></span><br><span class="line"><span class="string">sample(withReplacement,fraction, seed):根据fraction指定的比例，对数据进行采样，可以选择是否用随机数进行替换，seed用于指定随机数生成器种子</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd.union(wordsrdd).collect()　<span class="comment">#Transformation 7</span></span><br><span class="line">[(<span class="string">u'A'</span>, <span class="number">1</span>), (<span class="string">u'a'</span>, <span class="number">1</span>), (<span class="string">u'ac'</span>, <span class="number">2</span>), (<span class="string">u'e'</span>, <span class="number">2</span>), (<span class="string">u'heihei'</span>, <span class="number">1</span>), (<span class="string">u'g'</span>, <span class="number">2</span>), (<span class="string">u'i'</span>, <span class="number">1</span>), (<span class="string">u'am'</span>, <span class="number">1</span>), (<span class="string">u'k'</span>, <span class="number">1</span>), (<span class="string">u'm'</span>, <span class="number">1</span>), (<span class="string">u'c'</span>, <span class="number">1</span>), (<span class="string">u'I'</span>, <span class="number">1</span>), (<span class="string">u'ff'</span>, <span class="number">1</span>), (<span class="string">u'You'</span>, <span class="number">1</span>), (<span class="string">u'is'</span>, <span class="number">2</span>), (<span class="string">u'are'</span>, <span class="number">1</span>), (<span class="string">u'he'</span>, <span class="number">1</span>), (<span class="string">u'ab'</span>, <span class="number">1</span>), (<span class="string">u'd'</span>, <span class="number">2</span>), (<span class="string">u'f'</span>, <span class="number">1</span>), (<span class="string">u'h'</span>, <span class="number">1</span>), (<span class="string">u'that'</span>, <span class="number">1</span>), (<span class="string">u'l'</span>, <span class="number">1</span>), (<span class="string">u'n'</span>, <span class="number">1</span>), (<span class="string">u'gf'</span>, <span class="number">1</span>), (<span class="string">u'b'</span>, <span class="number">1</span>), (<span class="string">u'she'</span>, <span class="number">1</span>), (<span class="string">u'ha'</span>, <span class="number">1</span>), (<span class="string">u'AB'</span>, <span class="number">1</span>), (<span class="string">u'Ab'</span>, <span class="number">1</span>), <span class="string">u'a'</span>, <span class="string">u'b'</span>, <span class="string">u'c'</span>, <span class="string">u'd'</span>, <span class="string">u'e'</span>, <span class="string">u'f'</span>, <span class="string">u'g'</span>, <span class="string">u'h'</span>, <span class="string">u'i'</span>, <span class="string">u'g'</span>, <span class="string">u'k'</span>, <span class="string">u'l'</span>, <span class="string">u'm'</span>, <span class="string">u'n'</span>, <span class="string">u'ab'</span>, <span class="string">u'ac'</span>, <span class="string">u'd'</span>, <span class="string">u'e'</span>, <span class="string">u'ff'</span>, <span class="string">u'gf'</span>, <span class="string">u'ha'</span>, <span class="string">u'heihei'</span>, <span class="string">u'Ab'</span>, <span class="string">u'AB'</span>, <span class="string">u'ac'</span>, <span class="string">u'A'</span>, <span class="string">u'I'</span>, <span class="string">u'am'</span>, <span class="string">u'You'</span>, <span class="string">u'are'</span>, <span class="string">u'he'</span>, <span class="string">u'is'</span>, <span class="string">u'she'</span>, <span class="string">u'is'</span>, <span class="string">u'that'</span>]</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">union(otherDataset):返回一个新的数据集，新数据集是由源数据集和参数数据集联合而成简单说就是求集合交集。</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>reducerdd.intersection(wordsrdd).collect() <span class="comment">#Transformation 8</span></span><br><span class="line">[]</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">求交集交集为空</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure></p>
+<p>以上标序号的都是在实验指导书中没有出现的Transforamtion。为了看在实验指导书中是否有该操作，我还特地在实验指导书中搜索了一下，确认没有才进行标号的。同理下面的Actions也是。<br>
+<strong>下面是Actions练习:</strong> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>maprdd.countByKey()　<span class="comment">#Action 1</span></span><br><span class="line">defaultdict(&lt;type <span class="string">'int'</span>&gt;, &#123;<span class="string">u'ac'</span>: <span class="number">2</span>, <span class="string">u'ab'</span>: <span class="number">1</span>, <span class="string">u'is'</span>: <span class="number">2</span>, <span class="string">u'am'</span>: <span class="number">1</span>, <span class="string">u'gf'</span>: <span class="number">1</span>, <span class="string">u'are'</span>: <span class="number">1</span>, <span class="string">u'heihei'</span>: <span class="number">1</span>, <span class="string">u'You'</span>: <span class="number">1</span>, <span class="string">u'A'</span>: <span class="number">1</span>, <span class="string">u'AB'</span>: <span class="number">1</span>, <span class="string">u'that'</span>: <span class="number">1</span>, <span class="string">u'I'</span>: <span class="number">1</span>, <span class="string">u'Ab'</span>: <span class="number">1</span>, <span class="string">u'ff'</span>: <span class="number">1</span>, <span class="string">u'ha'</span>: <span class="number">1</span>, <span class="string">u'he'</span>: <span class="number">1</span>, <span class="string">u'a'</span>: <span class="number">1</span>, <span class="string">u'c'</span>: <span class="number">1</span>, <span class="string">u'b'</span>: <span class="number">1</span>, <span class="string">u'e'</span>: <span class="number">2</span>, <span class="string">u'd'</span>: <span class="number">2</span>, <span class="string">u'g'</span>: <span class="number">2</span>, <span class="string">u'f'</span>: <span class="number">1</span>, <span class="string">u'i'</span>: <span class="number">1</span>, <span class="string">u'h'</span>: <span class="number">1</span>, <span class="string">u'k'</span>: <span class="number">1</span>, <span class="string">u'm'</span>: <span class="number">1</span>, <span class="string">u'l'</span>: <span class="number">1</span>, <span class="string">u'n'</span>: <span class="number">1</span>, <span class="string">u'she'</span>: <span class="number">1</span>&#125;)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">返回每个key出现的次数</span></span><br><span class="line"><span class="string">countByKey()：Only available on RDDs of type (K, V). Returns a hashmap of (K, Int) pairs with the count of each key.</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd.count()</span><br><span class="line"><span class="number">35</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd.distinct().count()</span><br><span class="line"><span class="number">30</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd.first()</span><br><span class="line"><span class="string">u'a'</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">取第一个相当于take(1)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd.take(<span class="number">10</span>) <span class="comment">#Action 2</span></span><br><span class="line">[<span class="string">u'a'</span>, <span class="string">u'b'</span>, <span class="string">u'c'</span>, <span class="string">u'd'</span>, <span class="string">u'e'</span>, <span class="string">u'f'</span>, <span class="string">u'g'</span>, <span class="string">u'h'</span>, <span class="string">u'i'</span>, <span class="string">u'g'</span>]</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">取前十个</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsdd.takeSample(<span class="literal">False</span>,<span class="number">2</span>,<span class="number">3</span>)　<span class="comment">#Action 3</span></span><br><span class="line">[<span class="string">u'n'</span>, <span class="string">u'd'</span>]</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">以随机种子3不替换不足部分随机采样２个。</span></span><br><span class="line"><span class="string">takeSample(withReplacement,num, seed):返回一个数组，在数据集中随机采样num个元素组成，可以选择是否用随机数替换不足的部分，Seed用于指定的随机数生成器种子</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd.takeOrdered(<span class="number">10</span>) <span class="comment">#Action 4</span></span><br><span class="line">[<span class="string">u'A'</span>, <span class="string">u'AB'</span>, <span class="string">u'Ab'</span>, <span class="string">u'I'</span>, <span class="string">u'You'</span>, <span class="string">u'a'</span>, <span class="string">u'ab'</span>, <span class="string">u'ac'</span>, <span class="string">u'ac'</span>, <span class="string">u'am'</span>]</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">相当于排好序再take</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>accum = sc.accumulator(<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]).foreach(<span class="keyword">lambda</span> x: accum.add(x))<span class="comment">#Action5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>accum.value</span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">foreach:一般与accumulator使用</span></span><br><span class="line"><span class="string">foreach(func):Run a function func on each element of the dataset. This is usually done for side effects such as updating an Accumulator or interacting with external storage systems.</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd.saveAsSequenceFile(<span class="string">'test1.txt'</span>)<span class="comment"># Action 6 eror can't use</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>wordsrdd.saveAsObjectFile(<span class="string">'test1.txt'</span>)<span class="comment"># Action 7　eror can't use</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">saveAsSequenceFile(path):将数据集的元素，以Hadoop sequencefile的格式，保存到指定的目录下，本地系统，HDFS或者任何其它hadoop支持的文件系统。这个只限于由key-value对组成，并实现了Hadoop的Writable接口，或者隐式的可以转换为Writable的RDD。（Spark包括了基本类型的转换，例如Int，Double，String，等等）</span></span><br><span class="line"><span class="string">saveAsObjectFile(path):(Java and Scala)Write the elements of the dataset in a simple format using Java serialization, which can then be loaded usingSparkContext.objectFile().</span></span><br><span class="line"><span class="string">以上两个保存rdd的action在pyspark中不能用，必须得用java或者scala才能用，再一次体现了python语言开发spark程序的限制。spark guide中action的数目还是比较少的，去除在实验指导书上出现的剩下的也就七八个了，还有两个函数saveAsObjectFile,saveAsSequenceFile我测试的是保存wordsrdd时不能用。第一个函数报错：RDD element of type java.lang.String cannot be used，第二个函数报错：AttributeError: 'PipelinedRDD' object has no attribute 'saveAsObjectFile'。但是用reducerdd就能调用saveAsSequenceFile保存，不能调用saveAsObjectFile保存。这个原因和rdd的类型有关。</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure></p>
+<p>以上命令都在本地测试执行过，结果也粘贴出来了。<br>
+常见的一些Transformation和Action见<a href="http://colobu.com/2014/12/08/spark-programming-guide/" target="_blank" rel="noopener">http://colobu.com/2014/12/08/spark-programming-guide/</a>讲的很详细。 通过上面的命令练习了常用的Transformation和Action。可以在saveAsTextFile函数之前调用repartition加快保存速度。</p>
+<p><strong>使用其他函数实现wordcount思路总结:</strong></p>
+<p>如果自己实现wordcount的功能的话，还可以在map函数之后使用countByKey()这个函数，这个函数的返回值是collections.defaultdict，是python的一个类型，不能调用saveAsTextFile，但可以自己写for循环遍历，并写入本地文件中，在pyspark中是可以使用python的所有特性的。</p>
+<h3 id="编写spark-application">2.2 编写spark application</h3>
+<p><strong>(1) python版本：</strong> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    sc = SparkContext(appName=<span class="string">"PythonWordCount"</span>)</span><br><span class="line">    <span class="comment">#加载数据　并指明partition为1</span></span><br><span class="line">    lines = sc.textFile(<span class="string">"hdfs:/tmp/bigdata/2015/english_novel/*"</span>, <span class="number">1</span>)</span><br><span class="line">    counts = lines.flatMap(<span class="keyword">lambda</span> x: x.split(<span class="string">' '</span>)) \</span><br><span class="line">                  .map(map_filter) \</span><br><span class="line">                  .reduceByKey(add)</span><br><span class="line">    output.saveAsTextFile(<span class="string">'hdfs:/user/2015210978/hw2-output-python'</span>)</span><br><span class="line">    sc.stop()</span><br></pre></td></tr></table></figure></p>
+<p>这里的map_filter函数和上面在pyspark中执行的mapfilter.py中的map_filter函数是同一个函数，为了节省空间，这里没有粘贴出来。上述代码保存为wordcount.py。放在一个路径下，这里我还是放在了主目录下。在主目录下执行提交python application命令： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --master yarn-client --conf spark.ui.port=8015 ./wordcount.py</span><br></pre></td></tr></table></figure></p>
+<p>就可以看到程序开始执行了。<br>
+<strong>(2)Java版本：</strong><br>
+采用eclipse开发java版本,首先要在build_path中加入spark的包，即SPARK_HOME/lib/spark-assembly-1.5.1-hadoop2.6.0.jar。否则eclipse提示找不到类。采用eclipse开发一个好处就是可以图形化界面导出jar包，不用自己编写maven编译文件。这里列一下写内容到hdfs文件的代码： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">String dest = args[<span class="number">1</span>];</span><br><span class="line">Configuration conf = <span class="keyword">new</span> Configuration();</span><br><span class="line">FileSystem fs = FileSystem.get(URI.create(dest), conf);</span><br><span class="line">OutputStream out = fs.create(<span class="keyword">new</span> Path(dest));</span><br><span class="line">List&lt;Tuple2&lt;String, Integer&gt;&gt; output = counts.collect();</span><br><span class="line"><span class="keyword">for</span> (Tuple2&lt;?, ?&gt; tuple : output) &#123;</span><br><span class="line">	<span class="comment">//写入hdfs文件中</span></span><br><span class="line">	out.write(tuple._1().toString().getBytes());</span><br><span class="line">	out.write(<span class="string">' '</span>);</span><br><span class="line">	out.write(tuple._2().toString().getBytes());</span><br><span class="line">	out.write(<span class="string">'\n'</span>);</span><br><span class="line">&#125;</span><br><span class="line">out.flush();</span><br><span class="line">out.close();</span><br><span class="line">ctx.stop();</span><br></pre></td></tr></table></figure></p>
+<p>在java程序中，进行了两处修改，第一，对每个单词进行特殊字符的过滤。第二，调用hadoop文件操作API将结果以自己指定的格式写入hdfs中。（因为上面的pyspark shell版本和python application版本得到的结果中是python默认打印元组的格式含有括号和u什么的<code>(u'lead-line', 8)</code>,不便于下一步的数据处理）。程序中指定的输出格式是key+空格＋count然后换行。导出jar包为WordCountSparkInJava.jar并上传到服务器中。在jar包所在的路径下执行如下的命令： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --master yarn-client --conf spark.ui.port=8015 --name WordCount --class com.alvin.test.WordCount --executor-memory 2G --total-executor-cores 2 ./WordCountSparkInJava.jar hdfs:/tmp/bigdata/2015/english_novel/* hdfs:/user/2015210978/result.txt</span><br></pre></td></tr></table></figure></p>
+<p>执行完之后发现结果保存在hdfs:/user/2015210978/result.txt中了。然后利用<code>hadoop fs -copyToLocal　/user/2015210978/result.txt　./</code> 命令拷贝到服务器本地文件中。需要指出的是在hadoop application中也可以利用java的特性将结果写在本地文件中，这里没有用到，用的是java hdfs的一些API将结果写在了hdfs文件系统中。</p>
+<h3 id="排序形成最终结果">2.3 排序形成最终结果</h3>
+<ol type="1">
+<li><p>pyspark中用countByKey函数实现的wordcount功能就不需要这一步了，因为已经利用python文本处理进行了不区分大小写排序。pyspark传递函数那个版本和下面的spark python application的后续处理是一样的。<br>
+</p></li>
+<li><p>对Java Application保存的文件可以用下面的命令进行排序 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat result.txt | sort -t&apos; &apos; -k 1,1df &gt; sorted_result.txt</span><br></pre></td></tr></table></figure></p></li>
+<li><p>对python application保存的文件的处理有点麻烦，需要去掉括号还有key前面的u,利用linux的shell或者python脚本都可以实现，这里不再赘述。</p></li>
+</ol>
+<p>因为之前在代码中进行过滤操作时，如果去除特殊字符之后的字符串为空，我们返回("",0),所以在最后的sorted_result.txt文件中第一行为一个空格和０，把它删掉就行了。需要提出的是在spark中有sortByKey这个Transformation,其排序是按字典序排列的，区分大小写。先排大写字母然后排小写字母。不符合我们最后的不区分大小写的要求，也需要进行后续的处理。</p>
+<h2 id="总结">3. 总结</h2>
+<p>通过这次实验，配置好了本地的spark运行环境，在本地写完wordcount程序（pyspark版本，python application和java application版本），并在本机debug完，然后上传到服务器执行，在本地debug的一个好处就是便于查错。<br>
+本次实验中，主要做了以下的工作： 1. 在pyspark中自己写了一个map_filter函数，并放在文件中加载，这个函数的思路和第一次作业的思路相同，只不过这次这个函数是用python实现的。练习了向pyspark中传递函数以及常用的actions和transformation。并用实验指导书之外的rdd操作和python的一些排序特性进行wordcount的编写。 2. 编写了python application版本的wordcount,调用了map_filter函数。 3. 编写了Java application版本的wordcount。Java版本的application除了在map的时候进行特殊字符的过滤之外，还调用了hdfs的文件接口，以自己定义的格式将结果输出到hdfs文件中，便于后面进行进一步的分析处理。 4. 最后对文件进行合并。</p>
+<p>网上关于spark的中文资料还是挺多的，英文的就是spark guide，篇幅确实不是特别长。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/bigdata-system/" rel="tag"># bigdata system</a>
+            
+              <a href="/tags/spark/" rel="tag"># spark</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/05/11/Ubuntu14-04上hadoop2-7-1环境配置以及第一个MapReduce程序-WordCount/" rel="next" title="Ubuntu14.04上hadoop2.7.1环境配置以及第一个MapReduce程序-WordCount">
+                  <i class="fa fa-chevron-left"></i> Ubuntu14.04上hadoop2.7.1环境配置以及第一个MapReduce程序-WordCount
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/06/01/data-mining-basic-knowlege/" rel="prev" title="data mining basic knowlege">
+                  data mining basic knowlege <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#spark开发环境配置"><span class="nav-text">1. spark开发环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载所需文件"><span class="nav-text">1.1 下载所需文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置环境变量"><span class="nav-text">1.2 配置环境变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验过程"><span class="nav-text">2. 实验过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用pyspark"><span class="nav-text">2.1 使用pyspark</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#向pyspark传递函数实现wordcount"><span class="nav-text">2.1.1 向pyspark传递函数实现wordcount</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用其他rdd函数实现wordcount"><span class="nav-text">2.1.2 用其他RDD函数实现wordcount</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#练习使用pyspark交互式分析"><span class="nav-text">2.1.3 练习使用pyspark交互式分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编写spark-application"><span class="nav-text">2.2 编写spark application</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序形成最终结果"><span class="nav-text">2.3 排序形成最终结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-text">3. 总结</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="yrb">
+  <p class="site-author-name" itemprop="name">yrb</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yrb</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="code:https://github.com/yanruibo/machine-learning/tree/master/hmm 1. 要求 隐马尔科夫模型应用 实验要求:  学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。 既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。 实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是">
+<meta name="keywords" content="machine learning,hmm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hmm">
+<meta property="og:url" content="https://yanruibo.github.io/2016/04/15/hmm/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="code:https://github.com/yanruibo/machine-learning/tree/master/hmm 1. 要求 隐马尔科夫模型应用 实验要求:  学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。 既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。 实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2016-12-19T14:00:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hmm">
+<meta name="twitter:description" content="code:https://github.com/yanruibo/machine-learning/tree/master/hmm 1. 要求 隐马尔科夫模型应用 实验要求:  学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。 既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。 实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是">
+  <link rel="canonical" href="https://yanruibo.github.io/2016/04/15/hmm/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>hmm | Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Summary for Comprehensive Learning</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://yanruibo.github.io/2016/04/15/hmm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yrb">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">hmm
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2016-04-15 21:12:53" itemprop="dateCreated datePublished" datetime="2016-04-15T21:12:53+08:00">2016-04-15</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2016-12-19 22:00:45" itemprop="dateModified" datetime="2016-12-19T22:00:45+08:00">2016-12-19</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/machine-learning/" itemprop="url" rel="index"><span itemprop="name">machine learning</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="https://github.com/yanruibo/machine-learning/tree/master/hmm" target="_blank" rel="noopener">code:https://github.com/yanruibo/machine-learning/tree/master/hmm</a></p>
+<h2 id="要求">1. 要求</h2>
+<p>隐马尔科夫模型应用<br>
+实验要求:</p>
+<ol type="1">
+<li>学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。</li>
+<li>既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。</li>
+<li>实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是上传的一个小实验库，有需要的同学可找助教要较大的人脸库，或自行搜索下载）。</li>
+</ol>
+<a id="more"></a>
+<h2 id="相关知识">2. 相关知识</h2>
+<p>　　这里把重点放在介绍论文的人脸识别方法上。</p>
+<h3 id="hmm">2.1 HMM</h3>
+<p>　　隐马尔科夫模型是关于时序的概率模型，描述由一个隐藏的马尔科夫链随机生成不可观测的状态的随机序列，再由各个状态生成一个观测而产生观测随机序列的过程，隐藏的马尔科夫链随机生成的状态的序列称为状态序列，每个状态生成一个观测，而由此产生的观测的随机序列，称为观测序列，序列的每一个位置又可以看做是一个时刻。<br>
+　　隐马尔科夫模型由初始概率分布，状态转移概率分布以及观测概率分布确定。其余内容还有概率的前向和后向计算算法，学习算法中的Baum-Welch算法和预测算法的维特比算法，这些知识在统计学习方法第10章中有详细的介绍。</p>
+<h3 id="论文human-face-identification">2.2 论文Human Face Identification</h3>
+<p>Parameterisation of a Stochastic Model for Human Face Identification</p>
+<h4 id="采样">(1).采样</h4>
+<p>　　将每一个人脸的图像从上到下进行分块，每个分块的像素层数（行数）为L，块与块之前需要重叠一下，重叠的像素层数（行数）为M，那么状态序列的长度用下面的公式来计算： <span class="math display">\[
+T=\phi(\frac{Y-L}{L-M})+1
+\]</span> 　　在代码中我对每一个块的图像进行了图像特征提取，一方面是为了降维，另一方面是为了突出主要特征，常见的图像特征提取方法有LBP(Local Binary Pattern)和HOG(Histogram of Oriented Gradients),由于在模式识别课上已经自己实现了LBP算法，在这里就直接把模式识别课上写过的LBP算法拿过来直接用了。而论文中的操作只是把每一块图像的每一行首尾连接拼成一个很长的向量，这里对论文中的方法做了改进。</p>
+<p>具体代码如下所示： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">对每一张图片生成观测序列，该方法是把图片每一块的图像进行LBP提取特征之后变成36维的向量，然后按行放到一个矩阵中</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_observations_lbp</span><span class="params">(imagepath, L=<span class="number">10</span>, M=<span class="number">4</span>)</span>:</span></span><br><span class="line">    <span class="comment"># './att_faces/s1/1.pgm'</span></span><br><span class="line">    image = cv2.imread(imagepath)</span><br><span class="line">    <span class="comment"># (112,92)</span></span><br><span class="line">    <span class="comment"># print image.shape</span></span><br><span class="line">    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">    Y = gray_image.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># L = 10</span></span><br><span class="line">    <span class="comment"># M = 4</span></span><br><span class="line">    obs_length = np.floor((Y - L) / (L - M)) + <span class="number">1</span></span><br><span class="line">    obs_list = []</span><br><span class="line">    counter = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span>(counter &lt; obs_length):</span><br><span class="line">        begin = counter * (L - M)</span><br><span class="line">        end = (counter + <span class="number">1</span>) * L - counter * M</span><br><span class="line">        sub_mat = gray_image[range(begin, end), :]</span><br><span class="line">        obsith = LBP(sub_mat)</span><br><span class="line">        <span class="comment"># print sub_mat.shape</span></span><br><span class="line">        <span class="comment"># obsith = sub_mat.reshape(sub_mat.shape[0] * sub_mat.shape[1])</span></span><br><span class="line">        <span class="comment"># obsith = obsith.reshape((obsith.shape[0], 1))</span></span><br><span class="line">        obs_list.append(obsith)</span><br><span class="line">        counter = counter + <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> np.array(obs_list)</span><br></pre></td></tr></table></figure></p>
+<h4 id="训练">(2).训练</h4>
+<p>　　对每一张图片进行采样过后得到一个观测序列，这个观测序列中的一个值也是一个向量，这就和书上写的一般的HMM有所不同了，这里需要用到GaussianHMM，就是把每个观测序列的观测值训练为一个高斯模型。</p>
+<p>具体代码如下所示： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">models = []</span><br><span class="line"><span class="keyword">print</span> <span class="string">"begin training models"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(train_labels)):</span><br><span class="line">    <span class="keyword">if</span>(i % <span class="number">5</span> == <span class="number">0</span>):</span><br><span class="line">        <span class="comment"># 0 5 10 15 : 1 2 3 4</span></span><br><span class="line">        <span class="comment"># 选取同一个人的五张图片训练一个Model</span></span><br><span class="line">        X1 = generate_observations_lbp(train_imagepathes[i], L, M);</span><br><span class="line">        X2 = generate_observations_lbp(train_imagepathes[i + <span class="number">1</span>], L, M);</span><br><span class="line">        X3 = generate_observations_lbp(train_imagepathes[i + <span class="number">2</span>], L, M);</span><br><span class="line">        X4 = generate_observations_lbp(train_imagepathes[i + <span class="number">3</span>], L, M);</span><br><span class="line">        X5 = generate_observations_lbp(train_imagepathes[i + <span class="number">4</span>], L, M);</span><br><span class="line">        model = GaussianHMM(n_components, covariance_type=<span class="string">"diag"</span>, n_iter=<span class="number">1000</span>).fit([X1, X2, X3, X4, X5])</span><br><span class="line">        models.append(model)</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"training models %s%%"</span> % str(float(i+<span class="number">5</span>)/len(train_imagepathes)*<span class="number">100</span>)</span><br><span class="line">model_labels = range(<span class="number">1</span>, <span class="number">41</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="测试">(3).测试</h4>
+<p>　　训练完成之后，进行测试，这里我们选用的是论文中的数据集。该数据集共有40个不同的人脸，每个人脸有10个，我们选用每个人脸的前五个作为训练，后五个作为测试，这样就得到了40个GaussianHMM的model，然后在测试的时候，对每一张待测试的图片先生成观测序列，然后计算一下<span class="math inline">\(P(O_{test}|\lambda^{(k)})\)</span>（调用一下model.score函数），然后找到最大概率的模型所对应的类别就是预测的类别。</p>
+<p>具体代码如下所示： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">correct_count = <span class="number">0</span></span><br><span class="line">   <span class="keyword">for</span> j <span class="keyword">in</span> range(len(test_imagepathes)):</span><br><span class="line">       test_one = generate_observations_lbp(test_imagepathes[j], L, M)</span><br><span class="line">       max_score = -sys.maxint</span><br><span class="line">       max_label = <span class="literal">None</span></span><br><span class="line">       <span class="keyword">for</span> k <span class="keyword">in</span> range(len(models)):</span><br><span class="line">           current_score = models[k].score(test_one)</span><br><span class="line">           <span class="keyword">if</span>(current_score &gt; max_score):</span><br><span class="line">               max_score = current_score</span><br><span class="line">               max_label = model_labels[k]</span><br><span class="line">       <span class="keyword">if</span>(max_label == test_labels[j]):</span><br><span class="line">           <span class="keyword">print</span> <span class="string">"correct: real"</span>,test_labels[j],<span class="string">"predict"</span>,max_label</span><br><span class="line">           correct_count += <span class="number">1</span></span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           <span class="keyword">print</span> <span class="string">"error: real"</span>,test_labels[j],<span class="string">"predict"</span>,max_label</span><br><span class="line">   accracy = float(correct_count)/len(test_imagepathes)</span><br><span class="line">   <span class="keyword">print</span> <span class="string">"Accracy is"</span>,accracy</span><br><span class="line">   <span class="keyword">return</span> accracy</span><br></pre></td></tr></table></figure></p>
+<h2 id="实验过程">3. 实验过程</h2>
+<p>　　<font color="#FF7F50">注意跑本实验代码需要scikit-learn0.14版本。因为最新版本的scikit-learn库把hmm模块移除了。</font> 这里总结一下GaussianHMM的用法： 1.scikit-learn中的GaussianHMM(我的是scikit-learn 0.14.1版本) from sklearn.hmm import GaussianHMM model = GaussianHMM(n_components, covariance_type="diag", n_iter=1000).fit([X1, X2, X3, X4, X5]) 2.助教给的hmmlearn包 from hmmlearn.hmm import GaussianHMM model = GaussianHMM(n_components, covariance_type="diag", n_iter=1000).fit(X) 上面的X是五个图片矩阵按行堆叠形成的大矩阵。</p>
+<p>代码目录结构说明：<br>
+att_faces论文中所用到的数据库<br>
+face-identification.py，选用每个类别的前五张作为训练集后五张作为测试集进行人脸识别代码。<br>
+face-indentification-random.py。从每个类别的10张图片中任意选择五张作为训练集，剩余的作为测试集进行人脸识别。<br>
+log的txt文件是调参过程中的输出的参数的准确率的信息。<br>
+mainLBP.py是提取图像特征的LBP算法。</p>
+<p>固定L和M,观察states的影响：</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">states</th>
+<th style="text-align: center;">L</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.695</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.695</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.69</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.58</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.605</td>
+</tr>
+</tbody>
+</table>
+<p>固定L和M,随着states个数的增大，效果先变好后变差，在6或7左右取最大值。</p>
+<p>固定states和M,观察L的影响：</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">states</th>
+<th style="text-align: center;">L</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.675</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.62</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.685</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.675</td>
+</tr>
+</tbody>
+</table>
+<p>固定states和M,随着L个数的增大，效果先变好后变差，在14或15左右取最大值。</p>
+<p>固定states和L,观察M的影响：</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">states</th>
+<th style="text-align: center;">L</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">0.585</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">0.59</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.695</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">0.64</td>
+</tr>
+</tbody>
+</table>
+<p>固定states和L,随着M个数的增大，效果先变好后变差，在6或7或8左右取最大值。</p>
+<p>比较好的运行结果：</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">states</th>
+<th style="text-align: center;">L</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">0.73</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">0.765</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">0.75</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.745</td>
+</tr>
+</tbody>
+</table>
+<p>虽然准确率比较低，但是和论文中是差不多的，论文中的错误率也是在0.2-0.3之间。另外精确率比较高，比较好的结果可以见log-random6.txt文件。</p>
+<h2 id="总结">4. 总结</h2>
+<p>　　通过这次实验对用HMM进行人脸识别有了比较深入的了解，有一个缺点就是所有的函数都是通过调用库函数实现的，由于自己实现HMM已经非常复杂，而且用于人脸识别的每个观测点又是一个向量，因此要实现GaussianHMM，而且对于同一个人的人脸要用五张进行训练得到一个GaussianHMM模型，还要实现接收multi observation sequences的GaussianHMM，需要有一个迭代更新GaussianHMM参数的过程，这个方法在下面参考文献的硕士论文中有提到，因为时间紧张而且还要写老师的论文，就没有自己编写算法。就采用了调库的方式。</p>
+<h2 id="参考文献">5. 参考文献：</h2>
+<p>1.Parameterisation of a Stochastic Model for Human Face Identification<br>
+2.基于隐马尔科夫模型的人脸识别　李增劲 哈哈哈哈</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+            
+              <a href="/tags/hmm/" rel="tag"># hmm</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/04/10/svm/" rel="next" title="svm">
+                  <i class="fa fa-chevron-left"></i> svm
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/05/07/interview-questions-cpp/" rel="prev" title="interview questions cpp">
+                  interview questions cpp <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#要求"><span class="nav-text">1. 要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关知识"><span class="nav-text">2. 相关知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hmm"><span class="nav-text">2.1 HMM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#论文human-face-identification"><span class="nav-text">2.2 论文Human Face Identification</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#采样"><span class="nav-text">(1).采样</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#训练"><span class="nav-text">(2).训练</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试"><span class="nav-text">(3).测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验过程"><span class="nav-text">3. 实验过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-text">4. 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-text">5. 参考文献：</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="yrb">
+  <p class="site-author-name" itemprop="name">yrb</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yrb</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+  
+
+  
+
+  
+
+</body>
+</html>

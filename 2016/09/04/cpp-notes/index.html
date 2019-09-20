@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="note 1: 一个派生类对象如果是public继承的，那么可以被当做一个基类对象来使用 - 基类对象可以使用派生类对象赋值 - 基类的引用可以用派生类对象初始化 - 基类的指针可以用派生类指针赋值 - 通过基类指针，对象名只能使用从基类继承的成员">
+<meta name="keywords" content="cpp notes,cpp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp notes">
+<meta property="og:url" content="https://yanruibo.github.io/2016/09/04/cpp-notes/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="note 1: 一个派生类对象如果是public继承的，那么可以被当做一个基类对象来使用 - 基类对象可以使用派生类对象赋值 - 基类的引用可以用派生类对象初始化 - 基类的指针可以用派生类指针赋值 - 通过基类指针，对象名只能使用从基类继承的成员">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2016-09-17T07:46:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cpp notes">
+<meta name="twitter:description" content="note 1: 一个派生类对象如果是public继承的，那么可以被当做一个基类对象来使用 - 基类对象可以使用派生类对象赋值 - 基类的引用可以用派生类对象初始化 - 基类的指针可以用派生类指针赋值 - 通过基类指针，对象名只能使用从基类继承的成员">
+  <link rel="canonical" href="https://yanruibo.github.io/2016/09/04/cpp-notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>cpp notes | Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Summary for Comprehensive Learning</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://yanruibo.github.io/2016/09/04/cpp-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yrb">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">cpp notes
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2016-09-04 20:06:20" itemprop="dateCreated datePublished" datetime="2016-09-04T20:06:20+08:00">2016-09-04</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2016-09-17 15:46:14" itemprop="dateModified" datetime="2016-09-17T15:46:14+08:00">2016-09-17</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/cpp/" itemprop="url" rel="index"><span itemprop="name">cpp</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>note 1:<br>
+一个派生类对象如果是public继承的，那么可以被当做一个基类对象来使用<br>
+- 基类对象可以使用派生类对象赋值<br>
+- 基类的引用可以用派生类对象初始化<br>
+- 基类的指针可以用派生类指针赋值<br>
+- 通过基类指针，对象名只能使用从基类继承的成员</p>
+<a id="more"></a>
+<p>note 2:<br>
+In the static binding, the decision about which function to use to resolve an overload is made at compile time.<br>
+静态绑定表示的是调用哪个函数在编译时候已经决定。<br>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">public</span> :</span><br><span class="line">     <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">( )</span></span>&#123; <span class="built_in">cout</span> &lt;&lt; “it is in a”&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span> <span class="keyword">public</span> A </span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> :</span><br><span class="line">     <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">( )</span></span>&#123; <span class="built_in">cout</span> &lt;&lt; “it is in b”&lt;&lt;<span class="built_in">endl</span>;  &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> A a;</span><br><span class="line"><span class="number">2.</span> B b;</span><br><span class="line"><span class="number">3.</span> …</span><br><span class="line"><span class="number">4.</span> a.f(); b.f();</span><br><span class="line">Here, <span class="function">the determination of which <span class="title">f</span><span class="params">()</span> is used in the two calls at line4 is computable at compile time</span></span><br></pre></td></tr></table></figure></p>
+<p>If a member function is declared to be virtual, dynamic binding is used. The decision about which function to use to resolve an overload is made at run time, if it cannot be determined at compile time:<br>
+Virtualness is inherited.<br>
+It is override but not overload.<br>
+A run-time decision is needed only when an object is accessed through a pointer or reference to a base class.<br>
+1 如果声明为virtual，则为动态绑定，决定调用哪个函数是在运行时决定的，编译时不能决定。<br>
+2 虚函数是被继承的。<br>
+3 是覆盖不是重载。<br>
+4 动态绑定一般是当通过指针访问基类成员时。</p>
+<p>note 3:<br>
+A method is declared abstract by specifying that it is virtual and by supplying = 0 in the interface in place of an implementation.<br>
+An abstract method has no meaningful definition and is thus always defined in the derived class.<br>
+A class that has at least one abstract method is called an abstract class Because the behavior of an abstract class is not completely defined, abstract classes can never be instantiated.<br>
+When a derived class fails to override an abstract method with an implementation, it remains abstract, and the compiler reports an error if an attempt to instantiate the abstract derived class is made.<br>
+抽象方法：纯需函数，抽象类实际上就是画一个框架，它的所有孩子都拥有一样的框架，只是每个人的有不一样<br>
+1 抽象函数是在函数前加virtual，后面加上=0<br>
+2 抽象函数没有实际意义的定义，总是在子类里被定义<br>
+3 至少有一个纯需函数的类叫做抽象类<br>
+4 因为没有被完整的定义，所以抽象类不能被实例化<br>
+5 当一个子类没有写抽象方法的实现时，这个子类仍然是抽象类，如果实例化仍然会出错</p>
+<p>note 4:<br>
+Exception Handling<br>
+C++ exception handling centers around the use of the try keyword and the catch keyword<br>
+The C++ Standard Library provides and uses a standard exception class hierarchy.<br>
+Head file: <code>#include &lt;stdexcept&gt;</code><br>
+sample code:<br>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;        </span><br><span class="line">          <span class="keyword">if</span> (argc != <span class="number">2</span>) &#123;  </span><br><span class="line">              <span class="built_in">cerr</span> &lt;&lt; <span class="string">"Usage: "</span> &lt;&lt; argv[<span class="number">0</span>] &lt;&lt; <span class="string">" num"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">              <span class="keyword">return</span> EXIT_FAILURE;       </span><br><span class="line">         &#125;        </span><br><span class="line">         <span class="keyword">int</span> number_fib = atoi(argv[<span class="number">1</span>]);       </span><br><span class="line">        calculate_fibonacci(number_fib);       </span><br><span class="line">        <span class="keyword">return</span> EXIT_SUCCESS;    </span><br><span class="line">    &#125;    </span><br><span class="line">   <span class="keyword">catch</span> (exception&amp; e) &#123;</span><br><span class="line">        <span class="built_in">cerr</span> &lt;&lt; e.what() &lt;&lt; <span class="built_in">endl</span>;    </span><br><span class="line">      &#125;    </span><br><span class="line">   <span class="keyword">return</span> EXIT_FAILURE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><image src="cpp-exception.png" align="center"></image></p>
+<p>In C++, a variable of any data type can be thrown as an exception using the throw statement.<br>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        srand(time(<span class="number">0</span>));</span><br><span class="line">        <span class="keyword">if</span> (rand() % <span class="number">2</span> == <span class="number">0</span>) &#123; </span><br><span class="line">           <span class="keyword">throw</span> out_of_range(<span class="string">"out of range"</span>); </span><br><span class="line">       &#125; </span><br><span class="line">       <span class="keyword">else</span> &#123; </span><br><span class="line">           <span class="keyword">throw</span> length_error(<span class="string">"length error"</span>); </span><br><span class="line">       &#125;</span><br><span class="line">        <span class="keyword">return</span> EXIT_SUCCESS;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (out_of_range e) &#123;</span><br><span class="line">        <span class="built_in">cerr</span> &lt;&lt; <span class="string">"caught out_of_range exception"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125; </span><br><span class="line">   <span class="keyword">catch</span> (length_error e) &#123;</span><br><span class="line">        <span class="built_in">cerr</span> &lt;&lt; <span class="string">"caught length_error exception"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> EXIT_FAILURE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>A function can transfer execution to a catch statement that exists in another function. This usually happens when a function (that throws an exception) is called from within a try block of another function. <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">display_args</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (argc == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> runtime_error(<span class="string">"Please supply arguments"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; argc; i++) &#123; </span><br><span class="line">       <span class="built_in">cout</span> &lt;&lt; argv[i] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span> </span>&#123; </span><br><span class="line">   <span class="keyword">try</span> &#123;       </span><br><span class="line">       display_args(argc, argv); </span><br><span class="line">       <span class="keyword">return</span> EXIT_SUCCESS;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (runtime_error&amp; e) &#123; </span><br><span class="line">       <span class="built_in">cerr</span> &lt;&lt; e.what() &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> EXIT_FAILURE; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>C++ provides a mechanism to catch exceptions of all possible types.<br>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (argc == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> runtime_error(<span class="string">"runtime error"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (argc == <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> out_of_range(<span class="string">"out of range"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (argc == <span class="number">3</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> length_error(<span class="string">"length error"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> EXIT_SUCCESS;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (...) &#123;</span><br><span class="line">        <span class="built_in">cerr</span> &lt;&lt; <span class="string">"An exception was caught!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> EXIT_FAILURE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>note 5:<br>
+iterator an iterator is an object that allows us to iterate through all objects in a collection.<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">example：</span><br><span class="line">   for（int i=0；i&lt;v.size();i++)</span><br><span class="line">     cout&lt;&lt;v[i]&lt;&lt;endl;</span><br><span class="line">```   </span><br><span class="line">In this loop, i is an iterator. But we can store the collection only in an arraylik structure.   </span><br><span class="line">A flexible alternative：design an iterator class that encapsulates a position inside a collection   </span><br><span class="line">```cpp</span><br><span class="line">#include “MyVector.h”</span><br><span class="line">#include “VectorIterator.h”</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">  MyVector&lt;int&gt; v;</span><br><span class="line">  v.push_back(3);</span><br><span class="line">  v.push_back(2);</span><br><span class="line">  cout &lt;&lt; “Vector contents:” &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">  VectorIterator&lt;int&gt; itr = v.getIterator();</span><br><span class="line">  while(itr.hasNext())</span><br><span class="line">     cout &lt;&lt; itr.next() &lt;&lt; endl;</span><br><span class="line">  return 0;</span><br><span class="line">&#125;</span><br><span class="line">template &lt;class Object&gt;</span><br><span class="line">Class VectorIterator；</span><br><span class="line">template MyVector:public vector&lt;object&gt;</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">   explicit MyVector(int size = 0) :vector&lt;object&gt;(size) &#123;&#125;</span><br><span class="line">  VectorIterator&lt;object&gt; getIterator() const </span><br><span class="line">    &#123;return VectorIterator&lt;object&gt;(this);&#125;</span><br><span class="line">&#125;</span><br><span class="line">emplate &lt;class Object&gt;</span><br><span class="line">Class VectorIterator</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">   VectorIterator(const MyVector&lt;Object&gt;*v) :owner(v),count(0) &#123;&#125;</span><br><span class="line">   bool hasNext( ) const</span><br><span class="line">     &#123; return count != owner-&gt;size( ); &#125;</span><br><span class="line">   //const不允许修改</span><br><span class="line">   const Object&amp; next( )</span><br><span class="line">     &#123; return (*owner)[count++];&#125;</span><br><span class="line">private:</span><br><span class="line">   const MyVector&lt;Object&gt; *owner;</span><br><span class="line">   int count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Iterator Design 2 ：Inheritance-Based Iterators<br>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Object</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">Class</span> <span class="title">Iterator</span>;</span></span><br><span class="line">Template &lt;<span class="class"><span class="keyword">class</span> <span class="title">Object</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">Class</span> <span class="title">VectorIterator</span>;</span></span><br><span class="line"></span><br><span class="line">Template &lt;<span class="class"><span class="keyword">class</span> <span class="title">Object</span>&gt;</span></span><br><span class="line"><span class="class"> <span class="title">Class</span> <span class="title">MyVector</span>:</span><span class="keyword">public</span> <span class="built_in">vector</span>&lt;Object&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">MyVector</span><span class="params">(intint size=<span class="number">0</span>)</span></span></span><br><span class="line">      :vector&lt;Object&gt;(size)&#123;&#125;</span><br><span class="line">    Iterator&lt;Object&gt; * getIterator() <span class="keyword">const</span></span><br><span class="line">      &#123;<span class="keyword">return</span> <span class="keyword">new</span> VectorIterator&lt;Object&gt;(<span class="keyword">this</span>); &#125;</span><br><span class="line">&#125;</span><br><span class="line">Template &lt;<span class="class"><span class="keyword">class</span> <span class="title">Object</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">Class</span> <span class="title">Iterator</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">   <span class="keyword">virtual</span>  ~Iterator() &#123; &#125;</span><br><span class="line">   <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">hasNext</span><span class="params">( )</span> <span class="keyword">const</span> </span>= <span class="number">0</span>;</span><br><span class="line">   <span class="function"><span class="keyword">virtual</span> <span class="keyword">const</span> Object &amp; <span class="title">next</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line">Template &lt;<span class="class"><span class="keyword">class</span> <span class="title">Object</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">Class</span> <span class="title">VectorIterator</span>:</span><span class="keyword">public</span> Iterator&lt;Object&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">   VectorIterator(<span class="keyword">const</span> MyVector&lt;object. * v)</span><br><span class="line">   :owner(v),count(<span class="number">0</span>) &#123; &#125;</span><br><span class="line">   <span class="function"><span class="keyword">bool</span> <span class="title">hasNext</span><span class="params">( )</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">     </span>&#123;<span class="keyword">return</span> count != owner-&gt;size();&#125; </span><br><span class="line">   <span class="function"><span class="keyword">const</span> Object &amp; <span class="title">next</span><span class="params">()</span></span></span><br><span class="line"><span class="function">     </span>&#123;<span class="keyword">return</span> (*owner)[count++]; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">   <span class="keyword">const</span> MyVector&lt;Object&gt; *owner;</span><br><span class="line">   <span class="keyword">int</span> count;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>http://www.thecrazyprogrammer.com/2014/11/c-cpp-program-for-priority-scheduling-algorithm.html</p>
+<p>note 6:<br>
+note 7:<br>
+note 8:<br>
+note 9:<br>
+note 10:<br>
+note 11:<br>
+note 12:</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/cpp-notes/" rel="tag"># cpp notes</a>
+            
+              <a href="/tags/cpp/" rel="tag"># cpp</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/09/03/shallow-copy-and-deep-copy/" rel="next" title="深拷贝和浅拷贝">
+                  <i class="fa fa-chevron-left"></i> 深拷贝和浅拷贝
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/09/05/bubble-sort/" rel="prev" title="bubble sort">
+                  bubble sort <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="yrb">
+  <p class="site-author-name" itemprop="name">yrb</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yrb</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+  
+
+  
+
+  
+
+</body>
+</html>

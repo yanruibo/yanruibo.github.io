@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="1. 实验前准备工作 1.1 安装hadoop伪分布式系统 1.下载hadoop源文件，hadoop-2.7.1.tar.gz，将其解压在一个文件夹中，这里我解压到了我的电脑的主目录下面，配置参数，主要修改一下几个文件： core-site.xml 12345678910&amp;lt;configuration&amp;gt;  	&amp;lt;property&amp;gt;        	&amp;lt;name&amp;gt;fs.">
+<meta name="keywords" content="bigdata system,hadoop,spark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu14.04上hadoop2.7.1环境配置以及第一个MapReduce程序-WordCount">
+<meta property="og:url" content="https://yanruibo.github.io/2016/05/11/Ubuntu14-04上hadoop2-7-1环境配置以及第一个MapReduce程序-WordCount/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="1. 实验前准备工作 1.1 安装hadoop伪分布式系统 1.下载hadoop源文件，hadoop-2.7.1.tar.gz，将其解压在一个文件夹中，这里我解压到了我的电脑的主目录下面，配置参数，主要修改一下几个文件： core-site.xml 12345678910&amp;lt;configuration&amp;gt;  	&amp;lt;property&amp;gt;        	&amp;lt;name&amp;gt;fs.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yanruibo.github.io/2016/05/11/Ubuntu14-04上hadoop2-7-1环境配置以及第一个MapReduce程序-WordCount/pic/Eclipse-Hadoop-Home-Configure.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/05/11/Ubuntu14-04上hadoop2-7-1环境配置以及第一个MapReduce程序-WordCount/pic/map-reduce-locations.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/05/11/Ubuntu14-04上hadoop2-7-1环境配置以及第一个MapReduce程序-WordCount/pic/hadoop-location-conf.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/05/11/Ubuntu14-04上hadoop2-7-1环境配置以及第一个MapReduce程序-WordCount/pic/all-view.png">
+<meta property="og:updated_time" content="2016-09-17T08:18:00.032Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu14.04上hadoop2.7.1环境配置以及第一个MapReduce程序-WordCount">
+<meta name="twitter:description" content="1. 实验前准备工作 1.1 安装hadoop伪分布式系统 1.下载hadoop源文件，hadoop-2.7.1.tar.gz，将其解压在一个文件夹中，这里我解压到了我的电脑的主目录下面，配置参数，主要修改一下几个文件： core-site.xml 12345678910&amp;lt;configuration&amp;gt;  	&amp;lt;property&amp;gt;        	&amp;lt;name&amp;gt;fs.">
+<meta name="twitter:image" content="https://yanruibo.github.io/2016/05/11/Ubuntu14-04上hadoop2-7-1环境配置以及第一个MapReduce程序-WordCount/pic/Eclipse-Hadoop-Home-Configure.png">
+  <link rel="canonical" href="https://yanruibo.github.io/2016/05/11/Ubuntu14-04上hadoop2-7-1环境配置以及第一个MapReduce程序-WordCount/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Ubuntu14.04上hadoop2.7.1环境配置以及第一个MapReduce程序-WordCount | Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Summary for Comprehensive Learning</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://yanruibo.github.io/2016/05/11/Ubuntu14-04上hadoop2-7-1环境配置以及第一个MapReduce程序-WordCount/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yrb">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">Ubuntu14.04上hadoop2.7.1环境配置以及第一个MapReduce程序-WordCount
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2016-05-11 20:29:15" itemprop="dateCreated datePublished" datetime="2016-05-11T20:29:15+08:00">2016-05-11</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2016-09-17 16:18:00" itemprop="dateModified" datetime="2016-09-17T16:18:00+08:00">2016-09-17</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/data-mining/" itemprop="url" rel="index"><span itemprop="name">data mining</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="实验前准备工作">1. 实验前准备工作</h2>
+<h3 id="安装hadoop伪分布式系统">1.1 安装hadoop伪分布式系统</h3>
+<p>1.下载hadoop源文件，hadoop-2.7.1.tar.gz，将其解压在一个文件夹中，这里我解压到了我的电脑的主目录下面，配置参数，主要修改一下几个文件：<br>
+core-site.xml<br>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        	<span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        	<span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://localhost:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"> 	<span class="tag">&lt;<span class="name">property</span>&gt;</span>  </span><br><span class="line">        	<span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">        	<span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/yanruibo/hadoop-2.7.1/tmp<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  </span><br><span class="line">    	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>hdfs-site.xml<br>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">value</span>&gt;</span>1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        	<span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/yanruibo/hadoop-2.7.1/dfs/name<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.datanode.data.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/yanruibo/hadoop-2.7.1/dfs/data<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>mapred-site.xml <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>yarn-site.xml <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Site specific YARN configuration properties --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span>	</span><br><span class="line">	<span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.hostname<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">value</span>&gt;</span>localhost<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>最后在hadoop-env.sh文件的第25行，写入java的path， <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/java/jdk1.7.0_80</span><br></pre></td></tr></table></figure></p>
+<p>最后为了能在任何路径下都能启动hadoop，需要在path中加入hadoop的路径信息，这里我是为整个系统的用户添加的路径信息，可以在/etc/profile文件中加入如下内容： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export HADOOP_HOME=/home/yanruibo/hadoop-2.7.1</span><br><span class="line">export PATH=$PATH:$&#123;HADOOP_HOME&#125;/bin</span><br></pre></td></tr></table></figure></p>
+<p>配置完这些文件之后，需要安装一些软件。</p>
+<p>2.安装ssh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install ssh</span><br></pre></td></tr></table></figure>
+<p>设置ssh免登陆认证 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -P &apos;&apos; -f ~/.ssh/id_rsa</span><br><span class="line">cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure></p>
+<p>执行完这两条命令就可以免登陆了，可以用以下的命令进行测试： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh localhost</span><br></pre></td></tr></table></figure></p>
+<p>会出现下面的结果： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">yanruibo@yanruibo-PC:~$ ssh localhost</span><br><span class="line">The authenticity of host &apos;localhost (127.0.0.1)&apos; can&apos;t be established.</span><br><span class="line">ECDSA key fingerprint is 08:09:86:92:60:c2:62:09:21:3a:89:91:d5:8b:24:de.</span><br><span class="line">Are you sure you want to continue connecting (yes/no)? yes</span><br><span class="line">Warning: Permanently added &apos;localhost&apos; (ECDSA) to the list of known hosts.</span><br><span class="line">Welcome to Ubuntu 14.04.3 LTS (GNU/Linux 3.19.0-28-generic x86_64)</span><br><span class="line"></span><br><span class="line"> * Documentation:  https://help.ubuntu.com/</span><br><span class="line">The programs included with the Ubuntu system are free software;</span><br><span class="line">the exact distribution terms for each program are described in the</span><br><span class="line">individual files in /usr/share/doc/*/copyright.</span><br><span class="line"></span><br><span class="line">Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by</span><br><span class="line">applicable law.</span><br></pre></td></tr></table></figure></p>
+<p>3.第一次启动hadoop时要格式化一下hdfs文件系统<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs namenode -format</span><br></pre></td></tr></table></figure></p>
+<p>然后通过在命令行执行，因为我们之前在/etc/profile中设置了hadoop的路径信息，所以在任何路径下执行一下命令都可以 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start-all.sh</span><br></pre></td></tr></table></figure></p>
+<p>可以测试一下能否启动成功： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">yanruibo@yanruibo-PC:~$ start-all.sh</span><br><span class="line">This script is![](http://) Deprecated. Instead use start-dfs.sh and start-yarn.sh</span><br><span class="line">Starting namenodes on [localhost]</span><br><span class="line">localhost: starting namenode, logging to /home/yanruibo/hadoop-2.7.1/logs/hadoop-yanruibo-namenode-yanruibo-PC.out</span><br><span class="line">localhost: starting datanode, logging to /home/yanruibo/hadoop-2.7.1/logs/hadoop-yanruibo-datanode-yanruibo-PC.out</span><br><span class="line">Starting secondary namenodes [0.0.0.0]</span><br><span class="line">0.0.0.0: starting secondarynamenode, logging to /home/yanruibo/hadoop-2.7.1/logs/hadoop-yanruibo-secondarynamenode-yanruibo-PC.out</span><br><span class="line">starting yarn daemons</span><br><span class="line">starting resourcemanager, logging to /home/yanruibo/hadoop-2.7.1/logs/yarn-yanruibo-resourcemanager-yanruibo-PC.out</span><br><span class="line">localhost: starting nodemanager, logging to /home/yanruibo/hadoop-2.7.1/logs/yarn-yanruibo-nodemanager-yanruibo-PC.out</span><br></pre></td></tr></table></figure></p>
+<p>如果出现以上的信息，说明配置成功。或者执行jps命令 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">yanruibo@yanruibo-PC:~$ jps</span><br><span class="line">11149 SecondaryNameNode</span><br><span class="line">12989 Jps</span><br><span class="line">10941 DataNode</span><br><span class="line">10770 NameNode</span><br><span class="line">11315 ResourceManager</span><br><span class="line">11452 NodeManager</span><br></pre></td></tr></table></figure></p>
+<p>如果出现以上几个进程，也表示执行成功了。<br>
+关闭所有进程，相应的是stop-all.sh</p>
+<h3 id="配置eclipse开发环境">1.2 配置eclipse开发环境</h3>
+<p>首先下载hadoop的eclipse插件，从网上可以下载到，这个插件可以下载网上别人编译好的，也可以用eclipse自己编译，网上有教程，这里为了节省时间，我从网上自己下载了一个eclipse插件，hadoop-eclipse-plugin-2.7.1.jar，也是从csdn上下载的，可以自己搜索下载。下载下来之后放到eclipse安装文件夹下的plugins目录中，重启eclipse即可生效，然后在Window-&gt;Preferences-&gt;Hadoop Map/Reduce项中设置一下hadoop的home。<br>
+<img src="pic/Eclipse-Hadoop-Home-Configure.png" align="middle" width="70%"> 然后切换到eclipse的Map/Reduce视图下面，<br>
+<img src="pic/map-reduce-locations.png" align="middle" width="70%"> 右键 new hadoop location，按如下图所示进行配置，<br>
+<img src="pic/hadoop-location-conf.png" align="middle" width="70%"></p>
+<p>注意端口号要配置正确，配置完成这些之后，新建一个Map/Reduce的工程，eclipse就自动把相应依赖的hadoop包加载到工程的path中，你还可以在Project Explorer中的DFS Locations中查看你的hdfs中的文件，能观察到这一点的前提是前面hdfs的端口配置正确，还有就是你执行了start-all.sh，把hadoop的那几个进程都启动起来了。</p>
+<p><img src="pic/all-view.png" align="middle" width="70%"></p>
+<p>这里准备工作，即开发环境就搭建好了，下面就开始编写mapreduce程序。</p>
+<h2 id="实验过程">2. 实验过程</h2>
+<h3 id="基本要求level-0-1">2.1 基本要求Level 0 1</h3>
+<p>使用example里面的wordcount算法，统计每个词出现的次数，使用的命令为： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop jar /home/yanruibo/hadoop-2.7.1/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.1.jar wordcount /tmp/bigdata/2015/english_novel/* /user/2015210978/hw1-output1</span><br></pre></td></tr></table></figure></p>
+<p>这里我在eclipse中创建了一个mapreduce工程，包名为：com.alvin.test,有三个类WordCount.java,StringTest.java,Test.java，WordCount.java是实现单词计数的mapreduce程序，其余两个是过滤字符串的标点符号写的测试类。我创建了一个WordCount程序，照着example中的敲过来，然后通过eclipse导出jar包为WordCount1.jar，然后通过如下命令将导出的jar上传到服务器home目录下 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sftp -P 2222 2015210978@thumedia.org</span><br><span class="line">put WordCount1.jar /home/2015210978</span><br></pre></td></tr></table></figure></p>
+<p>然后ssh登陆到服务器： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -p 2222 2015210978@thumedia.org</span><br></pre></td></tr></table></figure></p>
+<p>在服务器的home目录也就是WordCount1.jar所在的目录，执行jar包，执行的命令为： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export HADOOP_CLASSPATH=WordCount1.jar</span><br><span class="line">hadoop com.alvin.test.WordCount /tmp/bigdata/2015/english_novel/* /user/2015210978/hw1-output1</span><br></pre></td></tr></table></figure></p>
+<p>这里的执行命令参考了《Hadoop The Definitive Guide》。然后就会看到mapreduce任务开始执行了。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">2015210978@cluster-3-0:~$ hadoop com.alvin.test.WordCount /tmp/bigdata/2015/english_novel/* /user/2015210978/hw1-output2</span><br><span class="line">15/10/15 11:07:28 INFO client.RMProxy: Connecting to ResourceManager at cluster29/192.168.5.129:8032</span><br><span class="line">15/10/15 11:07:29 INFO input.FileInputFormat: Total input paths to process : 1464</span><br><span class="line">15/10/15 11:07:33 INFO mapreduce.JobSubmitter: number of splits:1464</span><br><span class="line">15/10/15 11:07:34 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1426037502156_0240</span><br><span class="line">15/10/15 11:07:34 INFO impl.YarnClientImpl: Submitted application application_1426037502156_0240</span><br><span class="line">15/10/15 11:07:34 INFO mapreduce.Job: The url to track the job: http://cluster29:8088/proxy/application_1426037502156_0240/</span><br><span class="line">15/10/15 11:07:34 INFO mapreduce.Job: Running job: job_1426037502156_0240</span><br><span class="line">15/10/15 11:07:49 INFO mapreduce.Job: Job job_1426037502156_0240 running in uber mode : false</span><br><span class="line">15/10/15 11:09:52 INFO mapreduce.Job: Job job_1426037502156_0240 completed successfully</span><br></pre></td></tr></table></figure></p>
+<p>然后在服务器命令行中查看，并将结果拷贝到服务器的本地文件系统中， <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -ls /user/2015210978/output1</span><br><span class="line">hadoop fs -copyToLocal /user/2015210978/output1 ./</span><br></pre></td></tr></table></figure></p>
+<p>最后在sftp中将结果拉到我的电脑中 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get output1/* ./</span><br></pre></td></tr></table></figure></p>
+<h3 id="基本要求level-2">2.2 基本要求Level 2</h3>
+<p>有了单词计数的基本功能，我们查看一下执行结果，发现会有一下的情况： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&quot;/de/	1</span><br><span class="line">&quot;&apos;Alexander	1</span><br><span class="line">&quot;&apos;Ample.&apos;	1</span><br><span class="line">&quot;3&quot;	1</span><br><span class="line">&quot;52.43!&quot;	1</span><br><span class="line">&quot;&apos;&apos;Twon&apos;t	1</span><br><span class="line">&quot;But--how	2</span><br><span class="line">&quot;Bureaucracy,&quot;--if	1</span><br></pre></td></tr></table></figure></p>
+<p>这样的单词识别效果不是特别好，我们要去掉标点符号和数字以及其他的非英语字符，首先想到的是用正则表达式，于是上网查正则表达式的知识，把最经典的《<a href="http://deerchao.net/tutorials/regex/regex.htm" target="_blank" rel="noopener">正则表达式30分钟入门教程</a>》看完了，同时由搜了一些资料，发现把整个单词中的标点符号全部去掉很容易，但是如果把整个单词的标点符号都去掉的话，上面的第六七八行就会有问题，因为<code>"''Twon't "But--how "Bureaucracy,"--if</code>这三个词两边的标点符号去掉是可以的，但是这三个词中间的标点符号去掉是不合理的，因此我实现的策略是只过滤每个单词两边的标点符号，对于中间的标点符号不进行过滤。具体见下面的代码： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">map</span><span class="params">(Object key, Text value, Context context)</span> <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">	StringTokenizer itr = <span class="keyword">new</span> StringTokenizer(value.toString());</span><br><span class="line">	<span class="keyword">while</span> (itr.hasMoreTokens()) &#123;</span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		* 此处进行一些优化 1.去掉单词首尾的空格 2.去掉单词首尾的标点符号和数字</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line">		String s = itr.nextToken();</span><br><span class="line">		<span class="comment">// 去掉单词首尾的空格</span></span><br><span class="line">		s = s.trim();</span><br><span class="line">		<span class="comment">// 去除单词首部的标点符号</span></span><br><span class="line">		s = s.replaceFirst(<span class="string">"(?i)^[^a-zA-Z]+"</span>, <span class="string">""</span>);</span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		* 下面是去除单词尾部的标点符号，先把字符串反转，</span></span><br><span class="line"><span class="comment">		* 然后再调用replaceFirst，</span></span><br><span class="line"><span class="comment">		* 去除反转后的字符串首部的标点符号，再把字符串反转过来</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line">		s = <span class="keyword">new</span> StringBuilder(s).reverse().toString();</span><br><span class="line">		s = s.replaceFirst(<span class="string">"(?i)^[^a-zA-Z]+"</span>, <span class="string">""</span>);</span><br><span class="line">		s = <span class="keyword">new</span> StringBuilder(s).reverse().toString();</span><br><span class="line">		<span class="comment">//过滤之后s的值可能为空，比如全为数字的就变为空</span></span><br><span class="line">		<span class="keyword">if</span> (!s.isEmpty()) &#123;</span><br><span class="line">			word.set(s);</span><br><span class="line">			context.write(word, one);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s = s.replaceFirst(<span class="string">"(?i)^[^a-zA-Z]+"</span>, <span class="string">""</span>);</span><br></pre></td></tr></table></figure>
+<p>解释一下上面的正则表达式，小括号即里面的问好和i表示不去分大小写，紧接着的上角号标示单词的起始位置，中括号即中括号中的内容标示不是大小写字母，所以这句话的意思是不区分大小写把单词首部的不是大小写字母的都去掉。也就是说只要能匹配到哪个正则表达式的字符串都被替换为空字符串，匹配不上的保留。</p>
+<h3 id="基本要求level-3">2.3 基本要求Level 3</h3>
+<p>将得到的结果合并成一个txt文档，并对每个单词按照字典排序，其实可以通过设置reducer的个数为1，如果结果文件比较小的话，应该就输出到一个文件中了，这一点在实验中进行了验证，以下是设置方法： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//设置reducer的个数 通过设置reducer的个数为1，经过实验验证了输出结果全写在一个文件中了，结果文件也不大。</span><br><span class="line">job.setNumReduceTasks(1);</span><br></pre></td></tr></table></figure></p>
+<p>这样单词就按字典序拍好了，但是大写字母在前小写字母在后，为了不区分大小写，需要用sort命令： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat output2/* | sort -t&apos; &apos; -k 1,1df &gt; result.txt</span><br></pre></td></tr></table></figure></p>
+<p>sort -t指定分隔符为空格，-k 指定按哪一列进行排序，1,1df标示按第一列进行排序，并且加上-d -f选项，-d按字典序排序，-f忽略大小写。</p>
+<h3 id="基本要求level-4">2.4 基本要求Level 4</h3>
+<p>要求：自己实现shuffle等函数。</p>
+<p>1.查了一些资料，可以自己写combiner函数， 每一个map都可能会产生大量的本地输出，Combiner的作用就是对map端的输出先做一次合并，以减少在map和reduce节点之间的数据传输量，以提高网络IO性能，是MapReduce的一种优化手段之一。Combiner有本地reduce功能（其本质上就是一个<strong>提前的reducer</strong>），在WordCount程序中可以单独写一个Combiner类，也可以用Reducer类来代替，然后在job那儿设置一下： <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* Combiner类规定继承自Reducer</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyCombiner</span> <span class="keyword">extends</span> <span class="title">Reducer</span>&lt;<span class="title">Text</span>, <span class="title">IntWritable</span>, <span class="title">Text</span>, <span class="title">IntWritable</span>&gt; </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> IntWritable result = <span class="keyword">new</span> IntWritable();</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reduce</span><span class="params">(Text key, Iterable&lt;IntWritable&gt; values, Context context)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (IntWritable val : values) &#123;</span><br><span class="line">			sum += val.get();</span><br><span class="line">		&#125;</span><br><span class="line">		result.set(sum);</span><br><span class="line">		context.write(key, result);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>一定不要忘了设置一下 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">job.setCombinerClass(Combiner.class);</span><br></pre></td></tr></table></figure></p>
+<p>经过实验是可以的。<br>
+2.自己写Partitioner <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* Partitioner 自己写的一个例子，算法也是突发奇想，随便写的，可能分类的效果不好</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">MyPartitioner</span> <span class="keyword">extends</span> <span class="title">Partitioner</span>&lt;<span class="title">Text</span>, <span class="title">IntWritable</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPartition</span><span class="params">(Text key,IntWritable value,<span class="keyword">int</span> numReduceTasks)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		* 自己随便想的一个hash函数，把一个单词的每个字符的ASCII码的和乘以一个数再跟reducer的数目取余。</span></span><br><span class="line"><span class="comment">		* 乘以127是为了增加混杂度，取模之后分布更加均匀</span></span><br><span class="line"><span class="comment">		*/</span></span><br><span class="line">		String skey = key.toString();</span><br><span class="line">		<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; skey.length(); ++i) &#123;</span><br><span class="line">			sum += skey.charAt(i);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> sum * <span class="number">127</span> % numReduceTasks;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>同样也不要忘了在设置一下 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置Partitioner类</span></span><br><span class="line">job.setPartitionerClass(MyPartitioner.class);</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/bigdata-system/" rel="tag"># bigdata system</a>
+            
+              <a href="/tags/hadoop/" rel="tag"># hadoop</a>
+            
+              <a href="/tags/spark/" rel="tag"># spark</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/05/07/interview-questions-cpp/" rel="next" title="interview questions cpp">
+                  <i class="fa fa-chevron-left"></i> interview questions cpp
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/05/11/Ubuntu配置spark环境和spark-wordcount以及spark常用的actions和transactions/" rel="prev" title="Ubuntu配置spark环境和spark-wordcount以及spark常用的actions和transactions">
+                  Ubuntu配置spark环境和spark-wordcount以及spark常用的actions和transactions <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实验前准备工作"><span class="nav-text">1. 实验前准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装hadoop伪分布式系统"><span class="nav-text">1.1 安装hadoop伪分布式系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置eclipse开发环境"><span class="nav-text">1.2 配置eclipse开发环境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验过程"><span class="nav-text">2. 实验过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本要求level-0-1"><span class="nav-text">2.1 基本要求Level 0 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本要求level-2"><span class="nav-text">2.2 基本要求Level 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本要求level-3"><span class="nav-text">2.3 基本要求Level 3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本要求level-4"><span class="nav-text">2.4 基本要求Level 4</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="yrb">
+  <p class="site-author-name" itemprop="name">yrb</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yrb</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+  
+
+  
+
+  
+
+</body>
+</html>

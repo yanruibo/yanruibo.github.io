@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Linked List 1. Introduction  An data item plus its pointer is called a node A node contains data item and one or more links.  The link is a reference to a node. The link of last node is set to NULL  a">
+<meta name="keywords" content="dsa,linked list">
+<meta property="og:type" content="article">
+<meta property="og:title" content="list">
+<meta property="og:url" content="https://yanruibo.github.io/2016/10/11/list/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="Linked List 1. Introduction  An data item plus its pointer is called a node A node contains data item and one or more links.  The link is a reference to a node. The link of last node is set to NULL  a">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/11/list/list.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/11/list/linked-list-with-header.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/11/list/circular-linked-list.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/11/list/doubly-linked-list.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/11/list/doubly-linked-list-example.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/11/list/doubly-linked-list-insert.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/11/list/doubly-linked-list-delete.png">
+<meta property="og:updated_time" content="2016-10-13T15:41:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="list">
+<meta name="twitter:description" content="Linked List 1. Introduction  An data item plus its pointer is called a node A node contains data item and one or more links.  The link is a reference to a node. The link of last node is set to NULL  a">
+<meta name="twitter:image" content="https://yanruibo.github.io/2016/10/11/list/list.png">
+  <link rel="canonical" href="https://yanruibo.github.io/2016/10/11/list/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>list | Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Summary for Comprehensive Learning</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://yanruibo.github.io/2016/10/11/list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yrb">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">list
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2016-10-11 16:51:29" itemprop="dateCreated datePublished" datetime="2016-10-11T16:51:29+08:00">2016-10-11</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2016-10-13 23:41:42" itemprop="dateModified" datetime="2016-10-13T23:41:42+08:00">2016-10-13</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/data-structures-and-algorithms/" itemprop="url" rel="index"><span itemprop="name">data structures and algorithms</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="linked-list">Linked List</h1>
+<h2 id="introduction">1. Introduction</h2>
+<ul>
+<li>An data item plus its pointer is called a node</li>
+<li>A node contains data item and one or more links.
+<ul>
+<li>The link is a reference to a node.</li>
+<li>The link of last node is set to NULL</li>
+</ul></li>
+<li>a “head” which is a pointer to the first node in the linked list</li>
+<li>We can access all nodes through pointer “head”</li>
+</ul>
+<a id="more"></a>
+<figure>
+<img src="list.png" alt><figcaption>linked list</figcaption>
+</figure>
+<h3 id="linked-list-with-header">1.1 Linked List with header</h3>
+<p>A node linking to the first node is called Header, the header cell only contains references to the first.</p>
+<figure>
+<img src="linked-list-with-header.png" alt><figcaption>linked list</figcaption>
+</figure>
+<h2 id="template-of-linked-list">2. Template of linked list</h2>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">class</span> <span class="title">List</span>;</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; </span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">ListNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">List</span>&lt;Type&gt;;</span></span><br><span class="line">    Type data;<span class="comment">//结点数据</span></span><br><span class="line">    ListNode&lt;Type&gt; *link;<span class="comment">//结点链接指针</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ListNode();</span><br><span class="line">    ListNode(<span class="keyword">const</span> Type&amp; item);</span><br><span class="line">    ListNode&lt;Type&gt; *NextNode()&#123; <span class="keyword">return</span> link; &#125;<span class="comment">//给出当前结点的下一节点地址</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">InsertAfter</span><span class="params">(ListNode&lt;Type&gt; *p)</span></span>;<span class="comment">//在当前结点后插入节点p</span></span><br><span class="line">    ListNode&lt;Type&gt; *RemoveAfter();<span class="comment">//摘下当前节点的下一结点</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">List</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    ListNode&lt;Type&gt; *first, *last;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ListNode&lt;Type&gt; *GetNode(<span class="keyword">const</span> Type&amp; item, ListNode&lt;Type&gt; *next);</span><br><span class="line">    List(<span class="keyword">const</span> Type&amp; value)</span><br><span class="line">    &#123;</span><br><span class="line">        last = first = <span class="keyword">new</span> ListNode&lt;Type&gt;(value);</span><br><span class="line">    &#125;<span class="comment">//构造函数</span></span><br><span class="line">    ~List();<span class="comment">//析构函数</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">MakeEmpty</span><span class="params">()</span></span>;<span class="comment">//链表置空</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Length</span><span class="params">()</span> <span class="keyword">const</span></span>;<span class="comment">//求链表长度</span></span><br><span class="line">    ListNode&lt;Type&gt; *Find(Type value);</span><br><span class="line">    ListNode&lt;Type&gt; *Find(<span class="keyword">int</span> i);</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Insert</span><span class="params">(Type value, <span class="keyword">int</span> i)</span></span>;</span><br><span class="line">    <span class="function">Type *<span class="title">Remove</span><span class="params">(<span class="keyword">int</span> i)</span></span>;</span><br><span class="line">    <span class="function">Type *<span class="title">Get</span><span class="params">(<span class="keyword">int</span> i)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">ListNode</span>&lt;Type&gt;:</span>:ListNode():link(<span class="literal">NULL</span>)&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">ListNode</span>&lt;Type&gt;:</span>:ListNode(<span class="keyword">const</span> Type&amp; item):data(item),link(<span class="literal">NULL</span>)&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">ListNode</span>&lt;Type&gt;:</span>:InsertAfter(ListNode&lt;Type&gt; *p)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//在当前结点后插入节点p</span></span><br><span class="line">    p-&gt;link = link;</span><br><span class="line">    link = p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">ListNode</span>&lt;Type&gt; *<span class="title">ListNode</span>&lt;Type&gt;:</span>:RemoveAfter()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//摘下当前节点的下一结点</span></span><br><span class="line">    ListNode&lt;Type&gt; *tempptr = link;</span><br><span class="line">    <span class="keyword">if</span>(link == <span class="literal">NULL</span>)&#123; <span class="keyword">return</span> <span class="literal">NULL</span>; &#125;</span><br><span class="line">    link = tempptr-&gt;link;</span><br><span class="line">    <span class="keyword">return</span> tempptr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">ListNode</span>&lt;Type&gt; *<span class="title">List</span>&lt;Type&gt;:</span>:GetNode(<span class="keyword">const</span> Type&amp; item, ListNode&lt;Type&gt; *next = <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">    ListNode&lt;Type&gt; *newnode = <span class="keyword">new</span> ListNode&lt;Type&gt;(item);</span><br><span class="line">    newnode-&gt;link = next;</span><br><span class="line">    <span class="keyword">return</span> newnode;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">List</span>&lt;Type&gt;:</span>:~List()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//析构函数（链表的公共操作）</span></span><br><span class="line">    MakeEmpty();</span><br><span class="line">    <span class="keyword">delete</span> first;</span><br><span class="line">    <span class="comment">//链表置空，再删去表头结点</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">List</span>&lt;Type&gt;:</span>:MakeEmpty()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//删去链表中除表头结点外的所有其他结点</span></span><br><span class="line">    ListNode&lt;Type&gt; *q;</span><br><span class="line">    <span class="keyword">while</span>(first-&gt;link != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        q = first-&gt;link;</span><br><span class="line">        <span class="comment">//将表头结点后第一个结点从链中摘下</span></span><br><span class="line">        first-&gt;link = q-&gt;link;</span><br><span class="line">        <span class="keyword">delete</span> q;<span class="comment">//释放它</span></span><br><span class="line">    &#125;</span><br><span class="line">    last = first;<span class="comment">//修改表尾指针</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">int</span> <span class="title">List</span>&lt;Type&gt;:</span>:Length() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//求链表长度</span></span><br><span class="line">    ListNode&lt;Type&gt; *p = first-&gt;link;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(p != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        p = p-&gt;link;</span><br><span class="line">        count++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">ListNode</span>&lt;Type&gt; *<span class="title">List</span> &lt;Type&gt;:</span>:Find(Type value)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//在链表中从头搜索其数据值为value的结点</span></span><br><span class="line">    ListNode&lt;Type&gt; *p = first-&gt;link;</span><br><span class="line">    <span class="keyword">while</span>(p != <span class="literal">NULL</span> &amp;&amp; p-&gt;data != value)</span><br><span class="line">    &#123;</span><br><span class="line">        p = p-&gt;link;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">    <span class="comment">//p在搜索成功时返回找到的结点地址，p在搜索不成功时返回空值</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">ListNode</span>&lt;Type&gt; *<span class="title">List</span>&lt;Type&gt;:</span>:Find(<span class="keyword">int</span> i)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(i&lt;<span class="number">-1</span>) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span>(i == <span class="number">-1</span>) <span class="keyword">return</span> first;<span class="comment">//i应&gt;=0</span></span><br><span class="line">    ListNode&lt;Type&gt; *p = first-&gt;link;</span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//第一个位置的结点的下标是0，不计头节点</span></span><br><span class="line">    <span class="keyword">while</span>(p != <span class="literal">NULL</span> &amp;&amp; j &lt; i)<span class="comment">//j = i 停</span></span><br><span class="line">    &#123;</span><br><span class="line">        p = p-&gt;link;</span><br><span class="line">        ++j;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">int</span> <span class="title">List</span>&lt;Type&gt;:</span>:Insert(Type value, <span class="keyword">int</span> i)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//将含value的新元素插入到链表的第i个位置</span></span><br><span class="line">    ListNode&lt;Type&gt; *p = Find(i<span class="number">-1</span>);</span><br><span class="line">    <span class="comment">//p指向链表的第i-1个结点</span></span><br><span class="line">    <span class="keyword">if</span>(p == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    ListNode&lt;Type&gt; *newnode = GetNode(value,p-&gt;link);</span><br><span class="line">    <span class="comment">//创建结点 newnode指向p-&gt;link</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(p-&gt;link == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        last = newnode;</span><br><span class="line">    &#125;</span><br><span class="line">    p-&gt;link = newnode;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">Type</span> *<span class="title">List</span>&lt;Type&gt;:</span>:Remove(<span class="keyword">int</span> i)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//从链表中删除第i个结点</span></span><br><span class="line">    ListNode&lt;Type&gt; *p = Find(i<span class="number">-1</span>), *q;</span><br><span class="line">    <span class="keyword">if</span>(p == <span class="literal">NULL</span> || p-&gt;link == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    q = p-&gt;link;</span><br><span class="line">    p-&gt;link = q-&gt;link;</span><br><span class="line">    Type value = <span class="keyword">new</span> Type(q-&gt;data);</span><br><span class="line">    <span class="keyword">if</span>(q == last) </span><br><span class="line">    &#123;</span><br><span class="line">        last = p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">delete</span> q;</span><br><span class="line">    <span class="keyword">return</span> &amp;value;<span class="comment">//调用者得delete该空间</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">Type</span> *<span class="title">List</span>&lt;Type&gt;:</span>:Get(<span class="keyword">int</span> i)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//提取第i个结点的数据</span></span><br><span class="line">    ListNode&lt;Type&gt; *p = Find(i);</span><br><span class="line">    <span class="comment">//p指向链表的第i个结点</span></span><br><span class="line">    <span class="keyword">if</span>(p == <span class="literal">NULL</span> || p == first)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> &amp;(p-&gt;data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="array-versus-linked-list">3. Array versus Linked List</h2>
+<p>Linked lists are more complex to code and management than arrays, but they have some distinct advantages:</p>
+<ul>
+<li>Dynamic: a linked list can easily grow and shrink in size.
+<ul>
+<li>We don’t need to know how many nodes will be in the list. They are created in memory as needed.</li>
+<li>In contrast, the size of a C array is fixed at compilation time.</li>
+</ul></li>
+<li>Easy and fast insertions and deletions
+<ul>
+<li>To insert or delete an element in an array, we need to copy to temporary variables to make room for new elements or close the gap caused by deleted elements.</li>
+<li>With a linked list, no need to move other nodes. Only need to reset some pointers.</li>
+</ul></li>
+</ul>
+<h3 id="space-storage-considerations">3.1 Space (storage) considerations</h3>
+<ul>
+<li>A linked list requires pointers to nodes</li>
+<li>An array requires the maximum number of elements to be known in advance. If that maximum is not required, space is wasted at the end of the array.</li>
+</ul>
+<h3 id="time-considerations">3.2 Time considerations</h3>
+<ul>
+<li>Most methods in a linked list require more statements than those in an array, which may indicate more time required</li>
+<li>Arrays are quicker at finding and altering ‘in the middle’</li>
+<li>Linked lists are quicker at additions and removals ‘in the middle’</li>
+</ul>
+<h2 id="variations-of-linked-lists">4. Variations of Linked Lists</h2>
+<p>Two problems:</p>
+<ul>
+<li>we can’t get back to the beginning of the list</li>
+<li>from the end, and we can’t go backwards through the list.</li>
+</ul>
+<p>So, circular linked lists and doubly linked lists were invented.</p>
+<h3 id="circular-linked-lists">4.1 Circular Linked Lists</h3>
+<p>The last node points to the first node of the list</p>
+<figure>
+<img src="circular-linked-list.png" alt><figcaption>circular linked list</figcaption>
+</figure>
+<p>How do we know when we have finished traversing the list? (Tip: check if the pointer of the current node is equal to the head.)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">class</span> <span class="title">CircList</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">class</span> <span class="title">CircListNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">CircList</span>;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    CircListNode(Type d = <span class="number">0</span>, CircListNode&lt;Type&gt; *next = <span class="literal">NULL</span>):data(d),link(next)&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Type data;</span><br><span class="line">    CircListNode&lt;Type&gt; *link;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">class</span> <span class="title">CircList</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    CircList(Type value);</span><br><span class="line">    ~CircList();</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Length</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">IsEmpty</span><span class="params">()</span></span>&#123; <span class="keyword">return</span> first-&gt;link = first; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">Find</span><span class="params">(<span class="keyword">const</span> Type&amp; value)</span></span>;</span><br><span class="line">    <span class="function">Type <span class="title">getData</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Firster</span><span class="params">()</span></span>&#123; current = first; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">First</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">Next</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">Prior</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(<span class="keyword">const</span> Type&amp; value)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Remove</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    CircListNode&lt;Type&gt; *first, *current, *last;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//////////////////////////////////////////</span></span><br><span class="line"><span class="comment">//List(const Type&amp; value)</span></span><br><span class="line"><span class="comment">//&#123;</span></span><br><span class="line"><span class="comment">//    last = first = new ListNode&lt;Type&gt;(value);</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"><span class="comment">/////////////////////////////////////////</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">CircList</span>&lt;Type&gt;:</span>:CircList(<span class="keyword">const</span> Type&amp; value)</span><br><span class="line">&#123;</span><br><span class="line">    last = first = <span class="keyword">new</span> CircListNode&lt;Type&gt;(value);</span><br><span class="line">    first-&gt;link = first;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Linked Lists: Searching in a CLL</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">CircListNode</span>&lt;Type&gt;* <span class="title">CircList</span>&lt;Type&gt;:</span>:Find(Type value)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//在链表中从头搜索其数据值为value的结点</span></span><br><span class="line">    CircListNode&lt;Type&gt; *p = first-&gt;link;</span><br><span class="line">    <span class="comment">//检测指针p指示第一个结点</span></span><br><span class="line">    <span class="keyword">while</span>(p != first &amp;&amp; p-&gt;data != value)</span><br><span class="line">    &#123;</span><br><span class="line">        p = p-&gt;link;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (p!=first)?p:<span class="literal">NULL</span>;</span><br><span class="line">    <span class="comment">//p在搜索成功时返回找到的结点地址</span></span><br><span class="line">    <span class="comment">//p在搜索不成功时返回空值</span></span><br><span class="line">    <span class="comment">//p==first停止，此时到达链表尾端，没有找到，返回空值。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="doubly-linked-lists">4.2 Doubly Linked Lists</h3>
+<ul>
+<li>Each node points to not only successor but the predecessor</li>
+<li>There are two NULL: at the first and last nodes in the list</li>
+<li>Advantage: given a node, it is easy to visit its predecessor. Convenient to traverse lists backwards</li>
+</ul>
+<figure>
+<img src="doubly-linked-list.png" alt><figcaption>doubly linked list</figcaption>
+</figure>
+<p>双向链表是循环链表。</p>
+<figure>
+<img src="doubly-linked-list-example.png" alt><figcaption>doubly linked list example</figcaption>
+</figure>
+<p><img src="doubly-linked-list-insert.png" alt="doubly linked list insert"> 在current结点之后插入value新结点。执行完之后current指向新插入的结点。</p>
+<p><img src="doubly-linked-list-delete.png" alt="doubly linked list delete"> 删除current结点。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">class</span> <span class="title">DblList</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">class</span> <span class="title">DblNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">DblList</span>&lt;Type&gt;;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Type data;<span class="comment">//数据</span></span><br><span class="line">    DblNode&lt;Type&gt; *lLink, *rLink;<span class="comment">//指针</span></span><br><span class="line">    DblNode(Type value, DblNode&lt;Type&gt; *left, DblNode&lt;Type&gt; *right):data(value),lLink(left),rLink(right)&#123;&#125;</span><br><span class="line">    DblNode(Type value):data(value),lLink(<span class="literal">NULL</span>),rLink(<span class="literal">NULL</span>)&#123;&#125;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">class</span> <span class="title">DblList</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    DblList(Type uniqueVal);</span><br><span class="line">    ~DblList();</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Length</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">IsEmpty</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> first-&gt;rLink == first; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Find</span><span class="params">(<span class="keyword">const</span> Type&amp; target)</span></span>;</span><br><span class="line">    <span class="function">Type <span class="title">getData</span><span class="params">()</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Firster</span><span class="params">()</span></span>&#123; current = first; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">First</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Next</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">Prior</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">int</span> <span class="keyword">operator</span>!()&#123; <span class="keyword">return</span> current != <span class="literal">NULL</span>; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Insert</span><span class="params">(<span class="keyword">const</span> Type&amp; value)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Remove</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    DblNode&lt;Type&gt; *first, *current;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//constructing</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">DblList</span>&lt;Type&gt;:</span>:DblList(Type uniqueVal)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//双向循环链表的构造函数，创建头结点</span></span><br><span class="line">    first = <span class="keyword">new</span> DblNode&lt;Type&gt;(uniqueVal);</span><br><span class="line">    first-&gt;rLink = first-&gt;lLink = first;</span><br><span class="line">    current = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">int</span> <span class="title">DblList</span>&lt;Type&gt;:</span>:Find(<span class="keyword">const</span> Type&amp; target)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//在双向链表中搜索含target的结点，搜索成功返回1，否则返回0</span></span><br><span class="line">    DblNode&lt;Type&gt; *p = first-&gt;rLink;</span><br><span class="line">    <span class="keyword">while</span>(p != first &amp;&amp; p-&gt;data != target)</span><br><span class="line">    &#123;</span><br><span class="line">        p = p-&gt;rLink;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(p != first)</span><br><span class="line">    &#123;</span><br><span class="line">        current = p;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">void</span> <span class="title">DblList</span>&lt;Type&gt;:</span>:Insert(<span class="keyword">const</span> Type&amp; value)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//在current结点之后插入value</span></span><br><span class="line">    <span class="comment">//跟上面的一页图片ppt正好对应</span></span><br><span class="line">    <span class="keyword">if</span>(current == <span class="literal">NULL</span>)<span class="comment">//空表情形</span></span><br><span class="line">    &#123;</span><br><span class="line">        current = first-&gt;rLink = <span class="keyword">new</span> DblNode&lt;Type&gt;(value,first,first);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        current-&gt;rLink = <span class="keyword">new</span> DblNode&lt;Type&gt;(value, current, current-&gt;rLink);</span><br><span class="line">        current = current-&gt;rLink;</span><br><span class="line">    &#125;</span><br><span class="line">    current-&gt;rLink-&gt;lLink = current;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">DblList</span>&lt;Type&gt;:</span>:Remove()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(current != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        DblNode&lt;Type&gt; *temp = current;<span class="comment">//被删结点</span></span><br><span class="line">        current = current-&gt;rLink;<span class="comment">//下一节点</span></span><br><span class="line">        current-&gt;lLink = temp-&gt;lLink;<span class="comment">//从链中摘下</span></span><br><span class="line">        temp-&gt;lLink-&gt;rLink = current;</span><br><span class="line">        <span class="keyword">delete</span> temp;<span class="comment">//删去</span></span><br><span class="line">        <span class="keyword">if</span>(current == first)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(IsEmpty())</span><br><span class="line">            &#123;</span><br><span class="line">                current = <span class="literal">NULL</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                current = current-&gt;rLink;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">int</span> <span class="title">DblList</span>&lt;Type&gt;:</span>:Length() <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//求双向循环链表的长度(不计表头结点)</span></span><br><span class="line">    DblNode&lt;Type&gt; *p = first-&gt;rLink;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(p != first)</span><br><span class="line">    &#123;</span><br><span class="line">        p = p-&gt;rLink;</span><br><span class="line">        count++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">int</span> <span class="title">DblList</span>&lt;Type&gt;:</span>:First()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!IsEmpty())</span><br><span class="line">    &#123;</span><br><span class="line">        current = first-&gt;rLink;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    current = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">int</span> <span class="title">DblList</span>&lt;Type&gt;:</span>:Next()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(current-&gt;rLink == first)</span><br><span class="line">    &#123;</span><br><span class="line">        current = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    current = current-&gt;rLink;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">int</span> <span class="title">DblList</span>&lt;Type&gt;:</span>:Prior()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(current-&gt;lLink == first)</span><br><span class="line">    &#123;</span><br><span class="line">        current = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    current = current-&gt;lLink;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="dll-vs-sll">4.3 DLL vs SLL</h3>
+<p>Advantages:</p>
+<ul>
+<li>Can be traversed in either direction (may be essential for some programs)</li>
+<li>Some operations, such as deletion and inserting before a node, become easier</li>
+</ul>
+<p>Disadvantages:</p>
+<ul>
+<li>Requires more space</li>
+<li>List manipulations are slower (because more links must be changed)</li>
+<li>Greater chance of having bugs (because more links must be manipulated)</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/dsa/" rel="tag"># dsa</a>
+            
+              <a href="/tags/linked-list/" rel="tag"># linked list</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/09/25/array/" rel="next" title="array">
+                  <i class="fa fa-chevron-left"></i> array
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/10/14/Stacks-and-Queues/" rel="prev" title="Stacks and Queues">
+                  Stacks and Queues <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linked-list"><span class="nav-text">Linked List</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-text">1. Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linked-list-with-header"><span class="nav-text">1.1 Linked List with header</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#template-of-linked-list"><span class="nav-text">2. Template of linked list</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#array-versus-linked-list"><span class="nav-text">3. Array versus Linked List</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#space-storage-considerations"><span class="nav-text">3.1 Space (storage) considerations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#time-considerations"><span class="nav-text">3.2 Time considerations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#variations-of-linked-lists"><span class="nav-text">4. Variations of Linked Lists</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#circular-linked-lists"><span class="nav-text">4.1 Circular Linked Lists</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#doubly-linked-lists"><span class="nav-text">4.2 Doubly Linked Lists</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dll-vs-sll"><span class="nav-text">4.3 DLL vs SLL</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="yrb">
+  <p class="site-author-name" itemprop="name">yrb</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yrb</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+  
+
+  
+
+  
+
+</body>
+</html>

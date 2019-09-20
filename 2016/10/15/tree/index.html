@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Tree 1. Tree Terminology  Root: node without parent (A) Siblings(兄弟): nodes share the same parent Internal node(内部结点): node with at least one child (A, B, C, F) External node (leaf ): node without chi">
+<meta name="keywords" content="dsa,tree">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tree">
+<meta property="og:url" content="https://yanruibo.github.io/2016/10/15/tree/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="Tree 1. Tree Terminology  Root: node without parent (A) Siblings(兄弟): nodes share the same parent Internal node(内部结点): node with at least one child (A, B, C, F) External node (leaf ): node without chi">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/tree-terminology.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/tree-terminology-2.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/problem-of-tree-1.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/print-arithmetic-expressions.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/evaluate-arithmetic-expressions.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/create-a-btree-through-preorder-sequence.png">
+<meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/path-length.png">
+<meta property="og:updated_time" content="2016-10-16T13:14:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tree">
+<meta name="twitter:description" content="Tree 1. Tree Terminology  Root: node without parent (A) Siblings(兄弟): nodes share the same parent Internal node(内部结点): node with at least one child (A, B, C, F) External node (leaf ): node without chi">
+<meta name="twitter:image" content="https://yanruibo.github.io/2016/10/15/tree/tree-terminology.png">
+  <link rel="canonical" href="https://yanruibo.github.io/2016/10/15/tree/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>tree | Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Summary for Comprehensive Learning</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://yanruibo.github.io/2016/10/15/tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yrb">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">tree
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2016-10-15 10:43:52" itemprop="dateCreated datePublished" datetime="2016-10-15T10:43:52+08:00">2016-10-15</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2016-10-16 21:14:07" itemprop="dateModified" datetime="2016-10-16T21:14:07+08:00">2016-10-16</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/data-structures-and-algorithms/" itemprop="url" rel="index"><span itemprop="name">data structures and algorithms</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="tree">Tree</h1>
+<h2 id="tree-terminology">1. Tree Terminology</h2>
+<ul>
+<li>Root: node without parent (A)</li>
+<li>Siblings(兄弟): nodes share the same parent</li>
+<li>Internal node(内部结点): node with at least one child (A, B, C, F)</li>
+<li>External node (leaf ): node without children (E, I, J, K, G, H, D)</li>
+<li>Ancestors (祖先)of a node: parent, grandparent, grand-grandparent, etc.</li>
+<li>Descendant(后裔) of a node: child, grandchild, grand-grandchild, etc.</li>
+</ul>
+<a id="more"></a>
+<figure>
+<img src="tree-terminology.png" alt><figcaption>Tree Terminology</figcaption>
+</figure>
+<ul>
+<li>Depth of a node: number of ancestors</li>
+<li>Height of a tree: maximum depth of any node</li>
+<li>Degree of a node: the number of its children</li>
+<li>Degree of a tree: the maximum number of its node.</li>
+<li>Subtree: tree consisting of a node and its descendants</li>
+</ul>
+<figure>
+<img src="tree-terminology-2.png" alt><figcaption>Tree Terminology</figcaption>
+</figure>
+<h2 id="a-problem-often-in-exam-of-data-structure">2. A problem often in exam of data structure</h2>
+<figure>
+<img src="problem-of-tree-1.png" alt><figcaption>Tree Problem</figcaption>
+</figure>
+<p>solution:</p>
+<h2 id="print-arithmetic-expressions">3. Print Arithmetic Expressions</h2>
+<figure>
+<img src="print-arithmetic-expressions.png" alt><figcaption>Print Arithmetic Expression</figcaption>
+</figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">void</span> <span class="title">BinaryTree</span>&lt;Type&gt; :</span>: Outputexpress ( <span class="keyword">const</span> BinTreeNode &lt;Type&gt; *T )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (T)</span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">if</span>(T-&gt;leftChild != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"("</span>);</span><br><span class="line">			Outputexpress(T-&gt;leftChild);</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; T-&gt;data;</span><br><span class="line">	    <span class="keyword">if</span>(T-&gt;rightChild != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">			Outputexpress(T-&gt;rightChild);</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">")"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="求表达式的值">4. 求表达式的值</h2>
+<figure>
+<img src="evaluate-arithmetic-expressions.png" alt><figcaption>Evaluate Arithmetic Expressions</figcaption>
+</figure>
+<h2 id="create-a-binary-tree-through-preorder-sequence">5. Create a Binary Tree through Preorder Sequence</h2>
+<figure>
+<img src="create-a-btree-through-preorder-sequence.png" alt><figcaption>Create a Binary Tree through Preorder Sequence</figcaption>
+</figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">void</span> <span class="title">BinaryTree</span>&lt;Type&gt;:</span>: CreateBinaryTree()</span><br><span class="line">&#123;</span><br><span class="line">   CreateBinaryTree(root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">void</span> <span class="title">BinaryTree</span>&lt;Type&gt;:</span>: CreateBinaryTree(BiTreeNode *T)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(&amp;ch);                    <span class="comment">//get a char</span></span><br><span class="line">    <span class="keyword">if</span> (ch==‘*’)</span><br><span class="line">    &#123;</span><br><span class="line">    	T=<span class="literal">NULL</span>;       <span class="comment">//if it denotes an empty tree</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">if</span>(!(T= <span class="keyword">new</span> BiTreeNode&lt;Type&gt;()))</span><br><span class="line">        &#123;</span><br><span class="line">        	<span class="built_in">exit</span>(<span class="number">1</span>);              <span class="comment">//allocated failed</span></span><br><span class="line">        &#125;</span><br><span class="line">        T-&gt;data = ch;</span><br><span class="line">        CreateBiTree(T-&gt;leftChild); <span class="comment">//creates its left subtree</span></span><br><span class="line">        CreateBiTree(T-&gt;rightChild); <span class="comment">//creates its right subtree</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="pathlength">6. PathLength</h2>
+<figure>
+<img src="path-length.png" alt><figcaption>Path Length</figcaption>
+</figure>
+<h2 id="numberoftree-and-numberofleaf">7. NumberofTree and NumberofLeaf</h2>
+<p>Algorithm NumberofTree(v, n) Input: a tree node v and an initial value n Output: the number of nodes with root v Usage: leafn = NumberofTree(root, 0);</p>
+<p>Algorithm NumberofLeaf(v, n) Input: a tree node v and an initial value n Output: the number of leaf nodes with root v Usage: leafn = Numberofleaf(root, 0);</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/dsa/" rel="tag"># dsa</a>
+            
+              <a href="/tags/tree/" rel="tag"># tree</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/10/14/Stacks-and-Queues/" rel="next" title="Stacks and Queues">
+                  <i class="fa fa-chevron-left"></i> Stacks and Queues
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/11/11/array2/" rel="prev" title="array">
+                  array <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tree"><span class="nav-text">Tree</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#tree-terminology"><span class="nav-text">1. Tree Terminology</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#a-problem-often-in-exam-of-data-structure"><span class="nav-text">2. A problem often in exam of data structure</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#print-arithmetic-expressions"><span class="nav-text">3. Print Arithmetic Expressions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#求表达式的值"><span class="nav-text">4. 求表达式的值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#create-a-binary-tree-through-preorder-sequence"><span class="nav-text">5. Create a Binary Tree through Preorder Sequence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pathlength"><span class="nav-text">6. PathLength</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numberoftree-and-numberofleaf"><span class="nav-text">7. NumberofTree and NumberofLeaf</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="yrb">
+  <p class="site-author-name" itemprop="name">yrb</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yrb</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+  
+
+  
+
+  
+
+</body>
+</html>

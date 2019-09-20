@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Dynamic Programming 递归，暴力搜索，写出暴力搜索之后可以找出冗余。 本质：递归 原问题（N）-&amp;gt;子问题（N-1）-&amp;gt;原问题（N）">
+<meta name="keywords" content="algorithms">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dynamic programming part1">
+<meta property="og:url" content="https://yanruibo.github.io/2016/11/19/dynamic-programming-part-1/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="Dynamic Programming 递归，暴力搜索，写出暴力搜索之后可以找出冗余。 本质：递归 原问题（N）-&amp;gt;子问题（N-1）-&amp;gt;原问题（N）">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-03-30T10:45:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="dynamic programming part1">
+<meta name="twitter:description" content="Dynamic Programming 递归，暴力搜索，写出暴力搜索之后可以找出冗余。 本质：递归 原问题（N）-&amp;gt;子问题（N-1）-&amp;gt;原问题（N）">
+  <link rel="canonical" href="https://yanruibo.github.io/2016/11/19/dynamic-programming-part-1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>dynamic programming part1 | Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Summary for Comprehensive Learning</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://yanruibo.github.io/2016/11/19/dynamic-programming-part-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yrb">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">dynamic programming part1
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2016-11-19 21:48:55" itemprop="dateCreated datePublished" datetime="2016-11-19T21:48:55+08:00">2016-11-19</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2017-03-30 18:45:42" itemprop="dateModified" datetime="2017-03-30T18:45:42+08:00">2017-03-30</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/data-structures-and-algorithms/" itemprop="url" rel="index"><span itemprop="name">data structures and algorithms</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="dynamic-programming">Dynamic Programming</h1>
+<p>递归，暴力搜索，写出暴力搜索之后可以找出冗余。<br>
+本质：递归<br>
+原问题（N）-&gt;子问题（N-1）-&gt;原问题（N）<br>
+<a id="more"></a> 最优子结构</p>
+<ul>
+<li>子问题最优决策可导出原问题最优决策</li>
+<li>无后效性</li>
+</ul>
+<p>重叠子问题</p>
+<ul>
+<li>去冗余</li>
+<li>空间换时间（注意分析时空复杂度）</li>
+</ul>
+<p>vector/string的index或者size返回值是<code>vector::size_type</code>, <code>string::size_type</code>，是unsigned类型的，<code>unsighed int, unsigned long</code>。 bitset.size(),sizeof返回类型是size_t;<br>
+size_t不是容器概念。<br>
+size_type是容器概念，没有容器不能使用。<br>
+vector库也可以定义<code>size_type</code>类型，在vector库中还有一个<code>difference_type</code>类型，该类型用来存储任何两个迭代器对象间的距离，所以是<code>signed</code>类型的。</p>
+<p>只要题目中有最优，最大，最小，最长，计数的字眼，就有可能用动态规划来解决。<br>
+离散问题：容易设计状态。<br>
+最优子结构：N-1可以推导出N。N可以拆解成N-1。</p>
+<p>解题的基本步骤：</p>
+<ol type="1">
+<li>设计暴力算法（递归算法）枚举每一步的决策，找到冗余。</li>
+<li>设计并存储状态（一维，二维，三维数组，甚至用Map），存储重复计算的结果。</li>
+<li>递归式（状态转移方程）。</li>
+<li>自底向上计算最优解（编程方式）。</li>
+</ol>
+<p>自底向上（先计算小的，先计算idx=0,idx=1,最后计算得到idx=n），自顶向下（大问题分解为小问题，），一个是for循环（递推）一个是递归。</p>
+<h2 id="leetcode-198-house-robber">1. LeetCode 198: House Robber</h2>
+<p>暴力算法，枚举每个房子的决策。 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//从后往前</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span> idx, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(idx&lt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(idx==<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> nums[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(idx == <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> max(nums[<span class="number">0</span>],nums[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//选择idx,则得nums[idx]+solve(idx-2),不选择idx，则得solve(idx-1)</span></span><br><span class="line">        <span class="keyword">return</span> max(nums[idx]+solve(idx<span class="number">-2</span>,nums),solve(idx<span class="number">-1</span>,nums));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> solve(nums.size()<span class="number">-1</span>,nums);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>递归是把问题拆解成小问题。<br>
+递归要特别注意边界条件，要细致考虑边界条件。<br>
+时间复杂度<br>
+时间复杂度为<span class="math inline">\(O(2^n)\)</span>，递归的时间复杂度分析是递归的每一层的计算量相乘。每一次递归有两种决策，抢或者不抢，一共递归了n层，所以时间复杂度为<span class="math inline">\(O(2^n)\)</span>。<br>
+找到冗余： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">            s(5)</span><br><span class="line">        /        \</span><br><span class="line">    s(3)           s(4)</span><br><span class="line">   /      \       /     \</span><br><span class="line">s(1)     s(2)    s(2)      s(3)</span><br><span class="line">        /   \     /   \     /      \</span><br><span class="line">     s(0)  s(1)  s(0) s(1)  s(1)    s(2)</span><br><span class="line">                                    /  \</span><br><span class="line">                                 s(0)   s(1)</span><br></pre></td></tr></table></figure></p>
+<p>上面以六个房子为例，发现solve(0), solve(1), solve(2), solve(3)重复计算了好多次。 所以采用记忆化搜索的方式进行改进，就是将算过的值记录下来，下次要用到的时候就不计算了，直接使用该值。 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//从后往前</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span> idx, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; result)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(idx&lt;<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(result[idx]&gt;=<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> result[idx];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(idx==<span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> nums[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(idx == <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> max(nums[<span class="number">0</span>],nums[<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//选择idx,则得nums[idx]+solve(idx-2),不选择idx，则得solve(idx-1)</span></span><br><span class="line">        result[idx] = max(nums[idx]+solve(idx<span class="number">-2</span>,nums,result),solve(idx<span class="number">-1</span>,nums,result));</span><br><span class="line">        <span class="keyword">return</span> result[idx];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result(nums.size(),<span class="number">-1</span>);</span><br><span class="line">        <span class="keyword">return</span> solve(nums.size()<span class="number">-1</span>,nums,result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>时间复杂度：<br>
+每个状态只计算了一次，一共有n个状态，所以这个问题的解就是O(N)的。</p>
+<p>以上算法是自顶向下的编程方式，现在改写为自底向上的写法：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">//从后往前</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; result)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.size() &lt;= <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        result[<span class="number">0</span>]=nums[<span class="number">0</span>];<span class="comment">//有一个房子</span></span><br><span class="line">        result[<span class="number">1</span>]=max(nums[<span class="number">0</span>],nums[<span class="number">1</span>]);<span class="comment">//有两个房子，选其中最大的</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">2</span>; i &lt; nums.size(); ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            result[i] = max(nums[i]+result[i<span class="number">-2</span>],result[i<span class="number">-1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">rob</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result(nums.size(),<span class="number">-1</span>);</span><br><span class="line">        solve(nums,result);</span><br><span class="line">        <span class="keyword">return</span> result[nums.size()<span class="number">-1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="裴波那切数列">2. 裴波那切数列</h2>
+<ul>
+<li>暴力递归</li>
+<li>F(n)表示斐波那契第n个</li>
+<li>F(n) = F(n-1) + F(n-2), if n&gt;=2, otherwise F(n) = 1</li>
+<li>for i &lt;- 2 to n</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">int f(int n)</span><br><span class="line">&#123;</span><br><span class="line">	if (n == 0)</span><br><span class="line">	&#123;</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">	if (n == 1)</span><br><span class="line">	&#123;</span><br><span class="line">		return 1;</span><br><span class="line">	&#125;</span><br><span class="line">	return f(n - 1) + f(n - 2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">	for (int i = 0; i &lt; 10; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; f(i) &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>找冗余的情况和上面非常相似，这里就不画图了。<br>
+时间复杂度接近<span class="math inline">\(O(2^n)\)</span><br>
+去冗余（记忆化搜索）得到如下的代码：<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">int result[100];</span><br><span class="line">int f(int n)</span><br><span class="line">&#123;</span><br><span class="line">	if (n == 0)</span><br><span class="line">	&#123;</span><br><span class="line">		result[0] = 0;</span><br><span class="line">		return result[0];</span><br><span class="line">	&#125;</span><br><span class="line">	if (n == 1)</span><br><span class="line">	&#123;</span><br><span class="line">		result[1] = 1;</span><br><span class="line">		return result[1];</span><br><span class="line">	&#125;</span><br><span class="line">	if (result[n] &gt;= 0)</span><br><span class="line">	&#123;</span><br><span class="line">		return result[n];</span><br><span class="line">	&#125;</span><br><span class="line">	result[n] = f(n - 1) + f(n - 2);</span><br><span class="line">	return result[n];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">	for (int i = 0; i &lt; 50; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		result[i] = -1;</span><br><span class="line">	&#125;</span><br><span class="line">	for (int i = 0; i &lt; 30; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; f(i) &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>递推法，自底向上解法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">int result[100];</span><br><span class="line">int f(int n)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	result[0] = 0;</span><br><span class="line">	result[1] = 1;</span><br><span class="line">	for (int i = 2; i &lt;= n; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		result[n] = result[n - 1] + result[n - 2];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return result[n];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">	for (int i = 0; i &lt; 30; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; f(i) &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还可以进一步优化空间复杂度 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;algorithm&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int f(int n)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	int f = 0;</span><br><span class="line"></span><br><span class="line">	int g = 1;</span><br><span class="line">	for (int i = 2; i &lt;= n; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		g = f + g;</span><br><span class="line">		f = g - f;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return g;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(void)</span><br><span class="line">&#123;</span><br><span class="line">	for (int i = 0; i &lt; 30; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		cout &lt;&lt; f(i) &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><font color="red">由这里思考，House Robber问题中，可不可以将O(n)的空间复杂度降低为O(1)呢？</font></p>
+<h2 id="n阶乘">3. N阶乘</h2>
+<p>F(n)= F(n-1)*n;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">int f(int n)</span><br><span class="line">&#123;</span><br><span class="line">    if(n&lt;=1)</span><br><span class="line">    &#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return n*f(n-1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">f[0]=1;</span><br><span class="line">f[1]=1;</span><br><span class="line">for(int i = 2; i &lt; n; ++i)</span><br><span class="line">&#123;</span><br><span class="line">    f[i] = f[i-1]*i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="小兵向前冲">4. 小兵向前冲</h2>
+<p>N*M的棋盘上，小兵要从左下角走到右上角，只能向上或者向右走，问有多少种走法？</p>
+<p>套路：计数问题</p>
+<ul>
+<li>暴搜索（回溯法）</li>
+<li>F(n,m)表示棋盘大小为n*m时走法数量</li>
+<li>F(n,m) = F(n-1,m) + F(n,m-1) if n*m &gt; 0, otherwise F(n,m) = 1</li>
+<li>for i &lt;- 1 to n
+<ul>
+<li>for j &lt;- 1 to m</li>
+</ul></li>
+</ul>
+<p>扩展</p>
+<ul>
+<li>空间复杂度？</li>
+<li>时间复杂度？</li>
+<li>组合数递推公式C(n,m) ？</li>
+<li>如果某些格子禁止小兵进入？</li>
+<li>小兵一次某方向上可以走一步或者两步？</li>
+</ul>
+<p>2*2棋盘的最终状态： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-----------</span><br><span class="line">|    |  -&gt;|</span><br><span class="line">-----------</span><br><span class="line">|    |    |</span><br><span class="line">-----------</span><br></pre></td></tr></table></figure></p>
+<p>2*3棋盘的最终状态： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">----------------</span><br><span class="line">|    |  &gt; |  -&gt;|</span><br><span class="line">----------------</span><br><span class="line">|    |    |  ^ |</span><br><span class="line">----------------</span><br></pre></td></tr></table></figure></p>
+<p>只能向右和向上<br>
+<span class="math inline">\(f(2,3) = f(2,2) \cdot 1 + f(1,3) \cdot 1\)</span><br>
+从左下角(1,1)到(2,3)这个点的走法等于[从左下角(1,1)到(2,2)的走法乘以从(2,2)走到(2,3)的走法]再加上[从左下角(1,1)到(1,3)这个点的走法乘以从(1,3)走到(2,3)的走法]。从(2,2)到(2,3)就一种走法。从(1,3)到(2,3)也是一种走法。这也就是为什么乘以1的原因。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">//return value:N*M棋盘有多少种走法</span><br><span class="line">int f(int n, int m)</span><br><span class="line">&#123;</span><br><span class="line">    //边界条件</span><br><span class="line">    //棋盘都没有</span><br><span class="line">    if(n==0||m==0)</span><br><span class="line">    &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    //条状棋盘</span><br><span class="line">    if(n==1 || m==1)</span><br><span class="line">    &#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return f(n-1,m)+f(n,m-1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">f[0][0] = 0;</span><br><span class="line">for(int i = 1; i &lt;= n; ++i)</span><br><span class="line">&#123;</span><br><span class="line">    for(int j = 1; j &lt;= m; ++j)</span><br><span class="line">    &#123;</span><br><span class="line">        f[i][j] = f[i-1][j]+f[i][j-1];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>组合数递推公式<br>
+<span class="math inline">\(C(n,r) = C(n-1,r)+C(n-1,r-1)\)</span><br>
+从n中取一个特殊的元素，根据取或者不取这个元素，得出计算公式。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">nCr</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//确定边界条件</span></span><br><span class="line">    <span class="keyword">if</span>(n &lt; r)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(r==<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    nCr(n<span class="number">-1</span>,r<span class="number">-1</span>)+nCr(n<span class="number">-1</span>,r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>组合问题的物理意义是一个棋盘的走法，每次只能向上或者斜上方走一步。</p>
+<p>某些格子小兵不能进入的情况。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---------------------</span><br><span class="line">|    |    |  * |    |</span><br><span class="line">---------------------</span><br><span class="line">|    |    |    |    |</span><br><span class="line">---------------------</span><br></pre></td></tr></table></figure>
+<p>f(2,4) = f(2,3)+f(1,4)<br>
+(2,3)位置不能走，所以f(2,3)=0;</p>
+<p>小兵一次在某方向上可以走两步的情况： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//return value:N*M棋盘有多少种走法</span><br><span class="line">int f(int n, int m)</span><br><span class="line">&#123;</span><br><span class="line">    //边界条件</span><br><span class="line">    //棋盘都没有</span><br><span class="line">    if(n==0||m==0)</span><br><span class="line">    &#123;</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    //条状棋盘</span><br><span class="line">    if(n==1 || m==1)</span><br><span class="line">    &#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    return f(n-1,m)+f(n,m-1)</span><br><span class="line">         + f(n-2,m)+f(n,m-2);</span><br><span class="line">         //上面的边界条件已经够了</span><br><span class="line">         //独立不相关的，所以相加</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以推广到小兵可以走k步的情况。因此走k步的问题可以先考虑走一步的问题，再考虑走2步的问题。</p>
+<h2 id="走楼梯问题">6. 走楼梯问题</h2>
+<p>n阶台阶，一次最多可以走2步，多少种走法？<br>
+f[n]n阶台阶有多少种走法。<br>
+f[0]=1;<br>
+f[1]=1;<br>
+f[n] = f[n-1] + f[n-2];<br>
+n阶台阶，一次最多可以走k步，多少种走法？<br>
+f[n] = f[n-1] + f[n-2] + f[n-3] + ... + f[n-k];</p>
+<p>边界条件，耐心和思考问题的全面性。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/algorithms/" rel="tag"># algorithms</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/11/19/dynamic-programming-part-2/" rel="next" title="dynamic programming part2">
+                  <i class="fa fa-chevron-left"></i> dynamic programming part2
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/11/20/bit-operation/" rel="prev" title="bit operation">
+                  bit operation <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#dynamic-programming"><span class="nav-text">Dynamic Programming</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#leetcode-198-house-robber"><span class="nav-text">1. LeetCode 198: House Robber</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#裴波那切数列"><span class="nav-text">2. 裴波那切数列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#n阶乘"><span class="nav-text">3. N阶乘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小兵向前冲"><span class="nav-text">4. 小兵向前冲</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#走楼梯问题"><span class="nav-text">6. 走楼梯问题</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="yrb">
+  <p class="site-author-name" itemprop="name">yrb</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yrb</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+  
+
+  
+
+  
+
+</body>
+</html>

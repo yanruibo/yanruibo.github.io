@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="进程间通信 1. 进程间通信的所有方式  管道(pipe)及有名管道(named pipe, FIFO):管道可用于具有亲缘关系进程间的通信，有名管道克服了管道没有名字的限制，因此，除具有管道所具有的功能外，它还允许无亲缘关系进程间的通信； 信号(signal):信号是比较复杂的通信方式，用于通知接受进程有某种事件发生，除了用于进程间通信外，进程还可以发送信号给进程本身。 进程信号量:进程间通信的">
+<meta name="keywords" content="IPC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="inter-process-communication">
+<meta property="og:url" content="https://yanruibo.github.io/2016/11/22/inter-process-communication/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="进程间通信 1. 进程间通信的所有方式  管道(pipe)及有名管道(named pipe, FIFO):管道可用于具有亲缘关系进程间的通信，有名管道克服了管道没有名字的限制，因此，除具有管道所具有的功能外，它还允许无亲缘关系进程间的通信； 信号(signal):信号是比较复杂的通信方式，用于通知接受进程有某种事件发生，除了用于进程间通信外，进程还可以发送信号给进程本身。 进程信号量:进程间通信的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2016-11-24T02:36:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="inter-process-communication">
+<meta name="twitter:description" content="进程间通信 1. 进程间通信的所有方式  管道(pipe)及有名管道(named pipe, FIFO):管道可用于具有亲缘关系进程间的通信，有名管道克服了管道没有名字的限制，因此，除具有管道所具有的功能外，它还允许无亲缘关系进程间的通信； 信号(signal):信号是比较复杂的通信方式，用于通知接受进程有某种事件发生，除了用于进程间通信外，进程还可以发送信号给进程本身。 进程信号量:进程间通信的">
+  <link rel="canonical" href="https://yanruibo.github.io/2016/11/22/inter-process-communication/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>inter-process-communication | Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Summary for Comprehensive Learning</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://yanruibo.github.io/2016/11/22/inter-process-communication/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yrb">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">inter-process-communication
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2016-11-22 08:55:04" itemprop="dateCreated datePublished" datetime="2016-11-22T08:55:04+08:00">2016-11-22</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2016-11-24 10:36:31" itemprop="dateModified" datetime="2016-11-24T10:36:31+08:00">2016-11-24</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="进程间通信">进程间通信</h1>
+<h2 id="进程间通信的所有方式">1. 进程间通信的所有方式</h2>
+<ol type="1">
+<li><font color="#FF7F50">管道(pipe)及有名管道(named pipe, FIFO)</font>:管道可用于具有亲缘关系进程间的通信，有名管道克服了管道没有名字的限制，因此，除具有管道所具有的功能外，它还允许无亲缘关系进程间的通信；</li>
+<li><font color="#FF7F50">信号(signal)</font>:信号是比较复杂的通信方式，用于通知接受进程有某种事件发生，除了用于进程间通信外，进程还可以发送信号给进程本身。</li>
+<li><font color="#FF7F50">进程信号量</font>:进程间通信的同步控制机制，主要作为进程间以及同一进程不同线程之间的同步手段。</li>
+<li><font color="#FF7F50">共享内存以及映射内存</font>:共享内存是允许多个进程读写同一片内存区域，使得多个进程可以访问同一块内存空间，是最快的可用IPC形式。针对其他通信机制运行效率较低而设计的。往往与其它通信机制，如信号量结合使用，来达到进程间的同步及互斥；映射内存与共享内存的意义相同，但与文件相关联。</li>
+<li><font color="#FF7F50">消息队列</font>:在进程间传递二进制块数据，消息队列是消息的链接表，包括Posix消息队列system V消息队列。有足够权限的进程可以向队列中添加消息，被赋予读权限的进程则可以读走队列中的消息。消息队列克服了信号承载信息量少，管道只能承载无格式字节流以及缓冲区大小受限等缺点。</li>
+<li><font color="#FF7F50">套接字</font>:支持无关进程，甚至不同的计算机进行通信(网络进程间通讯，network IPC)</li>
+</ol>
+<a id="more"></a>
+<p>Unix系统所提供的经典的进程间的通讯机制(IPC)有:管道，FIFO，消息队列，信号量，以及共享储存。这些机制允许在同一台计算机上运行的进程可以相互通讯，量外还有不同计算机(通过网络相连)上的进程相互通信的机制:网络进程间通信(network IPC).</p>
+<h2 id="管道">2. 管道</h2>
+<p>管道分为匿名管道和命名管道(named pipe, FIFO).</p>
+<h3 id="匿名管道">2.1 匿名管道</h3>
+<p>一般说管道就是指的匿名管道。</p>
+<h4 id="管道的性质与意义">管道的性质与意义</h4>
+<ul>
+<li>管道是允许单向通信的自动同步设备(半双工)</li>
+<li>数据在写入端写入，在读取端读取</li>
+<li>管道为串行设备，数据的读取顺序与写入顺序完全相同</li>
+</ul>
+<h4 id="管道的用途">管道的用途</h4>
+<ul>
+<li>只能用于有亲缘关系的进程，例如父进程与子进程之间的通信</li>
+</ul>
+<p>注意事项</p>
+<ul>
+<li>管道的数据容量有限，一般为一个内存页面</li>
+<li>如果写入速度超过读取速度，写入进程将阻塞，直到容量有空闲</li>
+<li>如果读取速度超过写入速度，读取进程将阻塞，直到逛到有数据</li>
+</ul>
+<h4 id="pip函数创建管道">pip函数:创建管道</h4>
+<ul>
+<li>头文件:"unistd.h"和"fcntl.h"</li>
+<li>原型:<code>int pipe(int pipefd[2]);</code></li>
+<li>参数:一个包含两个元素的整数数组，元素类型为文件描述符，0号元为读取文件描述符，1号元为写入文件描述符</li>
+<li>返回值:成功时返回0，不成功时返回-1，并设置errno值。 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int pipe_fds[2];</span><br><span class="line">int read_fd;</span><br><span class="line">int write_fd;</span><br><span class="line">pip(pipe_fds);</span><br><span class="line">read_fd = pipe_fds[0];</span><br><span class="line">write_df = pipe_fds[1];</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="从管道中读取数据">从管道中读取数据</h4>
+<ul>
+<li>如果管道的写端不存在，则认为已经读到了数据的末尾，读函数返回的读出字节数为0</li>
+<li>当管道的写端存在时，如果请求的字节数目大于PIPE_BUF，则返回管道中现有的字节数；如果请求的字节数目不大于PIPE_BUF，则返回管道中现有的字节数(管道中数据量小于请求的数据量)或者返回请求的字节数(管道中数据量不小于请求的数据量)。</li>
+</ul>
+<h4 id="向管道中写入数据">向管道中写入数据</h4>
+<ul>
+<li>向管道中写入数据时，linux将不保证写入的原子性，管道缓冲区一有空闲区域，写进程就会试图向管道写入数据。如果读进程不读走管道缓冲区中的数据，那么写操作将一直阻塞。</li>
+</ul>
+<p>注:只有在管道的读端存在时，向管道中写入数据才有意义。否则，向管道中写入数据的进程将收到内核传来的SIFPIPE信号，应用程序可以处理该信号，也可以忽略（默认动作则是应用程序终止）。</p>
+<h4 id="管道通信example">管道通信example</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">//pipe.c</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">const int buf_size = 4096;</span><br><span class="line"></span><br><span class="line">//向stream中写入count次msg</span><br><span class="line">void write_stream(const char *msg, int count, FILE *stream)</span><br><span class="line">&#123;</span><br><span class="line">    for(;count&gt;0;--count)</span><br><span class="line">    &#123;</span><br><span class="line">        fprintf(stream,&quot;%s\n&quot;,msg);</span><br><span class="line">        fflush(stream);</span><br><span class="line">        sleep(1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//从stream中读取数据</span><br><span class="line">void read_stream(FILE *stream)</span><br><span class="line">&#123;</span><br><span class="line">    char buf[buf_size];</span><br><span class="line">    //一直读取到流的尾部</span><br><span class="line">    while(!feof(stream) &amp;&amp; !ferror(stream) &amp;&amp; fgets(buf,sizeof(buf),stream)!=NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        fprintf(stdout,&quot;Data received:\n&quot;);</span><br><span class="line">        fputs(buf,stdout);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">    int fds[2];</span><br><span class="line">    pipe(fds);//创建管道</span><br><span class="line">    pid_t pid = fork();//创建子进程</span><br><span class="line">    if(pid==0)</span><br><span class="line">    &#123;</span><br><span class="line">        //child process</span><br><span class="line">        close(fds[1]);//只读取，关闭管道写入端</span><br><span class="line">        //将文件描述符转换为FILE *，以便C/C++标准库函数处理</span><br><span class="line">        FILE *stream = fdopen(fds[0],&quot;r&quot;);</span><br><span class="line">        read_stream(stream);</span><br><span class="line">    &#125;</span><br><span class="line">    else if(pid&gt;0)</span><br><span class="line">    &#123;</span><br><span class="line">        //parent process</span><br><span class="line">        char buf[buf_size];</span><br><span class="line">        //数据缓冲区末尾封装两个&apos;\0&apos;</span><br><span class="line">        int i;</span><br><span class="line">        for(i = 0; i&lt;26;++i)</span><br><span class="line">        &#123;</span><br><span class="line">            buf[i]=&apos;A&apos;+i;</span><br><span class="line">        &#125;</span><br><span class="line">        buf[i] = buf[i] = &apos;\0&apos;;</span><br><span class="line">        close(fds[0]);//只写入关闭管道读取端</span><br><span class="line">        FILE *stream = fdopen(fds[1],&quot;w&quot;);</span><br><span class="line">        write_stream(buf,3,stream);</span><br><span class="line">        close(fds[1]);//关闭管道写入端</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">output:</span><br><span class="line">yanruibo@yanruibo-PC:~/self-learning/hexo-blog/blog-code$ gcc pipe.c</span><br><span class="line">yanruibo@yanruibo-PC:~/self-learning/hexo-blog/blog-code$ ./a.out</span><br><span class="line">Data received:</span><br><span class="line">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span><br><span class="line">Data received:</span><br><span class="line">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span><br><span class="line">Data received:</span><br><span class="line">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span><br></pre></td></tr></table></figure>
+<h4 id="管道重定向">管道重定向</h4>
+<ul>
+<li>共享相同的文件位置和状态标志设置</li>
+</ul>
+<p>dup()函数:将两个文件描述符等位处理</p>
+<ul>
+<li>原型:<code>int dup(int oldfd); int dup2(int oldfd, int newfd);</code></li>
+<li>参数:创建oldfd的一份拷贝，单参数版本选择数值最小的未用文件描述符作为新的文件描述符；双参数版本使用newfd作为新的文件描述符，拷贝前尝试关闭newfd。</li>
+<li>返回值:成功时返回新文件描述符，失败时返回-1，并设errno值</li>
+<li>示例:dup2(fd,STDIN_FILENO),关闭标准输入流，然后作为fd的副本重新打开。dup2函数成功返回时，目标描述符(dup2函数的第二个参数)将变成源描述符(dup2函数的第一个参数)的复制品。换句话说两个文件描述符现在都指向同一个文件，而且是函数的第一个参数指向的文件。</li>
+</ul>
+<p>管道重定向example <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;stdlib.h&gt;</span><br><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line">#include &lt;sys/wait.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;fcntl.h&gt;</span><br><span class="line"></span><br><span class="line">const int buf_size = 4096;</span><br><span class="line"></span><br><span class="line">int main(int argc, char *argv[])</span><br><span class="line">&#123;</span><br><span class="line">    int fds[2];</span><br><span class="line">    pipe(fds);//创建管道</span><br><span class="line">    pid_t pid = fork();</span><br><span class="line">    if(pid == 0)//子进程</span><br><span class="line">    &#123;</span><br><span class="line">        close(fds[0]);//关闭管道读取端</span><br><span class="line">        dup2(fds[1],STDOUT_FILENO);//管道挂接到标准输出流</span><br><span class="line">        char *args[] = &#123;&quot;ls&quot;,&quot;-l&quot;,&quot;/&quot;,NULL&#125;;</span><br><span class="line">        execvp(args[0],args);</span><br><span class="line">    &#125;</span><br><span class="line">    else if(pid&gt;0)//父进程</span><br><span class="line">    &#123;</span><br><span class="line">        close(fds[1]);//关闭管道写入端</span><br><span class="line">        char buf[buf_size];</span><br><span class="line">        FILE *stream = fdopen(fds[0],&quot;r&quot;);//以读模式打开管道读取端，返回文件指针</span><br><span class="line">        fprintf(stdout, &quot;Data received\n&quot;);</span><br><span class="line">        //在流未结束，未发生读取错误，且能从流中正常读取字符串时，输出读取到的字符串</span><br><span class="line">        while (!feof(stream) &amp;&amp; !ferror(stream) &amp;&amp; fgets(buf,sizeof(buf),stream)!=NULL) &#123;</span><br><span class="line">            fputs(buf,stdout);</span><br><span class="line">        &#125;</span><br><span class="line">        close(fds[0]);//关闭管道读取端</span><br><span class="line">        waitpid(pid,NULL,0);//等待子进程结束</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line">output:</span><br><span class="line">Data received</span><br><span class="line">total 104</span><br><span class="line">drwxr-xr-x   2 root root  4096 Nov 22 09:36 bin</span><br><span class="line">drwxr-xr-x   4 root root  4096 Sep 20 19:10 boot</span><br><span class="line">drwxrwxr-x   2 root root  4096 Sep 25  2015 cdrom</span><br><span class="line">drwxr-xr-x  18 root root  4740 Nov 22 15:15 dev</span><br><span class="line">drwxr-xr-x 155 root root 12288 Nov 22 15:15 etc</span><br><span class="line">drwxr-xr-x   4 root root  4096 Aug  5 11:21 home</span><br></pre></td></tr></table></figure></p>
+<p>管道是Unix系统IPC的最古老的形式，所有Unix系统都提供此种通讯机制。管道有以下两种局限性。</p>
+<ul>
+<li>历史上它们是半双工的，即数据只能在一个方向上流动。现在，某些系统提供全双工管道，但是为了可移植性，我们决不应该预先假定系统支持全双工管道。</li>
+<li>管道只能在具有公共祖先的两个进程之间使用。通常，一个管道由一个进程创建，在进程调用fork之后，这个管道就能在父进程和子进程之间使用了。</li>
+<li>没有名字</li>
+<li>管道的缓冲区是有限的(管道存在于内存中，在管道创建时，为缓存区分配一个页面大小)</li>
+<li>管道传送的是无格式的字节流，这就要求管道的读取方和写入方必须事先约定好格式，比如多少个字节算作一个消息(命令或记录等)。</li>
+</ul>
+<h3 id="fifo">2.2 FIFO</h3>
+<p>管道应用的一个重大限制是它没有名字，因此，只能用于具有亲缘关系的进程间通信，在有名管道（named pipe或FIFO）提出后，该限制得到了克服。FIFO不同于管道之处在于它提供一个路径名与之关联，以FIFO的文件形式存在于文件系统中。这样，即使与FIFO的创建进程不存在亲缘关系的进程，只要可以访问该路径，就能够彼此通过FIFO相互通信（能够访问该路径的进程以及FIFO的创建进程之间），因此，通过FIFO不相关的进程也能交换数据。值得注意的是，FIFO严格遵循先进先出（first in first out），对管道及FIFO的读总是从开始处返回数据，对它们的写则把数据添加到末尾。它们不支持诸如lseek()等文件定位操作。</p>
+<h4 id="有名管道的创建">有名管道的创建</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys/types.h&gt;</span><br><span class="line">#include &lt;sys/stat.h&gt;</span><br><span class="line">int mkfifo(const char * pathname, mode_t mode)</span><br></pre></td></tr></table></figure>
+<p>该函数的第一个参数是一个普通的路径名，也就是创建后FIFO的名字。第二个参数与打开普通文件的open()函数中的mode 参数相同。 如果mkfifo的第一个参数是一个已经存在的路径名时，会返回EEXIST错误，所以一般典型的调用代码首先会检查是否返回该错误，如果确实返回该错误，那么只要调用打开FIFO的函数就可以了。一般文件的I/O函数都可以用于FIFO，如close、read、write等等。</p>
+<h4 id="有名管道的打开规则">有名管道的打开规则</h4>
+<p>有名管道比管道多了一个打开操作:open。 FIFO的打开规则:</p>
+<ul>
+<li>如果当前打开操作是为读而打开FIFO时，若已经有相应进程为写而打开该FIFO，则当前打开操作将成功返回；否则，可能阻塞直到有相应进程为写而打开该FIFO（当前打开操作设置了阻塞标志）；或者，成功返回（当前打开操作没有设置阻塞标志）。</li>
+<li>如果当前打开操作是为写而打开FIFO时，如果已经有相应进程为读而打开该FIFO，则当前打开操作将成功返回；否则，可能阻塞直到有相应进程为读而打开该FIFO（当前打开操作设置了阻塞标志）；或者，返回ENXIO错误（当前打开操作没有设置阻塞标志）。</li>
+</ul>
+<h4 id="有名管道的读写规则">有名管道的读写规则</h4>
+<p>从FIFO中读取数据 约定:如果一个进程为了从FIFO中读取数据而阻塞打开FIFO，那么称该进程内的读操作为设置了阻塞标志的读操作。 - 如果有进程写打开FIFO，且当前FIFO内没有数据，则对于设置了阻塞标志的读操作来说，将一直阻塞。对于没有设置阻塞标志读操作来说则返回-1，当前errno值为EAGAIN，提醒以后再试。 - 对于设置了阻塞标志的读操作说，造成阻塞的原因有两种：当前FIFO内有数据，但有其它进程在读这些数据；另外就是FIFO内没有数据。解阻塞的原因则是FIFO中有新的数据写入，不论信写入数据量的大小，也不论读操作请求多少数据量。 - 读打开的阻塞标志只对本进程第一个读操作施加作用，如果本进程内有多个读操作序列，则在第一个读操作被唤醒并完成读操作后，其它将要执行的读操作将不再阻塞，即使在执行读操作时，FIFO中没有数据也一样（此时，读操作返回0）。 - 如果没有进程写打开FIFO，则设置了阻塞标志的读操作会阻塞。</p>
+<p>注:如果FIFO中有数据，则设置了阻塞标志的读操作不会因为FIFO中的字节数小于请求读的字节数而阻塞，此时，读操作会返回FIFO中现有的数据量。</p>
+<p>向FIFO中写入数据:</p>
+<p>约定:如果一个进程为了向FIFO中写入数据而阻塞打开FIFO，那么称该进程内的写操作为设置了阻塞标志的写操作。</p>
+<p>对于设置了阻塞标志的写操作:</p>
+<ul>
+<li>当要写入的数据量不大于PIPE_BUF时，linux将保证写入的原子性。如果此时管道空闲缓冲区不足以容纳要写入的字节数，则进入睡眠，直到当缓冲区中能够容纳要写入的字节数时，才开始进行一次性写操作。</li>
+<li>当要写入的数据量大于PIPE_BUF时，linux将不再保证写入的原子性。FIFO缓冲区一有空闲区域，写进程就会试图向管道写入数据，写操作在写完所有请求写的数据后返回。</li>
+</ul>
+<p>对于没有设置阻塞标志的写操作:</p>
+<ul>
+<li>当要写入的数据量大于PIPE_BUF时，linux将不再保证写入的原子性。在写满所有FIFO空闲缓冲区后，写操作返回。</li>
+<li>当要写入的数据量不大于PIPE_BUF时，linux将保证写入的原子性。如果当前FIFO空闲缓冲区能够容纳请求写入的字节数，写完后成功返回；如果当前FIFO空闲缓冲区不能够容纳请求写入的字节数，则返回EAGAIN错误，提醒以后再写。</li>
+</ul>
+<p>不管写打开的阻塞标志是否设置，在请求写入的字节数大于PIPE_BUF时，都不保证写入的原子性。但二者有本质区别:<br>
+对于阻塞写来说，写操作在写满FIFO的空闲区域后，会一直等待，直到写完所有数据为止，请求写入的数据最终都会写入FIFO；而非阻塞写则在写满FIFO的空闲区域后，就返回(实际写入的字节数)，所以有些数据最终不能够写入。</p>
+<h2 id="信号">3. 信号</h2>
+<p>信号:进程通讯机制</p>
+<ul>
+<li>信号是发给进程的特殊异步消息</li>
+<li>当进程接受到信息时立即处理，此时并不需要完成当前函数调用甚至代码行</li>
+</ul>
+<p>系统信号</p>
+<ul>
+<li>缺省处理逻辑:终止进程，生成内核转储文件</li>
+<li>使用<code>kill -l</code>可查看操作系统支持的信号列表，不同的系统可能有所不同</li>
+</ul>
+<p>信号处理</p>
+<ul>
+<li>SIGTERM，SIGKILL:终止进程信号，前者是请求（接收信号的进程可以忽略之），后者是强制</li>
+<li>SIGUSR1，SIGUSR2:用户自定义信号，可用于向进程发送命令。</li>
+</ul>
+<p>处理信号时的注意事项</p>
+<ul>
+<li>信号是异步操作，当处理信号时，主程序非常脆弱</li>
+<li>信号处理例程应尽可能短小，它甚至有可能会被新信号所中断</li>
+<li>尽量不要在信号处理例程中实施IO操作，也不要频繁的调用系统函数或库函数</li>
+<li>在信号处理例程中进行复杂的赋值操作也是危险的，它可能不是原子操作，因而有可能在执行期间被中断</li>
+<li>如果需要赋值，使用sig_atomic_t类型的全局变量（在Linux中等价于int，亦即允许整数或者指针赋值，不允许更大尺寸数据赋值）</li>
+</ul>
+<h2 id="进程信号量">4. 进程信号量</h2>
+<p>进程信号量: System V信号量</p>
+<ul>
+<li>可以使用同步机制确定进程的先后执行关系</li>
+<li>头文件:<code>sys/types.h, sys/ipc.h, sys/sem.h</code></li>
+</ul>
+<p>信号量的定义:</p>
+<ul>
+<li>信号量是一类特殊的计数器，其值为非负整数，用于进程或线程同步</li>
+</ul>
+<p>信号量的操作</p>
+<ul>
+<li>等待(wait)操作(P): 信号量的值递减1后返回，如果值为0，则为阻塞操作，直到信号量值为正（其他进程或线程释放了信号量），然后递减1后返回</li>
+<li>发布(post)操作(V): 信号量的值递增1后返回；如果信号量的值为0，则其中一个等待该信号量的进程或线程将取消阻塞。</li>
+</ul>
+<p>Linux信号量实现: 两个版本</p>
+<ul>
+<li>进程信号量多用于进程同步，POSIX标准实现多用于线程同步</li>
+</ul>
+<p>使用进程信号量时的注意事项</p>
+<ul>
+<li>每次创建和管理的进程信号量不是一个，而是一个集合（数组），该集合包含多个进程信号量</li>
+<li>使用键值key关联进程信号量集，但进程信号量集本身由进程信号量的标识符semid标识，函数调用时几乎总是使用semid——可以这么理解: semid对内，key对外。</li>
+</ul>
+<p>semget()函数：创建或获取进程信号量集</p>
+<ul>
+<li>原型：<code>int semget(key_t key, int nsems, int semflg);</code></li>
+<li>参数：key为键值，多个进程可以通过此键值访问同一进程信号量；nsems为需要创建的进程信号量集的进程信号量元素个数（不是进程信号量的信号数）， semflg为访问标志</li>
+<li>返回值：成功时返回进程信号量集的标识符，失败时返回-1，并设置errno值</li>
+<li>要获取已分配的进程信号量集，使用原先键值查询，此时进程信号量集的元素个数可设置为0</li>
+<li>键值IPC_PRIVATE用于创建当前进程的私有进程信号量集</li>
+<li>使用IPC_CREAT和IPC_EXCL创建进程信号量集，后者要求创建新的唯一的进程信号量集，若其已存在，则出错</li>
+</ul>
+<p>控制和管理进程信号量集</p>
+<ul>
+<li>原型：int semctl( int semid, int semnum, int cmd, … );</li>
+<li>参数：semid为进程信号量集的标识符，semnum为进程信号量集的元素下标，cmd为指定操作，第四个参数arg可有可 无，与cmd有关</li>
+<li>返回值：成功时与cmd有关，失败时返回-1，并设置errno值</li>
+<li>调用semctl()函数的进程的有效用户ID必须与分配进程信号量集的用户权限匹配</li>
+</ul>
+<p>释放（删除）进程信号量集：IPC_RMID</p>
+<ul>
+<li>最后一个使用进程信号量的进程负责清除进程信号量集</li>
+<li>进程信号量集释放后，内存自动释放</li>
+<li>调用说明：cmd为IPC_RMID，semnum被忽略，arg不需要；如果需要arg，定义union semun类型的变量并作为参数，部分系统可能未定义union semun类型，需按如下格式补充定义： <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">union semun</span><br><span class="line">&#123;</span><br><span class="line">    int val; // 供SETVAL使用的值</span><br><span class="line">    struct semid_ds *buf; // 供IPC_STAT、 IPC_SET使用的缓冲区</span><br><span class="line">    unsigned short int *array; // 供GETALL、 SETALL使用的数组</span><br><span class="line">    struct seminfo *__buf; // 供IPC_INFO使用的缓冲区</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>初始化进程信号量集：SETALL</p>
+<ul>
+<li>第一个参数semid为进程信号量集的标识符，第二个参数semnum为0，第三个参数cmd为SETALL，第四个参数arg 必须为union semun类型的数据对象</li>
+<li>union semun的array字段：指向无符号短整型数组首元素的指针，该数组保存进程信号量集的所有信号量的信号数 其他常用命令参数</li>
+<li>IPC_STAT/IPC_SET（获取或设置进程信号量信息）、GETALL（获取全部信号量的信号数）、 GETVAL/SETVAL （获取或设置单个信号量的信号数）等</li>
+</ul>
+<p>获取与释放 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 获取与key关联的二元信号量集，必要时会分配之</span><br><span class="line">int AcquireBinarySemaphore(key_t key, int sem_flags)</span><br><span class="line">&#123;</span><br><span class="line">    return semget(key, 1, sem_flags);</span><br><span class="line">&#125;</span><br><span class="line">// 释放二元信号量集，单一元素</span><br><span class="line">int ReleaseBinarySemaphore(int semid)</span><br><span class="line">&#123;</span><br><span class="line">    union semun ignored;</span><br><span class="line">    return semctl(semid, 1, IPC_RMID, ignored);</span><br><span class="line">&#125;</span><br><span class="line">// 初始化二元信号量集，单一元素，信号量初始值为1</span><br><span class="line">int InitializeBinarySemaphore(int semid)</span><br><span class="line">&#123;</span><br><span class="line">    unsigned short int values[1] = &#123; 1 &#125;;</span><br><span class="line">    union semun needed = &#123; .array = values &#125;;</span><br><span class="line">    return semctl(semid, 0, SETALL, needed);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>等待与发布进程信号量函数semop()</p>
+<ul>
+<li>原型：int semop(int semid, struct sembuf *sops, size_t nsops);</li>
+<li>参数：semid为待操作的进程信号量集的标识符；sops为操作数组，nsops为操作数组的元素个数</li>
+<li>返回值：成功时为进程信号量集的标识符，失败时返回-1，并设置errno值</li>
+</ul>
+<p>struct sembuf类型的成员</p>
+<ul>
+<li>sem_num：需要操作的进程信号量集中的信号量元素下标</li>
+<li>sem_op：指定信号量操作的整数（递增或递减信号量的信号数）
+<ul>
+<li>如果sem_op为正数，则立即加到信号量上（V操作）</li>
+<li>如果sem_op为负数，则从信号量上减去（P操作）</li>
+<li>如果会使结果为负数，则阻塞进程，直到信号量的信号数不小于sem_op的绝对值</li>
+<li>如果sem_op为0，则阻塞进程，直到信号量的信号数为0</li>
+</ul></li>
+<li>sem_flg：指定IPC_NOWAIT则不阻塞进程，指定SEM_UNDO则在进程退出时取消操作</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// P原语：等待二元信号量，信号数非正时阻塞</span><br><span class="line">int WaitBinarySemaphore(int semid)</span><br><span class="line">&#123;</span><br><span class="line">    struct sembuf ops[1];</span><br><span class="line">    ops[0].sem_num = 0;</span><br><span class="line">    ops[0].sem_op = -1;</span><br><span class="line">    ops[0].sem_flg = SEM_UNDO;</span><br><span class="line">    return semop(semid, ops, 1);</span><br><span class="line">&#125;</span><br><span class="line">// V原语：发布二元信号量，增加信号数后立即返回</span><br><span class="line">int PostBinarySemaphore(int semid)</span><br><span class="line">&#123;</span><br><span class="line">    struct sembuf ops[1];</span><br><span class="line">    ops[0].sem_num = 0;</span><br><span class="line">    ops[0].sem_op = 1;</span><br><span class="line">    ops[0].sem_flg = SEM_UNDO;</span><br><span class="line">    return semop(semid, ops, 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="共享内存以及映射内存">5. 共享内存以及映射内存</h2>
+<h3 id="共享内存">共享内存</h3>
+<p>共享内存的意义: 快捷方便的本地通信机制</p>
+<ul>
+<li>头文件: <code>sys/ipc.h, sys/shm.h</code></li>
+</ul>
+<p>共享内存编程原则</p>
+<ul>
+<li>系统没有对共享内存操作提供任何缺省同步行为</li>
+<li>如果需要，程序员自主设计同步策略:使用进程信号量</li>
+</ul>
+<p>共享内存使用过程</p>
+<ul>
+<li>某个进程分配一个内存段，其他需要访问该内存段的进程连接（attach）该内存段</li>
+<li>完成访问后，进程拆卸（detach）该内存段</li>
+<li>某个时刻，一个进程释放该内存段</li>
+</ul>
+<p>Linux内存模型</p>
+<ul>
+<li>每个进程的虚拟地址空间按页编址，页缺省为4096字节（不同硬件架构和操作系统可能不同，使用getpagesize()函数获取系统值）</li>
+<li>每个进程维持从内存地址到虚拟页面地址的映射</li>
+<li>多个进程可能使用同一虚拟页面，同样的数据在不同进程中的地址并不需要相同</li>
+<li>分配新的共享内存段将创建虚拟内存页面，其他进程连接该共享内存段即可访问。</li>
+<li>共享内存段的分配只有由一个进程负责，释放也同样</li>
+</ul>
+<p>获取共享内存<br>
+shmget()函数:获取或分配一段共享内存 - 原型: <code>int shmget(key_t key, size_t size, nt shmflg);</code> - 参数: key为内存段整数键值，size为内存段分配的字节数，shmflg为创建共享内存段的位标志</p>
+<p>键值参数key</p>
+<ul>
+<li>其他进程通过键值key访问该内存段，任意设定的键值可能和其他进程的共享内存段键值冲突，使用IPC_PRIVATE以确保无冲突。</li>
+</ul>
+<p>创建标志: IPC_CREAT（创建），IPC_EXCL（独占）</p>
+<ul>
+<li>后者与前者合并使用，如果键值已使用，则创建失败</li>
+<li>如果未设IPC_EXCL，则在键值已经存在时，返回其代表的共享内存段，而不是创建一个新的共享内存段。</li>
+</ul>
+<p>位标志参数</p>
+<ul>
+<li>模式标志: 以9位数字表示宿主，组用户，和其他人的访问控制权</li>
+<li>常数位于头文件<code>sys/stat.h</code></li>
+</ul>
+<p>返回值: 共享内存段的标识符<br>
+常用模式参数</p>
+<ul>
+<li>S_IRUSR和S_IWUSR分别表示共享内存段宿主的读写权限</li>
+<li>S_IRGRP和S_IWGRP分别表示共享内存段组用户的读写权限</li>
+<li>S_IROTH和S_IWOTH分别表示共享内存段其他人的读写权限</li>
+</ul>
+<p>调用示例</p>
+<ul>
+<li>int seg_id = shmget( shm_key, getpagesize(), IPC_CREAT | S_IRUSR | S_IWUSER );</li>
+</ul>
+<p>shmat()函数: 连接共享内存</p>
+<ul>
+<li>原型: <code>void *shmat(int shmid, const void *shmaddr, int shmflg);</code></li>
+<li>参数: shmid为共享内存段标识符（shmget()的返回值）， shmaddr为指针，指向共享内存段的映射地址，如果传递NULL，Linux自动选择合适地址， shmflg为连接标志</li>
+<li>返回值: 成功时返回所连接的共享内存段的地址</li>
+</ul>
+<p>连接标志</p>
+<ul>
+<li>SHM_RND: shmaddr指定的映射地址向下圆整到页面尺寸的整数倍；如果未指定，则传递shmaddr时必须手工对齐页面地址</li>
+<li>SHM_RDONLY: 共享内存段组只读</li>
+</ul>
+<p>shmdt()函数: 拆卸共享内存段 - 原型: <code>int shmdt(const void *shmaddr);</code></p>
+<p>共享内存example <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">#include &lt;sys/shm.h&gt;</span><br><span class="line">#include &lt;sys/stat.h&gt;</span><br><span class="line">int main ()</span><br><span class="line">&#123;</span><br><span class="line">    struct shmid_ds shmbuf;</span><br><span class="line">    int seg_size;</span><br><span class="line">    const int shared_size = 0x6400;</span><br><span class="line">    // 分配共享内存段</span><br><span class="line">    int seg_id = shmget(IPC_PRIVATE, shared_size, IPC_CREAT|IPC_EXCL|S_IRUSR|S_IWUSR );</span><br><span class="line">    // 连接共享内存段</span><br><span class="line">    char *shared_mem = (char *)shmat(seg_id, 0, 0);</span><br><span class="line">    printf(&quot;Shared memory attached at %p\n&quot;, shared_mem);</span><br><span class="line">    // 获取段尺寸信息</span><br><span class="line">    shmctl(seg_id, IPC_STAT, &amp;shmbuf);</span><br><span class="line">    seg_size = shmbuf.shm_segsz;</span><br><span class="line">    printf(&quot;Segment size: %d\n&quot;, seg_size);</span><br><span class="line">    // 向共享内存区段写入字符串</span><br><span class="line">    sprintf(shared_mem, &quot;Hello, world.&quot;);</span><br><span class="line">    // 拆卸共享内存区段</span><br><span class="line">    shmdt(shared_mem);</span><br><span class="line">    // 在不同的地址处重新连接共享内存区段</span><br><span class="line">    shared_mem = (char *)shmat(seg_id, (void *)0x5000000, 0 );</span><br><span class="line">    printf(&quot;Shared memory reattached at %p\n&quot;, shared_mem);</span><br><span class="line">    // 获取共享内存区段中的信息并打印</span><br><span class="line">    printf(&quot;%s\n&quot;, shared_mem);</span><br><span class="line">    // 拆卸共享内存区段</span><br><span class="line">    shmdt(shared_mem);</span><br><span class="line">    // 释放共享内存区段，与semctl类似</span><br><span class="line">    shmctl(seg_id, IPC_RMID, 0);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="映射内存">映射内存</h3>
+<p>mmap()函数：头文件<code>sys/mman.h</code></p>
+<ul>
+<li>映射共享文件到内存；文件被分割成页面大小装载；使用内存读写操作访问文件，速度更快；对映射内存的写入自动反映到文件中</li>
+<li>原型：void <em>mmap(void </em>addr, size_t length, int prot, int　flags, int fd, off_t offset);</li>
+</ul>
+<p>函数参数</p>
+<ul>
+<li>addr：映射目的地的内存地址，NULL表示由Linux自动选择合适的内存地址</li>
+<li>length：映射内存的大小，以字节为单位</li>
+<li>prot：指定映射内存的保护权限，为PROT_READ（允许读取）、PROT_WRITE（允许写入）、 PROT_EXEC（允许执行）或以上三者的组合</li>
+<li>flags：附加选项标志；为MAP_FIXED（如果指定此标志，则Linux使用用户指定的地址映射文件，地址本身必须页对齐）、MAP_PRIVATE（内存写入不回写至外部文件，本进程保留写入的文件副本），MAP_SHARED（内存写入立即反映到映射文件中）；MAP_PRIVATE与MAP_SHARED不能混用</li>
+<li>fd：待映射文件的文件描述符</li>
+<li>offset：指定映射数据在文件中的偏移量</li>
+</ul>
+<p>函数返回值</p>
+<ul>
+<li>成功调用时返回映射内存的基地址，失败时返回MAP_FAILED</li>
+</ul>
+<p>munmap()函数：释放映射内存 - 原型：<code>int *munmap(void *addr, size_t length);</code> - 参数：addr为映射内存的基地址；length为映射内存的大小 - 返回值：成功时返回0，失败时返回-1并设errno值</p>
+<p>msync()函数：映射内存同步</p>
+<ul>
+<li>原型：<code>int msync( void * addr, size_t length, int flags);</code></li>
+<li>参数：addr为映射内存基地址，length为映射内存大小，flags为同步标志，MS_ASYNC（数据更新被调度，但函数返回前并不一定会被执行）；MS_SYNC（数据更新立即执行，在完成前调用进程被阻塞）；MS_INVALIDATE（通知其他进程数据已无效，并自动提供新数据）；MS_ASYNC与MS_SYNC不能混用</li>
+<li>返回值：成功时返回0，失败时返回-1并设errno值</li>
+</ul>
+<p>映射内存example <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;fcntl.h&gt;</span><br><span class="line">#include &lt;sys/mman.h&gt;</span><br><span class="line">#include &lt;wait.h&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;iomanip&gt;</span><br><span class="line">const int mapped_size = 4096;</span><br><span class="line">const int mapped_count = mapped_size / sizeof(int);</span><br><span class="line">int main(int argc, char *const argv[])</span><br><span class="line">&#123;</span><br><span class="line">    // 打开文件作为内存映射的对象，确保文件尺寸足够存储1024个整数</span><br><span class="line">    int fd = open(argv[1],O_RDWR|O_CREAT,S_IRUSR|S_IWUSR);</span><br><span class="line">    lseek(fd, mapped_size - 1, SEEK_SET );</span><br><span class="line">    write(fd, &quot;&quot;, 1 );</span><br><span class="line">    lseek(fd, 0, SEEK_SET );</span><br><span class="line">    int *base = (int *)mmap(0, mapped_size, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, fd, 0);</span><br><span class="line">    close(fd); // 创建映射内存后，关闭文件的文件描述符</span><br><span class="line">    pid_t pid = fork();</span><br><span class="line">    if(pid == (pid_t)0) // 子进程写入数据</span><br><span class="line">    &#123;</span><br><span class="line">        // 写入数据0～1023</span><br><span class="line">        for(int i = 0, *p = base; i &lt; mapped_count; *p++ = i++);</span><br><span class="line">        munmap(base, mapped_size);</span><br><span class="line">    &#125;</span><br><span class="line">    else if(pid &gt; (pid_t)0) // 父进程读取数据</span><br><span class="line">    &#123;</span><br><span class="line">        sleep(10); // 等待10秒</span><br><span class="line">        for(int i = 0, *p = base; i &lt; mapped_count; i++, p++)</span><br><span class="line">        std::cout &lt;&lt; std::setw(5) &lt;&lt; *p &lt;&lt; &quot; &quot;;</span><br><span class="line">        std::cout &lt;&lt; std::endl;</span><br><span class="line">        munmap(base, mapped_size);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="消息队列">6. 消息队列</h2>
+<p>消息队列：在两个进程间传递二进制块数据</p>
+<ul>
+<li>数据块具有类别信息，接收方可根据消息类别有选择地接收</li>
+<li>头文件：“ sys/type.h”、“ sys/ipc.h”和“ sys/msg.h”</li>
+</ul>
+<p>msgget()函数：创建或获取消息队列</p>
+<ul>
+<li>原型：<code>int msgget(ket_t key, int msgflg);</code></li>
+<li>参数：key为键值，标识全局唯一的消息队列；msgflg为创建标志，与semget()的标志相同</li>
+<li>返回值：成功时返回正整数作为消息队列的标识符，失败时返回-1，并设errno值</li>
+<li>如果用于创建消息队列，相关内核数据结构struct msqid_ds将被创建并初始化</li>
+</ul>
+<p>msgsnd()函数：将消息添加到消息队列中</p>
+<ul>
+<li>原型：<code>int msgsnd(int msqid, const void * msg_ptr, size_t msg_sz, int msgflg);</code></li>
+<li>参数： msqid为msgget()返回的消息队列标识符；msg_ptr指向准备发送的消息； msg_sz为消息数据长度；msgflg控制消息发送行为，一般仅支持IPC_NOWAIT标志，即以非阻塞的方式发送消息</li>
+<li>返回值：成功时返回0，失败时返回-1，并设errno值</li>
+</ul>
+<p>消息缓冲区结构</p>
+<ul>
+<li>msg_ptr指向的数据结构如右</li>
+<li>mtype为消息类别，必须为正整数</li>
+<li>mtext为消息数据，msg_sz为其实际长度</li>
+</ul>
+<p>struct msgbuf { long int mtype; char mtext[512]; };</p>
+<p>msgrcv()函数：从消息队列中获取消息</p>
+<ul>
+<li>原型：<code>int msgrcv(int msqid, void *msg_ptr, size_t msg_sz, long int msgtype, int msgflg);</code></li>
+<li>参数： msqid为msgget()返回的消息队列标识符；msg_ptr用于存储接收的消息；msg_sz为消息数据长度；msgtype为消息类别；msgflg控制消息发送行为，可以为IPC_NOWAIT、MSG_EXCEPT（msgtype大于0时，读取第一个非msgtype类别的消息）和MSG_NOERROR的位或</li>
+<li>返回值：成功时返回0，失败时返回-1，并设errno值</li>
+<li>消息类别msgtype说明：为0则读取队列第一条消息，大于0则读取队列中第一条类别为msgtype的消息，小于0则读取队列中第一个类别比msgtype绝对值小的消息</li>
+</ul>
+<p>参考:<br>
+<a href="http://www.ibm.com/developerworks/cn/linux/l-ipc/index.html" target="_blank" rel="noopener">深刻理解Linux进程间通信（IPC）</a><br>
+<a href="http://www.ibm.com/developerworks/cn/linux/l-ipc/part1/index.html" target="_blank" rel="noopener">Linux环境进程间通信（一）管道</a><br>
+<a href="https://www.ibm.com/developerworks/cn/linux/l-ipc/part2/index1.html" target="_blank" rel="noopener">Linux环境进程间通信（二）: 信号（上）</a><br>
+<a href="https://www.ibm.com/developerworks/cn/linux/l-ipc/part2/index2.html" target="_blank" rel="noopener">Linux环境进程间通信（二）: 信号（下）</a><br>
+<a href="http://www.ibm.com/developerworks/cn/linux/l-ipc/part3/index.html" target="_blank" rel="noopener">Linux环境进程间通信（三）消息队列</a><br>
+<a href="http://www.ibm.com/developerworks/cn/linux/l-ipc/part4/index.html" target="_blank" rel="noopener">Linux环境进程间通信（四）信号量</a><br>
+<a href="http://www.ibm.com/developerworks/cn/linux/l-ipc/part5/index1.html" target="_blank" rel="noopener">Linux环境进程间通信（五）: 共享内存（上）</a><br>
+<a href="http://www.ibm.com/developerworks/cn/linux/l-ipc/part5/index2.html" target="_blank" rel="noopener">Linux环境进程间通信（五）: 共享内存（下）</a><br>
+<a href="https://www.ibm.com/developerworks/cn/linux/l-ipc/part6/" target="_blank" rel="noopener">Linux 环境进程间通信（六）套接口</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/IPC/" rel="tag"># IPC</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/11/21/infix-to-postfix/" rel="next" title="infix to postfix">
+                  <i class="fa fa-chevron-left"></i> infix to postfix
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/11/23/zombie-process/" rel="prev" title="zombie process">
+                  zombie process <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#进程间通信"><span class="nav-text">进程间通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程间通信的所有方式"><span class="nav-text">1. 进程间通信的所有方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管道"><span class="nav-text">2. 管道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#匿名管道"><span class="nav-text">2.1 匿名管道</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#管道的性质与意义"><span class="nav-text">管道的性质与意义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管道的用途"><span class="nav-text">管道的用途</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pip函数创建管道"><span class="nav-text">pip函数:创建管道</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从管道中读取数据"><span class="nav-text">从管道中读取数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#向管道中写入数据"><span class="nav-text">向管道中写入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管道通信example"><span class="nav-text">管道通信example</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管道重定向"><span class="nav-text">管道重定向</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fifo"><span class="nav-text">2.2 FIFO</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#有名管道的创建"><span class="nav-text">有名管道的创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有名管道的打开规则"><span class="nav-text">有名管道的打开规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有名管道的读写规则"><span class="nav-text">有名管道的读写规则</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号"><span class="nav-text">3. 信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程信号量"><span class="nav-text">4. 进程信号量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享内存以及映射内存"><span class="nav-text">5. 共享内存以及映射内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#共享内存"><span class="nav-text">共享内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#映射内存"><span class="nav-text">映射内存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息队列"><span class="nav-text">6. 消息队列</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="yrb">
+  <p class="site-author-name" itemprop="name">yrb</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yrb</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+  
+
+  
+
+  
+
+</body>
+</html>

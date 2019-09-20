@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="code : https://github.com/yanruibo/machine-learning/tree/master/bayes 1. 要求 实验目的： 　　掌握朴素贝叶斯分类方法的原理和应用 　　学会RSS数据集获取和数据解析 　　学习朴素贝叶斯分类方法的改进方法并应用 实验要求 　　1、课堂讲授的改进方法和paper方法，任一种即可 　　2、算法对比时以测试误差即错误率衡量，随机选取">
+<meta name="keywords" content="bayes,machine learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bayes">
+<meta property="og:url" content="https://yanruibo.github.io/2016/04/10/bayes/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="code : https://github.com/yanruibo/machine-learning/tree/master/bayes 1. 要求 实验目的： 　　掌握朴素贝叶斯分类方法的原理和应用 　　学会RSS数据集获取和数据解析 　　学习朴素贝叶斯分类方法的改进方法并应用 实验要求 　　1、课堂讲授的改进方法和paper方法，任一种即可 　　2、算法对比时以测试误差即错误率衡量，随机选取">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-20T07:36:38.830Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bayes">
+<meta name="twitter:description" content="code : https://github.com/yanruibo/machine-learning/tree/master/bayes 1. 要求 实验目的： 　　掌握朴素贝叶斯分类方法的原理和应用 　　学会RSS数据集获取和数据解析 　　学习朴素贝叶斯分类方法的改进方法并应用 实验要求 　　1、课堂讲授的改进方法和paper方法，任一种即可 　　2、算法对比时以测试误差即错误率衡量，随机选取">
+  <link rel="canonical" href="https://yanruibo.github.io/2016/04/10/bayes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>bayes | Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Summary for Comprehensive Learning</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://yanruibo.github.io/2016/04/10/bayes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yrb">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">bayes
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2016-04-10 10:32:50" itemprop="dateCreated datePublished" datetime="2016-04-10T10:32:50+08:00">2016-04-10</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-09-20 15:36:38" itemprop="dateModified" datetime="2019-09-20T15:36:38+08:00">2019-09-20</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/machine-learning/" itemprop="url" rel="index"><span itemprop="name">machine learning</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a href="https://github.com/yanruibo/machine-learning/tree/master/bayes" target="_blank" rel="noopener">code : https://github.com/yanruibo/machine-learning/tree/master/bayes</a></p>
+<h2 id="要求">1. 要求</h2>
+<p>实验目的：<br>
+　　掌握朴素贝叶斯分类方法的原理和应用<br>
+　　学会RSS数据集获取和数据解析<br>
+　　学习朴素贝叶斯分类方法的改进方法并应用<br>
+实验要求<br>
+　　1、课堂讲授的改进方法和paper方法，任一种即可<br>
+　　2、算法对比时以测试误差即错误率衡量，随机选取测试集时：或者a）固定随机选择的测试样本进行测试比较；或者b）随机选择多次，算出平均误差进行对比。<br>
+　　3、数据集：采用RSS方法获取数据集完成文本分类及书中所描述的应用；进行决策树算法对比时，建议采用前一章节数据集测试比对。<br>
+　　4、RSS下载英文高频词文件时，参考RSS应用教程。<br>
+<a id="more"></a></p>
+<h2 id="相关知识">2. 相关知识</h2>
+<h3 id="naive-bayesian-classifier">2.1 Naive Bayesian Classifier</h3>
+<p>　　朴素贝叶斯法是基于贝叶斯定理与特征条件独立假设的分类方法。对于给定的数据集，首先基于特征条件独立假设学习输入的联合概率分布，然后基于此模型，对给定的输入x,利用贝叶斯定理求出后验概率最大的输出y。<br>
+　　朴素贝叶斯是一个条件概率模型：给定一个需要分类的实例x，用一个向量来表示<span class="math inline">\(\mathbf{x} = (x_1, \dots, x_n)\)</span>,并且假设这n个特征之间是相互独立的变量，然后对k个可能的类别计算下面的概率 <span class="math display">\[p(C_k \vert x_1, \dots, x_n)\,\]</span> <span class="math inline">\(C_k\)</span>代表是k个类别<br>
+接下来是尝试对上面的式子进行变形。用贝叶斯定理，条件概率可以被描述为： <span class="math display">\[p(C_k \vert \mathbf{x}) = \frac{p(C_k) \ p(\mathbf{x} \vert C_k)}{p(\mathbf{x})}. \,\]</span> 用贝叶斯概率的术语，上面的等式可以被重写为： <span class="math display">\[\mbox{posterior} = \frac{\mbox{prior} \times \mbox{likelihood}}{\mbox{evidence}}. \,\]</span> 在实际中，我们只对上述式子的分子感兴趣，因为分母并不依赖于类别，是一个常数，所以分子等价于一个联合概率模型： <span class="math display">\[p(C_k, x_1, \dots, x_n)\,\]</span> 这个联合概率模型利用链式规则可以被重写为下面的式子： <span class="math display">\[\begin{align}
+p(C_k, x_1, \dots, x_n) &amp; = p(C_k) \ p(x_1, \dots, x_n \vert C_k) \\
+                        &amp; = p(C_k) \ p(x_1 \vert C_k) \ p(x_2, \dots, x_n \vert C_k, x_1) \\
+                        &amp; = p(C_k) \ p(x_1 \vert C_k) \ p(x_2 \vert C_k, x_1) \ p(x_3, \dots, x_n \vert C_k, x_1, x_2) \\
+                        &amp; = p(C_k) \ p(x_1 \vert C_k) \ p(x_2 \vert C_k, x_1) \ \dots p(x_n \vert C_k, x_1, x_2, x_3, \dots, x_{n-1})
+\end{align}\]</span> 朴素贝叶斯假设各个特征之间相互独立的，假定第j个特征和第i个特征是相互独立的，则有下面的等式成立： <span class="math display">\[p(x_i \vert C_k, x_j) = p(x_i \vert C_k)\,\]</span> <span class="math display">\[p(x_i \vert C_k, x_j, x_q) = p(x_i \vert C_k)\,\]</span> <span class="math display">\[p(x_i \vert C_k, x_j, x_q, x_l) = p(x_i \vert C_k)\,\]</span>, 因此联合概率模型可以被描述为： <span class="math display">\[\begin{align}
+p(C_k \vert x_1, \dots, x_n) &amp; \varpropto p(C_k, x_1, \dots, x_n) \\
+                             &amp; \varpropto p(C_k) \ p(x_1 \vert C_k) \ p(x_2\vert C_k) \ p(x_3\vert C_k) \ \cdots \\
+                             &amp; \varpropto p(C_k) \prod_{i=1}^n p(x_i \vert C_k)\,.
+\end{align}\]</span> 这意味着基于以上的独立假设，在类C上的条件分布可以标示为： <span class="math display">\[p(C_k \vert x_1, \dots, x_n) = \frac{1}{Z} p(C_k) \prod\limits_{i=1}^n p(x_i \vert C_k)\]</span> 其中<span class="math inline">\(Z = p(\mathbf{x})\)</span>是一个比例因子只依赖于<span class="math inline">\(x_1, \dots, x_n\)</span>，只要特征的取值是已知的它就是一个常数。<br>
+利用上面的概率模型构建一个分类器，就是对每个类别都计算后验概率，哪个类别的后验概率大就判定为哪个类。 <span class="math display">\[\hat{y} = \underset{k \in \{1, \dots, K\}}{\operatorname{argmax}} \ p(C_k) \displaystyle\prod_{i=1}^n p(x_i \vert C_k).\]</span></p>
+<p>参考：<a href="https://en.wikipedia.org/wiki/Naive_Bayes_classifier" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Naive_Bayes_classifier</a></p>
+<h3 id="selective-bayesian-classifier">2.2 Selective Bayesian Classifier</h3>
+<p>　　以下讲的方法来自于论文：Induction of Selective Bayesian Classifiers 　　选择贝叶斯分类器，其设计目标是为了提高朴素贝叶斯在属性冗余的情况下的分类精度。</p>
+<ol type="1">
+<li>考虑前向搜索还是后向搜索，前向搜索从空集往里添加属性，后向搜索从所有特征种移除属性，后向搜索的一个潜在的问题是当多个属性是有关系时移除他们中的一个并不会提高分类效果，因为还存在冗余信息。所以选择前向搜索，这样当一个冗余属性添加进来时就能立即发现属性之间的依赖关系。<br>
+</li>
+<li>考虑搜索过程，遍历搜索是不切实际的，因为在n个属性的有<span class="math inline">\(2^n\)</span>个子集。一个比较切实际的方法就是在机器学习中普遍应用的算法就是用一种贪婪的搜索算法。序列前向选择(SFS,Sequential Forward Selection)算法描述：特征子集X从空集开始，每次选择一个特征x加入特征子集X，使得特征函数J(X)最优。简单说就是，每次都选择一个使得评价函数的取值达到最优的特征加入，其实就是一种简单的贪心算法。<br>
+</li>
+<li>在评估属性的可选子集时，我们采用了leave-one-out的交叉验证方法来估计训练集的精确度，因为这是最准确地交叉验证的方法。<br>
+</li>
+<li>最后考虑两个规则来终止搜索过程，第一，所有的待选子集都没有提高分类精度，第二，采用一个保守的策略，只要不减少精确度就继续添加特征。最后要考虑所有特征的情况，论文中有提到。</li>
+</ol>
+<p>然后论文中采用的是UCI的数据(UCI reopsitory of machine learning datasets)。本文采用的是699个实例的breast cancer的数据。因为这个数据是最简单的。别的 Congressional voting records，mushroom domain都比较复杂。</p>
+<h3 id="learning-an-optimal-naive-bayes-classifier">2.3 Learning an optimal Naive Bayes Classifier</h3>
+<p>　　以下内容均来自论文：Learning an optimal Naive Bayes Classifier<br>
+　　朴素贝叶斯方法有两个缺点，第一个是当属性之间是不独立的时候分类精度就会下降，第二，不能解决非参数连续的问题。这篇论文提出了一个方法，该方法包含两个过程:Discretization based on minimum description length principle and Structural improvement based on mutual and conditional inforamtion measures.即基于MDL的离散化过程和去除冗余属性的结构提升过程。<br>
+1. 初始化。进行一个二分类<br>
+2. 离散化。对每个特征递归的进行二分类，对每一个划分计算MDL，直到一个新的划分的MDL不再提高。MDL表示保存一个特定信息的所需花费的比特数。然后它给出了一个评价指标，对每一次划分都要计算一下论文中的quality。quality的值越大越好。Net-Length正比于参数个数，这里可以取划分的个数（或者加上ｙ的种类数），Net-Weight是每个属性和类别之间的互信息的和。Max-Length，Max-Weight是每个属性取最大切分时的值。<br>
+3. 结构提升：1)计算每个属性和类别之间的互信息，互信息的值低于人工设定的阀值时，将这些属性删掉，因为这些属性没有提供有用的分类信息。2)经过第一步之后剩下的属性通过两两之间计算条件互信息，如果互信息的值比较高，说明这两个属性之间不独立，是相关的。3)对通过第二步检测出的条件互信息比较高的两个属性a)去掉一个属性，去掉和类别互信息小的那个属性；b)合并成一个属性。通过这两种方法哪个得到的分类准确率高，选择哪个方法。</p>
+<p><strong>分析</strong>：<br>
+　　这个方法没有代码实现，但是认真了看了好长时间，就把编程的思路写出来了，就算写出来了，还存在一个问题就是数据集得自己找比较麻烦。<strong>其实编程实现很容易，难的是之前的理解过程，只要你把一个过程理解透了，程序自然也就写出来了</strong>，最大的一个感受就是做大数据机器学习的作业写代码往往只占比较少的时间。</p>
+<h3 id="决策树id3和c4.5">2.4 决策树(ID3和C4.5)</h3>
+<p>　　ID3算法的核心是在决策树的各个节点上应用信息增益选择特征，递归的构建决策树，具体方法是从根结点开始对结点计算所有可能的特征的信息增益，选择信息增益最大的特征作为结点的特征，由该特征的不同取值建立子节点，再对子节点递归的调用以上方法，构建决策树。<br>
+　　按照李航的《统计学习方法》中介绍的算法，C4.5与ID3算法的区别就是用信息增益比来选取特征。</p>
+<h2 id="实验过程">3.实验过程</h2>
+<h3 id="数据集选择">3.1 数据集选择</h3>
+<p>　　本试验采用了两个数据集，一个是抓取的rss文档的数据集，另一个是UCI的breast cancer数据集。第二个数据集有很多版本，本试验下载了一个没有缺失值的版本，名称为unformatted-data.txt,经过preprocess_data.py处理之后变为前十列是属性值，第十一列是标签值，原来标签为2和4，处理之后变成了0和1。</p>
+<h3 id="实验过程-1">3.2 实验过程</h3>
+<p>　　根据前面相关知识的理解，进行编程，然后运行，得出结果。<br>
+　　主要的代码： SBC: <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Selective Bayesian Classifier</span></span><br><span class="line"><span class="string">从空集到全集搜索</span></span><br><span class="line"><span class="string">最主要的算法</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SBC</span><span class="params">(trainMat, trainClasses, testMat, testClasses)</span>:</span></span><br><span class="line">    <span class="comment"># 属性就是vocabList 训练集：trainMat trainClasses 测试集: testMat testClasses</span></span><br><span class="line">    <span class="comment"># 以第一个特征计算　目的是初始化值</span></span><br><span class="line">    <span class="comment">#totalFeatureNum记录共有多少列</span></span><br><span class="line">    <span class="comment">#remainedIndexes记录选取之后剩下的列的索引</span></span><br><span class="line">    <span class="comment">#bestIndex记录每一次要添加的最好的特征的列索引也就是第几列</span></span><br><span class="line">    <span class="comment">#选取一个属性时测试第一列之后的列，选取最好的那一列，这个没有放入循环中，主要是做一些初始化工作</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(remainedIndexes)):</span><br><span class="line">        errorRate, p0V, p1V, pSpam = cross_validation(trainMat[:, i].reshape((len(trainMat[:, i]), <span class="number">1</span>)), trainClasses)</span><br><span class="line">        <span class="keyword">if</span>(errorRate &lt; bestErrorRate):</span><br><span class="line">            bestErrorRate = errorRate</span><br><span class="line">            bestIndex = remainedIndexes[i]</span><br><span class="line">    <span class="comment">#将当前矩阵初始化为最好的那一列的值，这里需要将矩阵变成2维的，因为trainMat[:, bestIndex]是一维的。</span></span><br><span class="line">    currentMatrix = trainMat[:, bestIndex].reshape(len(trainMat[:, bestIndex]), <span class="number">1</span>)</span><br><span class="line">    <span class="comment">#selectedColumnIndexes记录当前所有的最好的特征的列索引</span></span><br><span class="line">    selectedColumnIndexes = [bestIndex]</span><br><span class="line">    remainedIndexes = list(set(fullIndexes) - set(selectedColumnIndexes))</span><br><span class="line">    <span class="comment">#decisionRemainedIndexes记录最终确定的剩余的特征的索引，这个需要返回，因为测试向量中相应的列要删掉</span></span><br><span class="line">    decisionRemainedIndexes = remainedIndexes</span><br><span class="line">    decisionP0V = p0V</span><br><span class="line">    decisionP1V = p1V</span><br><span class="line">    decisionPSpam = pSpam</span><br><span class="line">    <span class="comment">#算法的核心两重循环</span></span><br><span class="line">    <span class="keyword">while</span>(len(selectedColumnIndexes) &lt; totalFeatureNum):</span><br><span class="line">        isChanged = <span class="literal">False</span></span><br><span class="line">        bestIndex = remainedIndexes[<span class="number">0</span>]</span><br><span class="line">        <span class="comment">#测试剩余的列与当前已选则列的所有组合的准确率，选出最好的</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(remainedIndexes)):</span><br><span class="line">            errorRate, p0V, p1V, pSpam = cross_validation(</span><br><span class="line">            np.append(currentMatrix, trainMat[:, remainedIndexes[i]].reshape(len(trainMat[:, remainedIndexes[i]]), <span class="number">1</span>), axis=<span class="number">1</span>),</span><br><span class="line">            trainClasses)</span><br><span class="line">            <span class="comment">#只要准确率没有降低就继续添加特征</span></span><br><span class="line">            <span class="keyword">if</span>(errorRate &lt;= bestErrorRate):</span><br><span class="line">                isChanged = <span class="literal">True</span></span><br><span class="line">                bestErrorRate = errorRate</span><br><span class="line">                bestIndex = remainedIndexes[i]</span><br><span class="line">                <span class="keyword">print</span> <span class="string">"iterate bestErrorRate"</span>,bestErrorRate</span><br><span class="line">        <span class="comment">#如果当前准确率有提高，就更新记录变量的值，如果没有提高就停止添加特征跳出循环</span></span><br><span class="line">        <span class="keyword">if</span>(isChanged):</span><br><span class="line">            currentMatrix = np.append(currentMatrix, trainMat[:, bestIndex].reshape(len(trainMat[:, bestIndex]), <span class="number">1</span>), axis=<span class="number">1</span>)</span><br><span class="line">            selectedColumnIndexes.append(bestIndex)</span><br><span class="line">            remainedIndexes = list(set(fullIndexes) - set(selectedColumnIndexes))</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"selectedColumnIndexes"</span>, selectedColumnIndexes</span><br><span class="line">            decisionRemainedIndexes = remainedIndexes</span><br><span class="line">            decisionP0V = p0V</span><br><span class="line">            decisionP1V = p1V</span><br><span class="line">            decisionPSpam = pSpam</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="comment"># 计算所有的特征集，文章中提到了要计算一下所有的特征集</span></span><br><span class="line">    errorRate, p0V, p1V, pSpam = cross_validation(trainMat, trainClasses)</span><br><span class="line">    <span class="keyword">if</span>(errorRate &lt; bestErrorRate):</span><br><span class="line">        decisionRemainedIndexes = []</span><br><span class="line">        decisionP0V = p0V</span><br><span class="line">        decisionP1V = p1V</span><br><span class="line">        decisionPSpam = pSpam</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码进行了部分删除，只保留了核心代码。 下面是留一法验证的代码： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">leave-one-out　cross validation</span></span><br><span class="line"><span class="string">留一法验证</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cross_validation</span><span class="params">(trainMat, trainClasses)</span>:</span></span><br><span class="line">    errorCount = <span class="number">0</span></span><br><span class="line">    <span class="comment"># 如果不是ndarray转化为ndarray</span></span><br><span class="line">    trainMat = np.asarray(trainMat)</span><br><span class="line">    trainClasses = np.asarray(trainClasses)</span><br><span class="line">    p0V = <span class="literal">None</span></span><br><span class="line">    p1V = <span class="literal">None</span></span><br><span class="line">    pSpam = <span class="literal">None</span></span><br><span class="line">    <span class="comment">#每次用第i行做测试向量</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(trainMat)):</span><br><span class="line">        <span class="comment"># 0是行 1是列</span></span><br><span class="line">        remainedTrainMat = np.delete(trainMat, [i], <span class="number">0</span>)</span><br><span class="line">        remainedTrainClasses = np.delete(trainClasses, [i], <span class="number">0</span>)</span><br><span class="line">        p0V, p1V, pSpam = trainNB0(remainedTrainMat, remainedTrainClasses)</span><br><span class="line">        <span class="keyword">if</span> classifyNB(trainMat[i], p0V, p1V, pSpam) != trainClasses[i]:</span><br><span class="line">            errorCount += <span class="number">1</span></span><br><span class="line">    errorRate = float(errorCount) / len(trainMat)</span><br><span class="line">    <span class="keyword">return</span> errorRate, p0V, p1V, pSpam</span><br></pre></td></tr></table></figure></p>
+<p>C4.5建树： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">创建决策树，这里对代码进行了一些改动，不改变传入的labels的值。</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">createTree</span><span class="params">(dataSet, labels, threshhold=<span class="number">0</span>)</span>:</span></span><br><span class="line">    classList = [example[<span class="number">-1</span>] <span class="keyword">for</span> example <span class="keyword">in</span> dataSet]</span><br><span class="line">    <span class="keyword">if</span> classList.count(classList[<span class="number">0</span>]) == len(classList):</span><br><span class="line">        <span class="keyword">return</span> classList[<span class="number">0</span>]  <span class="comment"># stop splitting when all of the classes are equal</span></span><br><span class="line">    <span class="keyword">if</span> len(dataSet[<span class="number">0</span>]) == <span class="number">1</span>:  <span class="comment"># stop splitting when there are no more features in dataSet</span></span><br><span class="line">        <span class="keyword">return</span> majorityCnt(classList)</span><br><span class="line">    bestFeat = chooseBestFeatureToSplit(dataSet, threshhold)</span><br><span class="line">    <span class="comment">#低于阀值最好的feature返回-1，投票</span></span><br><span class="line">    <span class="keyword">if</span>(bestFeat == <span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">return</span> majorityCnt(classList)</span><br><span class="line">    bestFeatLabel = labels[bestFeat]</span><br><span class="line">    myTree = &#123;bestFeatLabel:&#123;&#125;&#125;</span><br><span class="line">    remainedLabels = list(set(labels) - set(labels[bestFeat]))</span><br><span class="line">    <span class="comment"># del(labels[bestFeat])</span></span><br><span class="line">    featValues = [example[bestFeat] <span class="keyword">for</span> example <span class="keyword">in</span> dataSet]</span><br><span class="line">    uniqueVals = set(featValues)</span><br><span class="line">    <span class="keyword">for</span> value <span class="keyword">in</span> uniqueVals:</span><br><span class="line">        <span class="comment"># subLabels = labels[:]  # copy all of labels, so trees don't mess up existing labels</span></span><br><span class="line">        subLabels = remainedLabels[:]  <span class="comment"># copy all of labels, so trees don't mess up existing labels</span></span><br><span class="line">        myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value), subLabels)</span><br><span class="line">    <span class="keyword">return</span> myTree</span><br></pre></td></tr></table></figure></p>
+<p>c4.5分类： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">测试分类过程和ID3的思路类似</span></span><br><span class="line"><span class="string">输入创建好的决策树，类别标签和测试向量，对书中的代码进行改进</span></span><br><span class="line"><span class="string">如果在决策树中，在某一层没有测试数据的值，就在该层的任意一个分支往下找，这里取的是第一个分支，也就是最左边的分支。</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">classify1</span><span class="params">(inputTree, featLabels, testVec)</span>:</span></span><br><span class="line">    firstStr = inputTree.keys()[<span class="number">0</span>]</span><br><span class="line">    secondDict = inputTree[firstStr]</span><br><span class="line">    featIndex = featLabels.index(firstStr)</span><br><span class="line">    classLabel = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">if</span> testVec[featIndex] <span class="keyword">in</span> secondDict.keys():</span><br><span class="line">        <span class="keyword">for</span> key <span class="keyword">in</span> secondDict.keys():</span><br><span class="line">            <span class="keyword">if</span> testVec[featIndex] == key:</span><br><span class="line">                <span class="keyword">if</span> type(secondDict[key]).__name__ == <span class="string">'dict'</span>:</span><br><span class="line">                    classLabel = classify1(secondDict[key], featLabels, testVec)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    classLabel = secondDict[key]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        key = secondDict.keys()[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span>(type(secondDict[key]).__name__ == <span class="string">'dict'</span>):</span><br><span class="line">            classLabel = classify1(secondDict[key], featLabels, testVec)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            classLabel = secondDict[key]</span><br><span class="line">    <span class="keyword">return</span> classLabel</span><br></pre></td></tr></table></figure></p>
+<p>下面对代码文件进行一下说明： bayes.py是随书代码的源代码，对其进行了一些改进，并添加了一些函数，如写了SBC的算法，写了用rss数据测试SBC和NBC算法的函数。 bayes_uci.py是对应uci breast cancer数据的bayes算法，绝大部分内容和bayes.py中的代码相同，不同的是写了用UCI breast cancer数据测试SBC和NBC算法的函数。 ID3.py是随书代码的决策树那一章的代码，对其进行了改进，修复了创建树时改变传入参数labels的bug还有classify中的一些特殊情况。 C45.py的内容与ID3.py中的内容差不多，就是改成了利用信息增益比来 TestC45UCI.py　TestID3UCI.py TestNbcUci.py TestSbcUci.py分别使用UCI的breast cancer数据集来测试C4.5,ID3,Nbc和Sbc算法的。 TestNbcRss.pyTestSbcRss.py分别使用rss文档来测试Nbc和Sbc算法的。 还有一些对决策树代码的改进以及C4.5算法的编写详见代码。</p>
+<h3 id="实验结果">3.3 实验结果</h3>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">classifier</th>
+<th style="text-align: center;">NBC</th>
+<th style="text-align: center;">SBC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">accuracy(rss)</td>
+<td style="text-align: center;">0.75</td>
+<td style="text-align: center;">0.78</td>
+</tr>
+</tbody>
+</table>
+<p>分析：rss-NBC:每一次测试随机选取样本，计算多次求平均值<br>
+rss-SBC:每一次测试随机选取样本，由于运行时间长，只运行了一次。<br>
+因为rss的特征较多，有500多个单词，所以运行时间比较长。在SBC中，每做一次选择都要对训练集做留一法交叉验证计算平均精确度，在属性数目较多时，所花费的时间比较长。<br>
+而且像RSS这个数据集特征特别多，用ID3和C4.5的效果也不会特别好，虽然ID3和C4.5可以限制树的深度，但是对于这个数据集来说效果不是特别好。下面选用了一个比较好一点的数据集进行测试。就是UCI的breast cancer那个数据集。</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">classifier</th>
+<th style="text-align: center;">NBC</th>
+<th style="text-align: center;">SBC</th>
+<th style="text-align: center;">ID3</th>
+<th style="text-align: center;">C4.5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">accuracy(UCI)</td>
+<td style="text-align: center;">0.902857142857</td>
+<td style="text-align: center;">0.935714285714</td>
+<td style="text-align: center;">0.918678571429</td>
+<td style="text-align: center;">0.920571428571</td>
+</tr>
+</tbody>
+</table>
+<p>从结果可以看出，SBC的精确度肯定比NBC的精确度好，按我们的算法至少和SBC的精确度相同，因为我们的算法在考虑完所有的添加特征之外，还计算了所有特征的情况，所以保证SBC算法是一定比NBC算法好的。<br>
+C4.5算法比ID3算法的精度要好，因为C4.5采用信息增益比来选取特征。ID3和C4.5算法都可以通过设置建树时选择合适的阀值threshold，可以控制树的深度。<br>
+从算法复杂度来讲：SBC要比NBC，ID3和C4.5高的多，所需时间也特别长，特别是对于特征多的情况。而NBC，ID3,C4.5则相对来说复杂度比较低，运行时间比较短。这里没有列出运行时间。但是很明显的感觉就是SBC的运行时间特别长。第一是因为选择特征的过程，第二是因为每次选择完特征都要进行留一法验证，这两个过程都很费时。</p>
+<h2 id="总结">4.总结</h2>
+<p>　　通过这次实验熟悉了NBC,SBC,ID3和C4.5算法，还看了一篇论文（Learning an optimal Naive Bayes Classifier）的算法，这篇论文的算法虽然没有实现，但是基本的思想以及一些公式计算已经搞懂了，因为时间原因没有进行代码实现。每一次作业还是收获挺多的，之前没有接触过机器学习的知识，在做的过程中也有向一些同学请教和讨论，但是代码都是自己独立写的，就是写之前的思路跟同学讨论过，还有就是感觉思路弄懂了，程序就能写出来，只是花费时间长短的问题。</p>
+<h2 id="参考">5.参考</h2>
+<ol type="1">
+<li>http://www.cs.ccsu.edu/~markov/ccsu_courses/mdl.pdf</li>
+<li>A Tutorial Introduction to the Minimum Description Length Principle</li>
+<li>Induction of selective Bayesian classifiers</li>
+<li>Semi-naive Bayesian classifier</li>
+<li>Learning an optimal Naive Bayes Classifier</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/bayes/" rel="tag"># bayes</a>
+            
+              <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/04/10/kNN/" rel="next" title="kNN">
+                  <i class="fa fa-chevron-left"></i> kNN
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/04/10/svm/" rel="prev" title="svm">
+                  svm <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#要求"><span class="nav-text">1. 要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关知识"><span class="nav-text">2. 相关知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#naive-bayesian-classifier"><span class="nav-text">2.1 Naive Bayesian Classifier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#selective-bayesian-classifier"><span class="nav-text">2.2 Selective Bayesian Classifier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#learning-an-optimal-naive-bayes-classifier"><span class="nav-text">2.3 Learning an optimal Naive Bayes Classifier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#决策树id3和c4.5"><span class="nav-text">2.4 决策树(ID3和C4.5)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验过程"><span class="nav-text">3.实验过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据集选择"><span class="nav-text">3.1 数据集选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验过程-1"><span class="nav-text">3.2 实验过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实验结果"><span class="nav-text">3.3 实验结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-text">4.总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">5.参考</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="yrb">
+  <p class="site-author-name" itemprop="name">yrb</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yrb</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+  
+
+  
+
+  
+
+</body>
+</html>

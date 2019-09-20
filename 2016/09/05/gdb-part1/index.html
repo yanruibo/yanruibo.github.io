@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="GNU&apos;s GDB Debugger 1. chapter 1 To use gdb, do the following: Compile your program with the -g flag e.g. 1gcc -Wall -Wstrict-prototypes -ansi -pedantic -g myprog.c -o myprog (Note that we&apos;re using a l">
+<meta name="keywords" content="cpp,gdb,linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gdb part1">
+<meta property="og:url" content="https://yanruibo.github.io/2016/09/05/gdb-part1/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="GNU&apos;s GDB Debugger 1. chapter 1 To use gdb, do the following: Compile your program with the -g flag e.g. 1gcc -Wall -Wstrict-prototypes -ansi -pedantic -g myprog.c -o myprog (Note that we&apos;re using a l">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2016-09-17T07:49:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="gdb part1">
+<meta name="twitter:description" content="GNU&apos;s GDB Debugger 1. chapter 1 To use gdb, do the following: Compile your program with the -g flag e.g. 1gcc -Wall -Wstrict-prototypes -ansi -pedantic -g myprog.c -o myprog (Note that we&apos;re using a l">
+  <link rel="canonical" href="https://yanruibo.github.io/2016/09/05/gdb-part1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>gdb part1 | Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Summary for Comprehensive Learning</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://yanruibo.github.io/2016/09/05/gdb-part1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yrb">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">gdb part1
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2016-09-05 16:18:21" itemprop="dateCreated datePublished" datetime="2016-09-05T16:18:21+08:00">2016-09-05</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2016-09-17 15:49:22" itemprop="dateModified" datetime="2016-09-17T15:49:22+08:00">2016-09-17</time>
+              </span>
+            
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="gnus-gdb-debugger">GNU's GDB Debugger</h1>
+<h2 id="chapter-1">1. chapter 1</h2>
+<p>To use gdb, do the following:<br>
+<strong>Compile your program with the -g flag e.g.</strong><br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall -Wstrict-prototypes -ansi -pedantic -g myprog.c -o myprog</span><br></pre></td></tr></table></figure></p>
+<p>(Note that we're using a lot of warning options as well, which are the "-Wall -Wstrict-prototypes -ansi -pedantic" options; these force the compiler to complain if your code isn't ANSI-compliant or if it has other suspicious features. It's a good habit to always use these options.) The "-g" option puts debugging information into the executable. Most importantly, it puts the text of the source code file into the executable so you can examine it as the program executes (we'll see how below).<br>
+<a id="more"></a></p>
+<p>Type gdb myprog (for the example above). This will start the interactive debugger. It's basically an interpreter-like environment in which you can run your program line-by-line and do useful debugging tasks as well.</p>
+<p>When in the debugger, you have a choice of lots of commands. Do "info" to get a list of commands. Here are some of the most important ones:<br>
+<strong> <code>run</code>: runs the program<br>
+<code>where</code>: tells you where you are in the program when you have stopped at some point. Also tells you the calling history of the program up to that point (i.e. which functions have been called to get you where you are).<br>
+<code>p &lt;variable&gt;</code>: prints the value of <variable><br>
+<code>break &lt;file&gt;:&lt;line&gt;</code>: causes the program to stop at a particular line in a particular source code file<br>
+<code>break &lt;function&gt;</code>: causes the program to stop when entering a particular function.<br>
+<code>n</code>: executes the next statement and then stops. This command will not enter a new function while you're inside a function. Instead, it goes to the next statement in the current function.<br>
+<code>s</code>: executes the next statement, possibly entering a new function, and then stops.<br>
+<code>l</code>: lists lines in a source code file.<br>
+<code>c</code>: continues executing the program.<br>
+<code>q</code>: exits (quits) gdb.<br>
+Several of these commands have longer names that you can use as well: print for p, next for n, step for s, list for l, cont for c, and quit for q.<br>
+</variable></strong></p>
+<p>You get GDB to pause execution by using breakpoints. We'll cover breakpoints later, but for now, all you need to know is that when you tell GDB break 5, the program will pause at line 5. You may ask: does the program execute line 5 (pause between 5 and 6) or does the program not execute line 5 (pause between 4 and 5)? The answer is that line 5 is not executed. Remember these principles:<br>
+<strong> 1.<code>break 5</code> means to pause at line 5.<br>
+2.This means GDB pauses between lines 4 and 5. Line 4 has executed. Line 5 has not.<br>
+</strong></p>
+<p>We can look at the stack by using GDB's <code>backtrace</code> command.<br>
+We can ask GDB to tell us which frame its context is in by giving the <code>frame</code> command without arguments.</p>
+<p>We can tell GDB to switch from frame 0 to <code>frame 1</code> using the frame command with the frame number as an argument. This gives us access to the variables in frame 1. As you can guess, after switching frames, we won't have access to variables stored in frame 0.</p>
+<h2 id="chapter-2">2. chapter 2</h2>
+<p>In the last chapter we learned about an executing process's memory layout which is divided into segments. One important segment is the call stack (or stack), which is a collection of stack frames (or frames). There is one frame for each function call, and the frame holds three important things:</p>
+<ol type="1">
+<li>The local variables for the function.</li>
+<li>The current address pointer within the function.</li>
+<li>The arguments passed to the function.</li>
+</ol>
+<p>When a function is called, a new frame is allocated and added to the stack. When the function returns, its frame is returned back to unused stack memory and execution resumes at the address pointed to by the previous function's current address pointer. We can ask GDB to tell us what the stack looks like with the <code>backtrace</code> command. We can also find out which frame GDB's context is in using the <code>frame</code> command. Lastly, we can change GDB's context to the n'th frame using the <code>frame n</code> command.</p>
+<p>Executables don't contain references to object (function and variable) names or source code line numbers. It would be painful to debug a program without these things, so to debug a program, we generate an augmented symbol table using gcc's <code>-g</code> option.</p>
+<p>Lastly, we briefly learned how to make GDB pause execution using the break command and execute one line of source code using the step command. We'll have much more to say about these commands shortly.</p>
+<h3 id="list">2.1 list</h3>
+<h4 id="basic-listing-of-source-code">2.1.1 Basic Listing of Source Code</h4>
+<p>By default, GDB always lists 10 lines of source code. <font color="purple">When you first issue <code>list</code>, GDB lists 10 lines of source code centred on <code>main()</code></font>. Subsequent use of <code>list</code> gives the next 10 lines of source code.</p>
+<p><code>list -</code> works like <code>list</code>, except in reverse. It lists the 10 lines previous to the last listed lines. If line 50 was the last listed line, <code>list -</code> should print lines 41 through 50.</p>
+<p>If you give <code>list</code> a line number, GDB lists 10 lines centered on that line number:</p>
+<p>Other listing operations you'll find useful:</p>
+<ul>
+<li>starting with some line number <strong>(gdb) list 5,</strong></li>
+<li>ending with some line number <strong>(gdb) list ,28</strong></li>
+<li>between two numbers: <strong>(gdb) list 21,25</strong></li>
+<li>by function name: <strong>(gdb) list f</strong></li>
+<li>functions in the other file: <strong>(gdb) list CentralDiff</strong></li>
+<li>by filename and line number: <strong>(gdb) list derivative.c:12</strong></li>
+<li>filename and function name: <strong>(gdb) list derivative.c:ForwardDiff</strong></li>
+</ul>
+<h4 id="listing-by-memory-address-advanced">2.1.2 Listing By Memory Address (advanced)</h4>
+<p>Every function begins at some memory address. You can find this address with the print function (which we'll cover later). For instance, we'll find the address for main(): <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) print *main</span><br><span class="line">$1 = &#123;int (int, char **)&#125; 0x8048647 &lt;main&gt;</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure></p>
+<p>So main() lives at 0x8048647. We can use list using memory locations as well; the syntax is very C'ish: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(gdb) list *0x8048647</span><br><span class="line">0x8048647 is in main (driver.c:17).</span><br><span class="line">12     &#125;</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16     int main(int argc, char *argv[])</span><br><span class="line">17     &#123;</span><br><span class="line">18          double x, dx, ans;</span><br><span class="line">19          double Forw, ForwDelta, Cent, CentDelta, Extr, ExtrDelta;</span><br><span class="line">20</span><br><span class="line">21          if (argc != 1) &#123;</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure></p>
+<h4 id="setting-the-list-size">2.1.3 Setting The List Size</h4>
+<p>GDB lists code in increments of 10 lines. Maybe that's too much. Or maybe that's too little. You can tell GDB to change the listing size with the set command and listsize variable: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(gdb) set listsize 5</span><br><span class="line">(gdb) list main</span><br><span class="line">15</span><br><span class="line">16     int main(int argc, char *argv[])</span><br><span class="line">17     &#123;</span><br><span class="line">18          double x, dx, ans;</span><br><span class="line">19          double Forw, ForwDelta, Cent, CentDelta, Extr, ExtrDelta;</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure></p>
+<h3 id="the-.gdbinit-file">2.2 The .gdbinit File</h3>
+<p>Upon startup, GDB reads and executes an initialization file named <code>.gdbinit</code>. It can contain any command (eg <code>set</code> and <code>break</code>), and more. For example, "set listsize" and "set prompt" can go into <code>.gdbinit</code>. There are two locations where GDB will look for this file (in order): - In your home directory - In the current directory</p>
+<p>You can put commands to be executed for all your programming projects in <code>$HOME/.gdbinit</code> and project-specific commands in <code>$PWD/.gdbinit</code>.</p>
+<p>You can comment your <code>.gdbinit</code> files with bash's "#". And blank lines, of course, are ignored.</p>
+<h3 id="run-command">2.3 run command</h3>
+<p>Running A Program In GDB</p>
+<p>Let's properly introduce the run command. <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; argc; ++i)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Argument %d: %s\n"</span>, i, argv[i]);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>The run command with no arguments runs your program without command line arguments. If you want to give the program arguments, use the run command with whatever arguments you want to pass to the program: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ gdb arguments</span><br><span class="line">(gdb) run 1 2</span><br><span class="line">Starting program: try2 1 2</span><br><span class="line">Argument 0: arguments</span><br><span class="line">Argument 1: 1</span><br><span class="line">Argument 2: 2</span><br><span class="line"></span><br><span class="line">Program exited normally.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure></p>
+<p>Nothing could be simpler. From now on, whenever you use run again, it will automatically use the arguments you just used (ie, "1 2"): <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(gdb) run</span><br><span class="line">Starting program: arguments 1 2</span><br><span class="line">Argument 0: arguments</span><br><span class="line">Argument 1: 1</span><br><span class="line">Argument 2: 2</span><br><span class="line"></span><br><span class="line">Program exited normally.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure></p>
+<p>until you tell it to use different arguments: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(gdb) run testing one two three</span><br><span class="line">Starting program: arguments testing one two three</span><br><span class="line">Argument 0: testing</span><br><span class="line">Argument 1: one</span><br><span class="line">Argument 2: two</span><br><span class="line">Argument 3: three</span><br><span class="line"></span><br><span class="line">Program exited normally.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure></p>
+<p>Suppose you want to run the program without command line arguments? How do you get run to stop automatically passing them? There is a "set args" command. If you give this command without any parameters, run will no longer automatically pass command line arguments to the program: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(gdb) set args</span><br><span class="line">(gdb) run</span><br><span class="line">Starting program: arguments </span><br><span class="line">Argument 0: try2</span><br><span class="line"></span><br><span class="line">Program exited normally.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure></p>
+<p>If you do give an argument to set args, those arguments will be passed to the program the next time you use run, just as if you had given those arguments directly to run.</p>
+<p>There is one more use for set args. If you intend on passing the same arguments to a program every time you begin a debugging session, you can put it in your .gdbinit file. This will make run pass your arguments to the program without you having to specify them every time you start GDB on a given project.</p>
+<h3 id="restarting-a-program-in-gdb">2.4 Restarting A Program In GDB</h3>
+<p>Sometimes you'll want to re-start a program in GDB from the beginning. One reason why you'd want to do this is if you find that the breakpoint you set is too late in the program execution and you want to set the breakpoint earlier. There are three ways of restarting a program in GDB.</p>
+<ol type="1">
+<li>Quit GDB and start over.</li>
+<li>Use the <code>kill</code> command to stop the program, and <code>run</code> to restart it.</li>
+<li>Use the GDB command <code>run</code>. GDB will tell you the program is already running and ask if you want to re-run the program from the beginning.</li>
+</ol>
+<p>The last two options will leave everything intact: breakpoints, watchpoints, commands, convenience variables, etc. However, if you don't mind starting fresh with nothing saved from your previous debugging session, quitting GDB is certainly an option.</p>
+<p>You might be wondering why there's a <code>kill</code> command when you can either <code>quit</code> GDB with quit or re-run the program with <code>run</code>. The <code>kill</code> command seems kind of superfluous. There are some reasons why you'd use this command, and you can read about them here. Thanks to Suresh Babu for pointing out that the <code>kill</code> command may also be useful when you are remote debugging or if a process is debugged via the <code>attach</code> command. That said, I've never used <code>kill</code> myself.</p>
+<h2 id="reference">3. reference:</h2>
+<p><font color="purple"> <a href="http://www.dirac.org/linux/gdb/02a-Memory_Layout_And_The_Stack.php" target="_blank" rel="noopener">http://www.dirac.org/linux/gdb/02a-Memory_Layout_And_The_Stack.php</a><br>
+非常好的gdb学习资料 </font></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/cpp/" rel="tag"># cpp</a>
+            
+              <a href="/tags/gdb/" rel="tag"># gdb</a>
+            
+              <a href="/tags/linux/" rel="tag"># linux</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/09/05/bubble-sort/" rel="next" title="bubble sort">
+                  <i class="fa fa-chevron-left"></i> bubble sort
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/09/06/automatic-variables-local-variables-static-variables-in-c/" rel="prev" title="automatic variables, local variables, static variables in c">
+                  automatic variables, local variables, static variables in c <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#gnus-gdb-debugger"><span class="nav-text">GNU&#39;s GDB Debugger</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#chapter-1"><span class="nav-text">1. chapter 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chapter-2"><span class="nav-text">2. chapter 2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#list"><span class="nav-text">2.1 list</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#basic-listing-of-source-code"><span class="nav-text">2.1.1 Basic Listing of Source Code</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#listing-by-memory-address-advanced"><span class="nav-text">2.1.2 Listing By Memory Address (advanced)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setting-the-list-size"><span class="nav-text">2.1.3 Setting The List Size</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#the-.gdbinit-file"><span class="nav-text">2.2 The .gdbinit File</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run-command"><span class="nav-text">2.3 run command</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#restarting-a-program-in-gdb"><span class="nav-text">2.4 Restarting A Program In GDB</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-text">3. reference:</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/images/avatar.jpg"
+      alt="yrb">
+  <p class="site-author-name" itemprop="name">yrb</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yrb</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+    
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+  
+
+  
+
+  
+
+</body>
+</html>
