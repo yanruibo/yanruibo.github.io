@@ -58,11 +58,11 @@
       
         <tags>
             
+            <tag> circular linked list </tag>
+            
             <tag> stack </tag>
             
             <tag> queue </tag>
-            
-            <tag> circular linked list </tag>
             
         </tags>
       
@@ -954,9 +954,9 @@
             
             <tag> bigdata system </tag>
             
-            <tag> hadoop </tag>
-            
             <tag> spark </tag>
+            
+            <tag> hadoop </tag>
             
         </tags>
       
