@@ -58,11 +58,11 @@
       
         <tags>
             
-            <tag> circular linked list </tag>
-            
             <tag> stack </tag>
             
             <tag> queue </tag>
+            
+            <tag> circular linked list </tag>
             
         </tags>
       
@@ -846,9 +846,9 @@
       
         <tags>
             
-            <tag> machine learning </tag>
-            
             <tag> hmm </tag>
+            
+            <tag> machine learning </tag>
             
         </tags>
       
@@ -954,9 +954,9 @@
             
             <tag> bigdata system </tag>
             
-            <tag> spark </tag>
-            
             <tag> hadoop </tag>
+            
+            <tag> spark </tag>
             
         </tags>
       
@@ -1008,9 +1008,9 @@
       
         <tags>
             
-            <tag> machine learning </tag>
-            
             <tag> hmm </tag>
+            
+            <tag> machine learning </tag>
             
         </tags>
       
@@ -1062,9 +1062,9 @@
       
         <tags>
             
-            <tag> bayes </tag>
-            
             <tag> machine learning </tag>
+            
+            <tag> bayes </tag>
             
         </tags>
       
@@ -1091,9 +1091,9 @@
             
             <tag> machine learning </tag>
             
-            <tag> kNN </tag>
-            
             <tag> python </tag>
+            
+            <tag> kNN </tag>
             
             <tag> kd-tree </tag>
             
