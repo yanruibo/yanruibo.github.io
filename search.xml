@@ -954,9 +954,9 @@
             
             <tag> bigdata system </tag>
             
-            <tag> hadoop </tag>
-            
             <tag> spark </tag>
+            
+            <tag> hadoop </tag>
             
         </tags>
       
@@ -1091,9 +1091,9 @@
             
             <tag> machine learning </tag>
             
-            <tag> kNN </tag>
-            
             <tag> python </tag>
+            
+            <tag> kNN </tag>
             
             <tag> kd-tree </tag>
             
