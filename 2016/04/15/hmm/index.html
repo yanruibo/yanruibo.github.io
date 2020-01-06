@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>hmm | Blog</title>
@@ -11,18 +11,18 @@
     
 
     
-    <meta name="description" content="code:https://github.com/yanruibo/machine-learning/tree/master/hmm 1. 要求 隐马尔科夫模型应用 实验要求:  学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。 既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。 实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是">
-<meta name="keywords" content="machine learning,hmm">
+    <meta name="description" content="code:https:&#x2F;&#x2F;github.com&#x2F;yanruibo&#x2F;machine-learning&#x2F;tree&#x2F;master&#x2F;hmm 1. 要求 隐马尔科夫模型应用 实验要求:  学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。 既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。 实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hmm">
 <meta property="og:url" content="https://yanruibo.github.io/2016/04/15/hmm/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="code:https://github.com/yanruibo/machine-learning/tree/master/hmm 1. 要求 隐马尔科夫模型应用 实验要求:  学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。 既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。 实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2016-12-19T14:00:45.000Z">
+<meta property="og:description" content="code:https:&#x2F;&#x2F;github.com&#x2F;yanruibo&#x2F;machine-learning&#x2F;tree&#x2F;master&#x2F;hmm 1. 要求 隐马尔科夫模型应用 实验要求:  学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。 既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。 实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是">
+<meta property="article:published_time" content="2016-04-15T13:12:53.000Z">
+<meta property="article:modified_time" content="2016-12-19T14:00:45.000Z">
+<meta property="article:author" content="yrb">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="hmm">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hmm">
-<meta name="twitter:description" content="code:https://github.com/yanruibo/machine-learning/tree/master/hmm 1. 要求 隐马尔科夫模型应用 实验要求:  学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。 既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。 实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是">
 
     
     <link rel="alternative" href="/atom.xml" title="Blog" type="application/atom+xml">
@@ -34,9 +34,13 @@
     <link rel="apple-touch-icon" href="/img/jacman.jpg">
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
@@ -104,7 +108,7 @@
 		
 		<p><a href="https://github.com/yanruibo/machine-learning/tree/master/hmm" target="_blank" rel="noopener">code:https://github.com/yanruibo/machine-learning/tree/master/hmm</a></p>
 <h2 id="要求">1. 要求</h2>
-<p>隐马尔科夫模型应用<br>
+<p>隐马尔科夫模型应用<br />
 实验要求:</p>
 <ol type="1">
 <li>学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。</li>
@@ -115,7 +119,7 @@
 <h2 id="相关知识">2. 相关知识</h2>
 <p>　　这里把重点放在介绍论文的人脸识别方法上。</p>
 <h3 id="hmm">2.1 HMM</h3>
-<p>　　隐马尔科夫模型是关于时序的概率模型，描述由一个隐藏的马尔科夫链随机生成不可观测的状态的随机序列，再由各个状态生成一个观测而产生观测随机序列的过程，隐藏的马尔科夫链随机生成的状态的序列称为状态序列，每个状态生成一个观测，而由此产生的观测的随机序列，称为观测序列，序列的每一个位置又可以看做是一个时刻。<br>
+<p>　　隐马尔科夫模型是关于时序的概率模型，描述由一个隐藏的马尔科夫链随机生成不可观测的状态的随机序列，再由各个状态生成一个观测而产生观测随机序列的过程，隐藏的马尔科夫链随机生成的状态的序列称为状态序列，每个状态生成一个观测，而由此产生的观测的随机序列，称为观测序列，序列的每一个位置又可以看做是一个时刻。<br />
 　　隐马尔科夫模型由初始概率分布，状态转移概率分布以及观测概率分布确定。其余内容还有概率的前向和后向计算算法，学习算法中的Baum-Welch算法和预测算法的维特比算法，这些知识在统计学习方法第10章中有详细的介绍。</p>
 <h3 id="论文human-face-identification">2.2 论文Human Face Identification</h3>
 <p>Parameterisation of a Stochastic Model for Human Face Identification</p>
@@ -132,11 +136,11 @@ T=\phi(\frac{Y-L}{L-M})+1
 <p>具体代码如下所示： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">correct_count = <span class="number">0</span></span><br><span class="line">   <span class="keyword">for</span> j <span class="keyword">in</span> range(len(test_imagepathes)):</span><br><span class="line">       test_one = generate_observations_lbp(test_imagepathes[j], L, M)</span><br><span class="line">       max_score = -sys.maxint</span><br><span class="line">       max_label = <span class="literal">None</span></span><br><span class="line">       <span class="keyword">for</span> k <span class="keyword">in</span> range(len(models)):</span><br><span class="line">           current_score = models[k].score(test_one)</span><br><span class="line">           <span class="keyword">if</span>(current_score &gt; max_score):</span><br><span class="line">               max_score = current_score</span><br><span class="line">               max_label = model_labels[k]</span><br><span class="line">       <span class="keyword">if</span>(max_label == test_labels[j]):</span><br><span class="line">           <span class="keyword">print</span> <span class="string">"correct: real"</span>,test_labels[j],<span class="string">"predict"</span>,max_label</span><br><span class="line">           correct_count += <span class="number">1</span></span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           <span class="keyword">print</span> <span class="string">"error: real"</span>,test_labels[j],<span class="string">"predict"</span>,max_label</span><br><span class="line">   accracy = float(correct_count)/len(test_imagepathes)</span><br><span class="line">   <span class="keyword">print</span> <span class="string">"Accracy is"</span>,accracy</span><br><span class="line">   <span class="keyword">return</span> accracy</span><br></pre></td></tr></table></figure></p>
 <h2 id="实验过程">3. 实验过程</h2>
 <p>　　<font color="#FF7F50">注意跑本实验代码需要scikit-learn0.14版本。因为最新版本的scikit-learn库把hmm模块移除了。</font> 这里总结一下GaussianHMM的用法： 1.scikit-learn中的GaussianHMM(我的是scikit-learn 0.14.1版本) from sklearn.hmm import GaussianHMM model = GaussianHMM(n_components, covariance_type="diag", n_iter=1000).fit([X1, X2, X3, X4, X5]) 2.助教给的hmmlearn包 from hmmlearn.hmm import GaussianHMM model = GaussianHMM(n_components, covariance_type="diag", n_iter=1000).fit(X) 上面的X是五个图片矩阵按行堆叠形成的大矩阵。</p>
-<p>代码目录结构说明：<br>
-att_faces论文中所用到的数据库<br>
-face-identification.py，选用每个类别的前五张作为训练集后五张作为测试集进行人脸识别代码。<br>
-face-indentification-random.py。从每个类别的10张图片中任意选择五张作为训练集，剩余的作为测试集进行人脸识别。<br>
-log的txt文件是调参过程中的输出的参数的准确率的信息。<br>
+<p>代码目录结构说明：<br />
+att_faces论文中所用到的数据库<br />
+face-identification.py，选用每个类别的前五张作为训练集后五张作为测试集进行人脸识别代码。<br />
+face-indentification-random.py。从每个类别的10张图片中任意选择五张作为训练集，剩余的作为测试集进行人脸识别。<br />
+log的txt文件是调参过程中的输出的参数的准确率的信息。<br />
 mainLBP.py是提取图像特征的LBP算法。</p>
 <p>固定L和M,观察states的影响：</p>
 <table>
@@ -311,7 +315,7 @@ mainLBP.py是提取图像特征的LBP算法。</p>
 <h2 id="总结">4. 总结</h2>
 <p>　　通过这次实验对用HMM进行人脸识别有了比较深入的了解，有一个缺点就是所有的函数都是通过调用库函数实现的，由于自己实现HMM已经非常复杂，而且用于人脸识别的每个观测点又是一个向量，因此要实现GaussianHMM，而且对于同一个人的人脸要用五张进行训练得到一个GaussianHMM模型，还要实现接收multi observation sequences的GaussianHMM，需要有一个迭代更新GaussianHMM参数的过程，这个方法在下面参考文献的硕士论文中有提到，因为时间紧张而且还要写老师的论文，就没有自己编写算法。就采用了调库的方式。</p>
 <h2 id="参考文献">5. 参考文献：</h2>
-<p>1.Parameterisation of a Stochastic Model for Human Face Identification<br>
+<p>1.Parameterisation of a Stochastic Model for Human Face Identification<br />
 2.基于隐马尔科夫模型的人脸识别　李增劲 哈哈哈哈</p>
   
 	</div>
@@ -483,6 +487,10 @@ mainLBP.py是提取图像特征的LBP算法。</p>
 			
 		
 			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
@@ -504,10 +512,6 @@ mainLBP.py是提取图像特征的LBP算法。</p>
 		
 			
 				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bubble-sort/" title="bubble sort">bubble sort<sup>1</sup></a></li>
 			
 		
 		</ul>

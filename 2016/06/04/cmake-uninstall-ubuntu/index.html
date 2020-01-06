@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>cmake uninstall ubuntu | Blog</title>
@@ -12,17 +12,17 @@
 
     
     <meta name="description" content="CMake uninstall CMake is a great tool when building cross-plattform software. It offers also install target so you can build and install software this way:">
-<meta name="keywords" content="cmake-uninstall,ubuntu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="cmake uninstall ubuntu">
 <meta property="og:url" content="https://yanruibo.github.io/2016/06/04/cmake-uninstall-ubuntu/index.html">
 <meta property="og:site_name" content="Blog">
 <meta property="og:description" content="CMake uninstall CMake is a great tool when building cross-plattform software. It offers also install target so you can build and install software this way:">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2016-09-17T07:45:15.000Z">
+<meta property="article:published_time" content="2016-06-04T07:32:42.000Z">
+<meta property="article:modified_time" content="2016-09-17T07:45:15.000Z">
+<meta property="article:author" content="yrb">
+<meta property="article:tag" content="cmake-uninstall">
+<meta property="article:tag" content="ubuntu">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cmake uninstall ubuntu">
-<meta name="twitter:description" content="CMake uninstall CMake is a great tool when building cross-plattform software. It offers also install target so you can build and install software this way:">
 
     
     <link rel="alternative" href="/atom.xml" title="Blog" type="application/atom+xml">
@@ -34,9 +34,13 @@
     <link rel="apple-touch-icon" href="/img/jacman.jpg">
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
@@ -105,7 +109,7 @@
 		<h2 id="cmake-uninstall">CMake uninstall</h2>
 <p>CMake is a great tool when building cross-plattform software. It offers also install target so you can build and install software this way:</p>
 <a id="more"></a>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># create of-of-source build directory</span><br><span class="line">mkdir bld</span><br><span class="line">cd bld</span><br><span class="line"># run CMake to generate a Makefile</span><br><span class="line">ccmake ..</span><br><span class="line"># Build in 4 cores</span><br><span class="line">make -j 4</span><br><span class="line"># Install into CMAKE_INSTALL_PREFIX (default is /usr/local)</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># create of-of-source build directory</span><br><span class="line">mkdir bld</span><br><span class="line">cd bld</span><br><span class="line"># run CMake to generate a Makefile</span><br><span class="line">ccmake ..</span><br><span class="line"># Build in 4 cores</span><br><span class="line">make -j 4</span><br><span class="line"># Install into CMAKE_INSTALL_PREFIX (default is &#x2F;usr&#x2F;local)</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
 <p>However there is no uninstall target. But this is no problem as long as you have a shell and the xargs command (part of GNU findutils).</p>
 <p>CMake creates a file called install_manifest.txt when executing the install target. This contains a list of all installed files. So for removing them you simply need to execute this command:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># uninstall</span><br><span class="line">xargs rm &lt; install_manifest.txt</span><br></pre></td></tr></table></figure>
@@ -280,6 +284,10 @@
 			
 		
 			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
@@ -301,10 +309,6 @@
 		
 			
 				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bubble-sort/" title="bubble sort">bubble sort<sup>1</sup></a></li>
 			
 		
 		</ul>

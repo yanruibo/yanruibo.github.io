@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>dsa notes | Blog</title>
@@ -12,21 +12,20 @@
 
     
     <meta name="description" content="dsa notes 1. note 1 渐进复杂度 针对足够大的输入规模n,算法执行时间T(n)的渐进增长速度，应如何度量和评价呢?">
-<meta name="keywords" content="dsa">
 <meta property="og:type" content="article">
 <meta property="og:title" content="dsa notes">
 <meta property="og:url" content="https://yanruibo.github.io/2016/09/19/dsa-notes/index.html">
 <meta property="og:site_name" content="Blog">
 <meta property="og:description" content="dsa notes 1. note 1 渐进复杂度 针对足够大的输入规模n,算法执行时间T(n)的渐进增长速度，应如何度量和评价呢?">
-<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://yanruibo.github.io/2016/09/19/dsa-notes/o-theta-omega.png">
 <meta property="og:image" content="https://yanruibo.github.io/2016/09/19/dsa-notes/sum-recursion.png">
 <meta property="og:image" content="https://yanruibo.github.io/2016/09/19/dsa-notes/binary-recursion.png">
 <meta property="og:image" content="https://yanruibo.github.io/2016/09/19/dsa-notes/binary-recursion-trace.png">
-<meta property="og:updated_time" content="2016-09-22T12:21:22.000Z">
+<meta property="article:published_time" content="2016-09-19T03:32:04.000Z">
+<meta property="article:modified_time" content="2016-09-22T12:21:22.000Z">
+<meta property="article:author" content="yrb">
+<meta property="article:tag" content="dsa">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="dsa notes">
-<meta name="twitter:description" content="dsa notes 1. note 1 渐进复杂度 针对足够大的输入规模n,算法执行时间T(n)的渐进增长速度，应如何度量和评价呢?">
 <meta name="twitter:image" content="https://yanruibo.github.io/2016/09/19/dsa-notes/o-theta-omega.png">
 
     
@@ -39,9 +38,13 @@
     <link rel="apple-touch-icon" href="/img/jacman.jpg">
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
@@ -116,22 +119,21 @@
 <li>对于任一常数c&gt;0，有<span class="math inline">\(O(f(n)) = O(c \cdot f(n))\)</span></li>
 <li>对于任意常数a&gt;b&gt;0，有<span class="math inline">\(O(n^a+n^b)=O(n^a)\)</span></li>
 </ol>
-<p>前一性质意味着，在大O记号的意义下，函数各项正的常系数可以忽略并等同于1。后一性质则意味着，多项式中的低次项均可忽略，只保留最高次项。可以看出，大O记号的这些性质的确体现了对函数总体增长趋势的关注和刻画。<br>
+<p>前一性质意味着，在大O记号的意义下，函数各项正的常系数可以忽略并等同于1。后一性质则意味着，多项式中的低次项均可忽略，只保留最高次项。可以看出，大O记号的这些性质的确体现了对函数总体增长趋势的关注和刻画。<br />
 以大O记号形式表示的时间复杂度，实质上是对算法执行时间的一种保守估计——对于规模为n的任意输入，算法的运行时间都不会超过O(f(n))。比如，起泡排序算法复杂度T(n)=O(n<sup>2)，意味着，该算法处理任何序列所需的时间绝不会超过O(n</sup>2)。的确需要这么长计算时间的输入实例，称作是最坏实例或最坏情况。</p>
 <h4 id="大omega记号bit-omega-notation">大<span class="math inline">\(\Omega\)</span>记号(bit-<span class="math inline">\(\Omega\)</span> notation)</h4>
 <p>如果存在正的常数c和函数g(n)，使得对于任何n &gt;&gt; 2都有 <span class="math display">\[T(n) \geq c \cdot g(n)\]</span> 就可以认为，在n足够大之后，g(n)给出了T(n)的一个渐进下界。此时，我们记之为： <span class="math display">\[T(n)= \Omega(g(n))\]</span> 这里的<span class="math inline">\(\Omega\)</span>称作大<span class="math inline">\(\Omega\)</span>记号。与大O记号恰好相反，大<span class="math inline">\(\Omega\)</span>记号是对算法执行效率的乐观估计——对于规模为n的任意输入，算法的运行时间都不低于<span class="math inline">\(\Omega (g(n))\)</span>。比如，即便在最好的情况下，起泡排序也至少需要<span class="math inline">\(T(n)=\Omega(n)\)</span>的计算时间。</p>
 <h4 id="大theta记号">大<span class="math inline">\(\Theta\)</span>记号</h4>
-<p>借助大O记号，大<span class="math inline">\(\Omega\)</span>记号，可以对算法的时间复杂度做出定量的界定，亦即，从渐进的趋势看，T(n)介于<span class="math inline">\(\Omega(g(n))\)</span>与<span class="math inline">\(O(f(n))\)</span>之间。若恰巧出现<span class="math inline">\(g(n)=f(n)\)</span>的情况，则可以用另一符号表示。<br>
-如果存在正的常数<span class="math inline">\(c_1\)</span>&lt;<span class="math inline">\(c_2\)</span>和函数<span class="math inline">\(h(n)\)</span>，使得对于任何n&gt;&gt;2都有， <span class="math display">\[c_1 \cdot h(n) \leq T(n) \leq c_2 \cdot h(n)\]</span> 就可以认为在n足够大之后，h(n)给出了T(n)的一个确界。此时，我们记之为： <span class="math display">\[T(n) = \Theta(h(n))\]</span> 这里的<span class="math inline">\(\Theta\)</span>称作大<span class="math inline">\(\Theta\)</span>记号，(big-theta notation)，它是对算法复杂度的准确估计——对于规模为n的任何输入，算法的运行时间T(n)都与<span class="math inline">\(\Theta(h(n))\)</span>同阶。<br>
-形象表示如下图所示： <img src="o-theta-omega.png"></p>
+<p>借助大O记号，大<span class="math inline">\(\Omega\)</span>记号，可以对算法的时间复杂度做出定量的界定，亦即，从渐进的趋势看，T(n)介于<span class="math inline">\(\Omega(g(n))\)</span>与<span class="math inline">\(O(f(n))\)</span>之间。若恰巧出现<span class="math inline">\(g(n)=f(n)\)</span>的情况，则可以用另一符号表示。<br />
+如果存在正的常数<span class="math inline">\(c_1\)</span>&lt;<span class="math inline">\(c_2\)</span>和函数<span class="math inline">\(h(n)\)</span>，使得对于任何n&gt;&gt;2都有， <span class="math display">\[c_1 \cdot h(n) \leq T(n) \leq c_2 \cdot h(n)\]</span> 就可以认为在n足够大之后，h(n)给出了T(n)的一个确界。此时，我们记之为： <span class="math display">\[T(n) = \Theta(h(n))\]</span> 这里的<span class="math inline">\(\Theta\)</span>称作大<span class="math inline">\(\Theta\)</span>记号，(big-theta notation)，它是对算法复杂度的准确估计——对于规模为n的任何输入，算法的运行时间T(n)都与<span class="math inline">\(\Theta(h(n))\)</span>同阶。<br />
+形象表示如下图所示： <img src="o-theta-omega.png" /></p>
 <h2 id="note-2-统计二进制展开中-数位1的个数">2. note 2 : 统计二进制展开中　数位1的个数</h2>
 <p>考查如下问题：对于任意非负整数，统计其二进制展开中数位为1的总数。 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">countOnes</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> ones = <span class="number">0</span>;<span class="comment">//计数器复位</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">0</span>&lt;n)</span><br><span class="line">    &#123;</span><br><span class="line">    	ones+= (n&amp;<span class="number">1</span>);<span class="comment">//检查最低位，若为1，则计数。</span></span><br><span class="line">        n &gt;&gt;=<span class="number">1</span>;<span class="comment">//右移一位</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="note-3-数组求和">3. note 3 : 数组求和</h2>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(<span class="number">1</span>&gt;n)<span class="comment">//平凡情况，递归基</span></span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//直接，非递归式计算</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span><span class="comment">//一般情况</span></span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">return</span> sum(A,n<span class="number">-1</span>)+A[n<span class="number">-1</span>];<span class="comment">//递归，前n-1项之和，再累计第n-1项。</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>递归分析： <img src="sum-recursion.png"></p>
+<p>递归分析： <img src="sum-recursion.png" /></p>
 <h2 id="note-4-二分递归">4. note 4 : 二分递归</h2>
-<p>数组求和： <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(lo==hi)</span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">return</span> A[lo];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">int</span> mi = (lo+hi)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> sum(A,lo,mi)+sum(A,mi+<span class="number">1</span>,hi)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><img src="binary-recursion.png" alt="binary recursion"> <img src="binary-recursion-trace.png" alt="binary recursion trace"></p>
+<p>数组求和： <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(lo==hi)</span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">return</span> A[lo];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">int</span> mi = (lo+hi)&gt;&gt;<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> sum(A,lo,mi)+sum(A,mi+<span class="number">1</span>,hi)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> <img src="binary-recursion.png" alt="binary recursion" /> <img src="binary-recursion-trace.png" alt="binary recursion trace" /></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -302,6 +304,10 @@
 			
 		
 			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
@@ -323,10 +329,6 @@
 		
 			
 				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bubble-sort/" title="bubble sort">bubble sort<sup>1</sup></a></li>
 			
 		
 		</ul>

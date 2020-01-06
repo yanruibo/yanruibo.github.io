@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>array | Blog</title>
@@ -11,18 +11,17 @@
     
 
     
-    <meta name="description" content="Array Problems 1. 求局部最大值  给定一个无重复元素的数组A[0...N-1]，求找到一个该数组的局部最大值。规定：在数 组边界外的值无穷小。即：A[0] &amp;gt; A[-1]，A[N-1] &amp;gt; A[N]。 显然，遍历一遍可以找到全局最大值，而全局最大值显然是局部最大值。 可否有更快的办法？">
-<meta name="keywords" content="algorithms">
+    <meta name="description" content="Array Problems 1. 求局部最大值  给定一个无重复元素的数组A[0...N-1]，求找到一个该数组的局部最大值。规定：在数 组边界外的值无穷小。即：A[0] &gt; A[-1]，A[N-1] &gt; A[N]。 显然，遍历一遍可以找到全局最大值，而全局最大值显然是局部最大值。 可否有更快的办法？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="array">
 <meta property="og:url" content="https://yanruibo.github.io/2016/11/11/array2/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="Array Problems 1. 求局部最大值  给定一个无重复元素的数组A[0...N-1]，求找到一个该数组的局部最大值。规定：在数 组边界外的值无穷小。即：A[0] &amp;gt; A[-1]，A[N-1] &amp;gt; A[N]。 显然，遍历一遍可以找到全局最大值，而全局最大值显然是局部最大值。 可否有更快的办法？">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-04-21T02:06:41.000Z">
+<meta property="og:description" content="Array Problems 1. 求局部最大值  给定一个无重复元素的数组A[0...N-1]，求找到一个该数组的局部最大值。规定：在数 组边界外的值无穷小。即：A[0] &gt; A[-1]，A[N-1] &gt; A[N]。 显然，遍历一遍可以找到全局最大值，而全局最大值显然是局部最大值。 可否有更快的办法？">
+<meta property="article:published_time" content="2016-11-11T13:48:55.000Z">
+<meta property="article:modified_time" content="2017-04-21T02:06:41.000Z">
+<meta property="article:author" content="yrb">
+<meta property="article:tag" content="algorithms">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="array">
-<meta name="twitter:description" content="Array Problems 1. 求局部最大值  给定一个无重复元素的数组A[0...N-1]，求找到一个该数组的局部最大值。规定：在数 组边界外的值无穷小。即：A[0] &amp;gt; A[-1]，A[N-1] &amp;gt; A[N]。 显然，遍历一遍可以找到全局最大值，而全局最大值显然是局部最大值。 可否有更快的办法？">
 
     
     <link rel="alternative" href="/atom.xml" title="Blog" type="application/atom+xml">
@@ -34,9 +33,13 @@
     <link rel="apple-touch-icon" href="/img/jacman.jpg">
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
@@ -233,7 +236,7 @@
 <li>例如，数组： 1, -2, 3, 10, -4, 7, 2, -5</li>
 <li>最大子数组：3, 10, -4, 7, 2</li>
 </ul>
-<p><strong>分析</strong><br>
+<p><strong>分析</strong><br />
 解法一：</p>
 <ul>
 <li>定义：前缀和sum[i] = a[0] + a[1] + ... + a[i]</li>
@@ -298,8 +301,8 @@
 <li>问：给定数组C={3,4,1,2,1,0}，如何恢复数组A？</li>
 <li>我们称A为原数组，C为Cantor数组。</li>
 </ul>
-<p>原数组 -&gt; Cantor数组<br>
-code:<br>
+<p>原数组 -&gt; Cantor数组<br />
+code:<br />
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cantorExpansion</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> *a, <span class="keyword">int</span> *b, <span class="keyword">int</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		b[i] = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; size; ++j)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (a[j] &lt; a[i])</span><br><span class="line">			&#123;</span><br><span class="line">				++b[i];</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a[] = &#123; <span class="number">4</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">3</span>,<span class="number">1</span>&#125;;</span><br><span class="line">	<span class="keyword">int</span> size = <span class="keyword">sizeof</span>(a) / <span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line">	<span class="keyword">int</span> *b = <span class="keyword">new</span> <span class="keyword">int</span>[size];</span><br><span class="line">	cantorExpansion(a, b, size);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; b[i] &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><strong>问题分析</strong></p>
 <p>example:</p>
@@ -547,6 +550,10 @@ code:<br>
 			
 		
 			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
@@ -568,10 +575,6 @@ code:<br>
 		
 			
 				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bubble-sort/" title="bubble sort">bubble sort<sup>1</sup></a></li>
 			
 		
 		</ul>

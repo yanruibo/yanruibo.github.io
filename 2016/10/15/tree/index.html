@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>tree | Blog</title>
@@ -12,13 +12,11 @@
 
     
     <meta name="description" content="Tree 1. Tree Terminology  Root: node without parent (A) Siblings(兄弟): nodes share the same parent Internal node(内部结点): node with at least one child (A, B, C, F) External node (leaf ): node without chi">
-<meta name="keywords" content="dsa,tree">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tree">
 <meta property="og:url" content="https://yanruibo.github.io/2016/10/15/tree/index.html">
 <meta property="og:site_name" content="Blog">
 <meta property="og:description" content="Tree 1. Tree Terminology  Root: node without parent (A) Siblings(兄弟): nodes share the same parent Internal node(内部结点): node with at least one child (A, B, C, F) External node (leaf ): node without chi">
-<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/tree-terminology.png">
 <meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/tree-terminology-2.png">
 <meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/problem-of-tree-1.png">
@@ -26,10 +24,12 @@
 <meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/evaluate-arithmetic-expressions.png">
 <meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/create-a-btree-through-preorder-sequence.png">
 <meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/path-length.png">
-<meta property="og:updated_time" content="2016-10-16T13:14:07.000Z">
+<meta property="article:published_time" content="2016-10-15T02:43:52.000Z">
+<meta property="article:modified_time" content="2016-10-16T13:14:07.000Z">
+<meta property="article:author" content="yrb">
+<meta property="article:tag" content="dsa">
+<meta property="article:tag" content="tree">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tree">
-<meta name="twitter:description" content="Tree 1. Tree Terminology  Root: node without parent (A) Siblings(兄弟): nodes share the same parent Internal node(内部结点): node with at least one child (A, B, C, F) External node (leaf ): node without chi">
 <meta name="twitter:image" content="https://yanruibo.github.io/2016/10/15/tree/tree-terminology.png">
 
     
@@ -42,9 +42,13 @@
     <link rel="apple-touch-icon" href="/img/jacman.jpg">
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
@@ -122,7 +126,7 @@
 </ul>
 <a id="more"></a>
 <figure>
-<img src="tree-terminology.png" alt><figcaption>Tree Terminology</figcaption>
+<img src="tree-terminology.png" alt="" /><figcaption>Tree Terminology</figcaption>
 </figure>
 <ul>
 <li>Depth of a node: number of ancestors</li>
@@ -132,30 +136,30 @@
 <li>Subtree: tree consisting of a node and its descendants</li>
 </ul>
 <figure>
-<img src="tree-terminology-2.png" alt><figcaption>Tree Terminology</figcaption>
+<img src="tree-terminology-2.png" alt="" /><figcaption>Tree Terminology</figcaption>
 </figure>
 <h2 id="a-problem-often-in-exam-of-data-structure">2. A problem often in exam of data structure</h2>
 <figure>
-<img src="problem-of-tree-1.png" alt><figcaption>Tree Problem</figcaption>
+<img src="problem-of-tree-1.png" alt="" /><figcaption>Tree Problem</figcaption>
 </figure>
 <p>solution:</p>
 <h2 id="print-arithmetic-expressions">3. Print Arithmetic Expressions</h2>
 <figure>
-<img src="print-arithmetic-expressions.png" alt><figcaption>Print Arithmetic Expression</figcaption>
+<img src="print-arithmetic-expressions.png" alt="" /><figcaption>Print Arithmetic Expression</figcaption>
 </figure>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">void</span> <span class="title">BinaryTree</span>&lt;Type&gt; :</span>: Outputexpress ( <span class="keyword">const</span> BinTreeNode &lt;Type&gt; *T )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (T)</span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">if</span>(T-&gt;leftChild != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"("</span>);</span><br><span class="line">			Outputexpress(T-&gt;leftChild);</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; T-&gt;data;</span><br><span class="line">	    <span class="keyword">if</span>(T-&gt;rightChild != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">			Outputexpress(T-&gt;rightChild);</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">")"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="求表达式的值">4. 求表达式的值</h2>
 <figure>
-<img src="evaluate-arithmetic-expressions.png" alt><figcaption>Evaluate Arithmetic Expressions</figcaption>
+<img src="evaluate-arithmetic-expressions.png" alt="" /><figcaption>Evaluate Arithmetic Expressions</figcaption>
 </figure>
 <h2 id="create-a-binary-tree-through-preorder-sequence">5. Create a Binary Tree through Preorder Sequence</h2>
 <figure>
-<img src="create-a-btree-through-preorder-sequence.png" alt><figcaption>Create a Binary Tree through Preorder Sequence</figcaption>
+<img src="create-a-btree-through-preorder-sequence.png" alt="" /><figcaption>Create a Binary Tree through Preorder Sequence</figcaption>
 </figure>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">void</span> <span class="title">BinaryTree</span>&lt;Type&gt;:</span>: CreateBinaryTree()</span><br><span class="line">&#123;</span><br><span class="line">   CreateBinaryTree(root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">void</span> <span class="title">BinaryTree</span>&lt;Type&gt;:</span>: CreateBinaryTree(BiTreeNode *T)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(&amp;ch);                    <span class="comment">//get a char</span></span><br><span class="line">    <span class="keyword">if</span> (ch==‘*’)</span><br><span class="line">    &#123;</span><br><span class="line">    	T=<span class="literal">NULL</span>;       <span class="comment">//if it denotes an empty tree</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">if</span>(!(T= <span class="keyword">new</span> BiTreeNode&lt;Type&gt;()))</span><br><span class="line">        &#123;</span><br><span class="line">        	<span class="built_in">exit</span>(<span class="number">1</span>);              <span class="comment">//allocated failed</span></span><br><span class="line">        &#125;</span><br><span class="line">        T-&gt;data = ch;</span><br><span class="line">        CreateBiTree(T-&gt;leftChild); <span class="comment">//creates its left subtree</span></span><br><span class="line">        CreateBiTree(T-&gt;rightChild); <span class="comment">//creates its right subtree</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="pathlength">6. PathLength</h2>
 <figure>
-<img src="path-length.png" alt><figcaption>Path Length</figcaption>
+<img src="path-length.png" alt="" /><figcaption>Path Length</figcaption>
 </figure>
 <h2 id="numberoftree-and-numberofleaf">7. NumberofTree and NumberofLeaf</h2>
 <p>Algorithm NumberofTree(v, n) Input: a tree node v and an initial value n Output: the number of nodes with root v Usage: leafn = NumberofTree(root, 0);</p>
@@ -330,6 +334,10 @@
 			
 		
 			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
@@ -351,10 +359,6 @@
 		
 			
 				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bubble-sort/" title="bubble sort">bubble sort<sup>1</sup></a></li>
 			
 		
 		</ul>

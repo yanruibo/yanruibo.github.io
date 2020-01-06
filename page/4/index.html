@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>Blog</title>
@@ -15,9 +15,8 @@
 <meta property="og:title" content="Blog">
 <meta property="og:url" content="https://yanruibo.github.io/page/4/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:locale" content="zh-Hans">
+<meta property="article:author" content="yrb">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Blog">
 
     
     <link rel="alternative" href="/atom.xml" title="Blog" type="application/atom+xml">
@@ -29,9 +28,13 @@
     <link rel="apple-touch-icon" href="/img/jacman.jpg">
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
@@ -94,9 +97,9 @@
         
         <h1 id="第一章-绪论">第一章　绪论</h1>
 <ol type="1">
-<li>本书用模型泛指从数据中学得的结果。有文献用模型指全局性结果，例如一棵决策树，而用模式指局部性结果。<br>
+<li>本书用模型泛指从数据中学得的结果。有文献用模型指全局性结果，例如一棵决策树，而用模式指局部性结果。<br />
 </li>
-<li>记录的集合称为dataset，每条记录是关于一个事件或者对象的描述，称为一个示例instance或样本，sample。反应事件或对象的某方面的表现或性质的事项，例如色泽，根蒂，敲声，称为属性，attribute，或特征feature。属性上的取值，称为属性值，属性张成的空间称为属性空间，样本空间或者输入空间。把每一个属性作为一个坐标轴，每个对象都可以在空间中找到自己的坐标位置，空间中的每个点对应一个坐标向量，因此我们也把一个示例称为一个特征向量feature vector。示例结果的信息称为标记，label,拥有了标记信息的示例称为样例，sample。所有标记的集合称为标记空间或输出空间。<br>
+<li>记录的集合称为dataset，每条记录是关于一个事件或者对象的描述，称为一个示例instance或样本，sample。反应事件或对象的某方面的表现或性质的事项，例如色泽，根蒂，敲声，称为属性，attribute，或特征feature。属性上的取值，称为属性值，属性张成的空间称为属性空间，样本空间或者输入空间。把每一个属性作为一个坐标轴，每个对象都可以在空间中找到自己的坐标位置，空间中的每个点对应一个坐标向量，因此我们也把一个示例称为一个特征向量feature vector。示例结果的信息称为标记，label,拥有了标记信息的示例称为样例，sample。所有标记的集合称为标记空间或输出空间。<br />
 </li>
 <li>现实问题中，我们常面临很大的假设空间，但学习过程是基于有限样本训练集进行的，因此，有可能有多个假设与训练集一致，即存在着一个与训练集一致的假设集合，我们称之为版本空间。</li>
 </ol>
@@ -166,12 +169,10 @@
         <h1 id="numpy常用的操作">numpy常用的操作</h1>
 <p>本文适合那些使用过numpy一段时间的人阅读，记录一些numpy中的常用知识点和使用技巧。</p>
 <h2 id="note-1">1. note 1</h2>
-<p>当某个轴的元素为-1时，将根据数组元素的个数自动计算此轴的长度。<br>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape</span><br><span class="line">(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape = <span class="number">3</span>,<span class="number">-1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">4</span>, <span class="number">5</span>]])</span><br></pre></td></tr></table></figure></p>
-<h2 id="note-2">2. note 2</h2>
-<p>使用bool数组筛选数据。当使用布尔数组b作为下标存取数组x中的元素时，将收集数组x中所有在数组b中对应下标为True的元素。使用布尔数组作为下标获得的数组不和原始数组共享数据空间，注意这种方式只对应于布尔数组，不能使用布尔列表。<br>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = np.arange(<span class="number">5</span>,<span class="number">0</span>,<span class="number">-1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">array([<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[np.array([<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>])]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 布尔数组中下标为0，2的元素为True，因此获取x中下标为0,2的元素</span></span><br><span class="line">array([<span class="number">5</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[[<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 如果是布尔列表，则把True当作1, False当作0，按照整数序列方式获取x中的元素</span></span><br><span class="line">array([<span class="number">4</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[np.array([<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">True</span>])]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 布尔数组的长度不够时，不够的部分都当作False</span></span><br><span class="line">array([<span class="number">5</span>, <span class="number">3</span>, <span class="number">2</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[np.array([<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">True</span>])] = <span class="number">-1</span>, <span class="number">-2</span>, <span class="number">-3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 布尔数组下标也可以用来修改元素</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">array([<span class="number">-1</span>,  <span class="number">4</span>, <span class="number">-2</span>, <span class="number">-3</span>,  <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = np.random.rand(<span class="number">10</span>) <span class="comment"># 产生一个长度为10，元素值为0-1的随机数的数组</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">array([ <span class="number">0.72223939</span>,  <span class="number">0.921226</span>  ,  <span class="number">0.7770805</span> ,  <span class="number">0.2055047</span> ,  <span class="number">0.17567449</span>,</span><br><span class="line">        <span class="number">0.95799412</span>,  <span class="number">0.12015178</span>,  <span class="number">0.7627083</span> ,  <span class="number">0.43260184</span>,  <span class="number">0.91379859</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x&gt;<span class="number">0.5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 数组x中的每个元素和0.5进行大小比较，得到一个布尔数组，True表示x中对应的值大于0.5</span></span><br><span class="line">array([ <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>,  <span class="literal">True</span>, <span class="literal">False</span>,  <span class="literal">True</span>, <span class="literal">False</span>,  <span class="literal">True</span>], dtype=bool)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[x&gt;<span class="number">0.5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 使用x&gt;0.5返回的布尔数组收集x中的元素，因此得到的结果是x中所有大于0.5的元素的数组</span></span><br><span class="line">array([ <span class="number">0.72223939</span>,  <span class="number">0.921226</span>  ,  <span class="number">0.7770805</span> ,  <span class="number">0.95799412</span>,  <span class="number">0.7627083</span> ,</span><br><span class="line">        <span class="number">0.91379859</span>])</span><br></pre></td></tr></table></figure></p>
-<h2 id="note-3">3. note 3</h2>
+<p>当某个轴的元素为-1时，将根据数组元素的个数自动计算此轴的长度。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape</span><br><span class="line">(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape = <span class="number">3</span>,<span class="number">-1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">4</span>, <span class="number">5</span>]])</span><br></pre></td></tr></table></figure> ## 2. note 2</p>
+<p>使用bool数组筛选数据。当使用布尔数组b作为下标存取数组x中的元素时，将收集数组x中所有在数组b中对应下标为True的元素。使用布尔数组作为下标获得的数组不和原始数组共享数据空间，注意这种方式只对应于布尔数组，不能使用布尔列表。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = np.arange(<span class="number">5</span>,<span class="number">0</span>,<span class="number">-1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">array([<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[np.array([<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>])]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 布尔数组中下标为0，2的元素为True，因此获取x中下标为0,2的元素</span></span><br><span class="line">array([<span class="number">5</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[[<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 如果是布尔列表，则把True当作1, False当作0，按照整数序列方式获取x中的元素</span></span><br><span class="line">array([<span class="number">4</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[np.array([<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">True</span>])]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 布尔数组的长度不够时，不够的部分都当作False</span></span><br><span class="line">array([<span class="number">5</span>, <span class="number">3</span>, <span class="number">2</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[np.array([<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">True</span>])] = <span class="number">-1</span>, <span class="number">-2</span>, <span class="number">-3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 布尔数组下标也可以用来修改元素</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">array([<span class="number">-1</span>,  <span class="number">4</span>, <span class="number">-2</span>, <span class="number">-3</span>,  <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = np.random.rand(<span class="number">10</span>) <span class="comment"># 产生一个长度为10，元素值为0-1的随机数的数组</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">array([ <span class="number">0.72223939</span>,  <span class="number">0.921226</span>  ,  <span class="number">0.7770805</span> ,  <span class="number">0.2055047</span> ,  <span class="number">0.17567449</span>,</span><br><span class="line">        <span class="number">0.95799412</span>,  <span class="number">0.12015178</span>,  <span class="number">0.7627083</span> ,  <span class="number">0.43260184</span>,  <span class="number">0.91379859</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x&gt;<span class="number">0.5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 数组x中的每个元素和0.5进行大小比较，得到一个布尔数组，True表示x中对应的值大于0.5</span></span><br><span class="line">array([ <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>,  <span class="literal">True</span>, <span class="literal">False</span>,  <span class="literal">True</span>, <span class="literal">False</span>,  <span class="literal">True</span>], dtype=bool)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[x&gt;<span class="number">0.5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 使用x&gt;0.5返回的布尔数组收集x中的元素，因此得到的结果是x中所有大于0.5的元素的数组</span></span><br><span class="line">array([ <span class="number">0.72223939</span>,  <span class="number">0.921226</span>  ,  <span class="number">0.7770805</span> ,  <span class="number">0.95799412</span>,  <span class="number">0.7627083</span> ,</span><br><span class="line">        <span class="number">0.91379859</span>])</span><br></pre></td></tr></table></figure> ## 3. note 3</p>
 <p>上面的功能也可以将一个矩阵中的大于等于1的数变成1,等于0的数还是0. <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>]])</span><br><span class="line">bool = a&gt;=<span class="number">1</span></span><br><span class="line"><span class="keyword">print</span> bool.astype(np.int)</span><br></pre></td></tr></table></figure></p>
 <h2 id="参考资料">参考资料：</h2>
 <p>http://old.sebug.net/paper/books/scipydoc/numpy_intro.html</p>
@@ -359,26 +360,26 @@
         <h1 id="data-mining-material">Data Mining Material</h1>
 <h2 id="introduction">1.Introduction</h2>
 <ol type="1">
-<li><p>Q: why data mining?<br>
-Answer: Data Rich, Information Poor<br>
+<li><p>Q: why data mining?<br />
+Answer: Data Rich, Information Poor<br />
 </p></li>
-<li><p>Q: what is big data?<br>
-Answer: volumn, velocity, varity, value.大量快速产生，多样化的数据需要花费很大的精力去处理以产生有用的信息和决策；数据量达到传统数据库所不能存储，处理和分析。<br>
+<li><p>Q: what is big data?<br />
+Answer: volumn, velocity, varity, value.大量快速产生，多样化的数据需要花费很大的精力去处理以产生有用的信息和决策；数据量达到传统数据库所不能存储，处理和分析。<br />
 </p></li>
-<li><p>Q:what's data?<br>
-Answer: 数据是一条一条的信息，是一个属性的变量的定量或定性的表示。数据经常被视为从中可以抽取出知识和信息的最低级别的抽象。<br>
+<li><p>Q:what's data?<br />
+Answer: 数据是一条一条的信息，是一个属性的变量的定量或定性的表示。数据经常被视为从中可以抽取出知识和信息的最低级别的抽象。<br />
 </p></li>
-<li><p>Data Types: continuous binray, discrete, string, symbolic.<br>
-Storage: Physical, logical. Major issues: transformation, Errors and Corruption.<br>
+<li><p>Data Types: continuous binray, discrete, string, symbolic.<br />
+Storage: Physical, logical. Major issues: transformation, Errors and Corruption.<br />
 </p></li>
-<li><p>Relational Database<br>
+<li><p>Relational Database<br />
 </p></li>
 <li><p>第一范式：https://www.1keydata.com/database-normalization/first-normal-form-1nf.php; A database is in first normal form if it satisfies the following conditions: Contains only atomic values; There are no repeating groups. An atomic value is a value that cannot be divided. For example, in the table shown below, the values in the [Color] column in the first row can be divided into "red" and "green", hence [TABLE_PRODUCT] is not in 1NF. A repeating group means that a table contains two or more columns that are closely related. For example, a table that records data on a book and its author(s) with the following columns: [Book ID], [Author 1], [Author 2], [Author 3] is not in 1NF because [Author 1], [Author 2], and [Author 3] are all repeating the same attribute.</p></li>
 <li><p>第二范式：https://www.1keydata.com/database-normalization/second-normal-form-2nf.php; A database is in second normal form if it satisfies the following conditions: It is in first normal form; All non-key attributes are fully functional dependent on the primary key. 第二范式在第一范式的基础上消除了非主属性对于码的部分函数依赖。如何判断一个表是否符合2NF?看数据表中是否存在非主属性对于码的部分函数依赖。3NF在2NF的基础之上，消除了非主属性对于码的传递函数依赖。BCNF在3NF的基础上消除了主属性对于码的部分与传递函数依赖。</p></li>
 <li><p>Data Warehouse Answer: 可操作的数据库，可以充分保持数据一致性和保证业务交易的速度，在数据仓库数据可以被很快的检索到。在数据仓库中存储公司的电子数据，以更好的利用这些数据仓库中的数据进行决策报告和分析。Subject-oriented, Time-variant, Non-volatile(挥发), Integrated.　数据仓库是一个业务智能工具。数据仓库是提取／转换,加载数据到一个仓库的工具。管理和检索元数据的工具。</p></li>
 <li><p>ETL: Extraction,Transformation,Loading.</p></li>
 <li><p>OLAP: Online Analytical Processing.　联机分析处理。</p></li>
-<li><p>To build a data warehouse?<br>
+<li><p>To build a data warehouse?<br />
 </p></li>
 <li><p>数据挖掘是从大量的不完整和有噪声的数据中提取有意义的和隐藏的模式的自动化过程（并不是完全自动化的过程）。</p></li>
 </ol>
@@ -448,7 +449,7 @@ Storage: Physical, logical. Major issues: transformation, Errors and Corruption.
         
         <p class="article-more-link">
           
-            <a href="/2016/05/11/Ubuntu配置spark环境和spark-wordcount以及spark常用的actions和transactions/#more">Read More</a>
+            <a href="/2016/05/11/Ubuntu%E9%85%8D%E7%BD%AEspark%E7%8E%AF%E5%A2%83%E5%92%8Cspark-wordcount%E4%BB%A5%E5%8F%8Aspark%E5%B8%B8%E7%94%A8%E7%9A%84actions%E5%92%8Ctransactions/#more">Read More</a>
           
        </p>
     </div>
@@ -506,14 +507,14 @@ Storage: Physical, logical. Major issues: transformation, Errors and Corruption.
         
         <h2 id="实验前准备工作">1. 实验前准备工作</h2>
 <h3 id="安装hadoop伪分布式系统">1.1 安装hadoop伪分布式系统</h3>
-<p>1.下载hadoop源文件，hadoop-2.7.1.tar.gz，将其解压在一个文件夹中，这里我解压到了我的电脑的主目录下面，配置参数，主要修改一下几个文件：<br>
-core-site.xml<br>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        	<span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        	<span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://localhost:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"> 	<span class="tag">&lt;<span class="name">property</span>&gt;</span>  </span><br><span class="line">        	<span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">        	<span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/yanruibo/hadoop-2.7.1/tmp<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  </span><br><span class="line">    	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>1.下载hadoop源文件，hadoop-2.7.1.tar.gz，将其解压在一个文件夹中，这里我解压到了我的电脑的主目录下面，配置参数，主要修改一下几个文件：<br />
+core-site.xml<br />
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        	<span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        	<span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://localhost:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"> 	<span class="tag">&lt;<span class="name">property</span>&gt;</span>  </span><br><span class="line">        	<span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">        	<span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/yanruibo/hadoop-2.7.1/tmp<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  </span><br><span class="line">    	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
         
         
         <p class="article-more-link">
           
-            <a href="/2016/05/11/Ubuntu14-04上hadoop2-7-1环境配置以及第一个MapReduce程序-WordCount/#more">Read More</a>
+            <a href="/2016/05/11/Ubuntu14-04%E4%B8%8Ahadoop2-7-1%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E7%AC%AC%E4%B8%80%E4%B8%AAMapReduce%E7%A8%8B%E5%BA%8F-WordCount/#more">Read More</a>
           
        </p>
     </div>
@@ -528,7 +529,7 @@ core-site.xml<br>
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/bigdata-system/">bigdata system</a><a href="/tags/spark/">spark</a><a href="/tags/hadoop/">hadoop</a>
+  <span></span> <a href="/tags/bigdata-system/">bigdata system</a><a href="/tags/hadoop/">hadoop</a><a href="/tags/spark/">spark</a>
   </div>
 
 </div>
@@ -696,7 +697,7 @@ core-site.xml<br>
         
         <p><a href="https://github.com/yanruibo/machine-learning/tree/master/hmm" target="_blank" rel="noopener">code:https://github.com/yanruibo/machine-learning/tree/master/hmm</a></p>
 <h2 id="要求">1. 要求</h2>
-<p>隐马尔科夫模型应用<br>
+<p>隐马尔科夫模型应用<br />
 实验要求:</p>
 <ol type="1">
 <li>学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。</li>
@@ -815,7 +816,7 @@ core-site.xml<br>
 
 
   <nav id="page-nav" class="clearfix">
-    <a class="extend prev" rel="prev" href="/page/3/"><span></span>Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next<span></span></a>
+    <a class="extend prev" rel="prev" href="/page/3/">&lt;span&gt;&lt;&#x2F;span&gt;Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next&lt;span&gt;&lt;&#x2F;span&gt;</a>
   </nav>
 
 </div>
@@ -923,6 +924,10 @@ core-site.xml<br>
 			
 		
 			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
@@ -944,10 +949,6 @@ core-site.xml<br>
 		
 			
 				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bubble-sort/" title="bubble sort">bubble sort<sup>1</sup></a></li>
 			
 		
 		</ul>

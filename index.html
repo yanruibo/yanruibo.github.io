@@ -1,7 +1,7 @@
 
  <!DOCTYPE HTML>
 <html lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
     <title>Blog</title>
@@ -15,9 +15,8 @@
 <meta property="og:title" content="Blog">
 <meta property="og:url" content="https://yanruibo.github.io/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:locale" content="zh-Hans">
+<meta property="article:author" content="yrb">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Blog">
 
     
     <link rel="alternative" href="/atom.xml" title="Blog" type="application/atom+xml">
@@ -29,9 +28,13 @@
     <link rel="apple-touch-icon" href="/img/jacman.jpg">
     <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
     
-    <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-</html>
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
       
@@ -92,7 +95,7 @@
 </header>
     <div class="article-content">
         
-        <h4 id="c语言中将float直接赋值给double再进行一些乘乘除除有问题要加static_castfloat">1. c++语言中，将float直接赋值给double，再进行一些乘乘除除有问题。要加static_cast<doulbe>(float);</doulbe></h4>
+        <h4 id="c语言中将float直接赋值给double再进行一些乘乘除除有问题要加static_castfloat">1. c++语言中，将float直接赋值给double，再进行一些乘乘除除有问题。要加static_cast<doulbe>(float);</h4>
 
         
         
@@ -269,13 +272,13 @@
         
         <h1 id="排列与组合">排列与组合</h1>
 <h2 id="全排列">1. 全排列</h2>
-<p>求一个全排列函数：<br>
+<p>求一个全排列函数：<br />
 如p([a,b,c])输出：[abc],[acb],[bac],[bca],[cba],[cab].</p>
         
         
         <p class="article-more-link">
           
-            <a href="/2016/11/24/排列与组合/#more">Read More</a>
+            <a href="/2016/11/24/%E6%8E%92%E5%88%97%E4%B8%8E%E7%BB%84%E5%90%88/#more">Read More</a>
           
        </p>
     </div>
@@ -532,8 +535,8 @@
 <p><strong>题目描述</strong></p>
 <p>给定一个只包含正整数的非空数组，判断该数组能否分成两个和相等的子数组。</p>
 <p><strong>样例输入</strong></p>
-<p>输入[1,5,11,5] 返回 true . 可以分为[1,5,5]和[11]<br>
-输入[1,2,3,5] 返回false. 无法分为相等的两个子数组<br>
+<p>输入[1,5,11,5] 返回 true . 可以分为[1,5,5]和[11]<br />
+输入[1,2,3,5] 返回false. 无法分为相等的两个子数组<br />
         
         
         <p class="article-more-link">
@@ -644,7 +647,7 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/11/19/dynamic-programming-part-1/" title="dynamic programming part1" itemprop="url">dynamic programming part1</a>
+      <a href="/2016/11/19/dynamic-programming-part-2/" title="dynamic programming part2" itemprop="url">dynamic programming part2</a>
   </h1>
   <p class="article-author">By
        
@@ -658,14 +661,17 @@
     <div class="article-content">
         
         <h1 id="dynamic-programming">Dynamic Programming</h1>
-<p>递归，暴力搜索，写出暴力搜索之后可以找出冗余。<br>
-本质：递归<br>
-原问题（N）-&gt;子问题（N-1）-&gt;原问题（N）<br>
+<p>动态规划的本质是递归，一切动态规划问题一定能写成递归的形式。递归的本质是原问题能拆解成子问题，子问题再推导出原问题。<br />
+最优子结构：用递归式处理掉后效性，使子问题不具有后效性。<br />
+重叠子问题：用空间换取时间，将中间结果记录下来，去除冗余。<br />
+问题共性： 套路：最大，最小，最优，最长，计数。<br />
+离散问题：用动态规划来解决，容易设计状态。<br />
+最优子结构：子问题的解能推导出原问题的解。N-1可以推导出N。<br />
         
         
         <p class="article-more-link">
           
-            <a href="/2016/11/19/dynamic-programming-part-1/#more">Read More</a>
+            <a href="/2016/11/19/dynamic-programming-part-2/#more">Read More</a>
           
        </p>
     </div>
@@ -704,7 +710,7 @@
 
 
   <nav id="page-nav" class="clearfix">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next<span></span></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next&lt;span&gt;&lt;&#x2F;span&gt;</a>
   </nav>
 
 </div>
@@ -812,6 +818,10 @@
 			
 		
 			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
@@ -833,10 +843,6 @@
 		
 			
 				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bubble-sort/" title="bubble sort">bubble sort<sup>1</sup></a></li>
 			
 		
 		</ul>
