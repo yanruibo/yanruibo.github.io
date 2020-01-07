@@ -647,7 +647,7 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/11/19/dynamic-programming-part-2/" title="dynamic programming part2" itemprop="url">dynamic programming part2</a>
+      <a href="/2016/11/19/dynamic-programming-part-1/" title="dynamic programming part1" itemprop="url">dynamic programming part1</a>
   </h1>
   <p class="article-author">By
        
@@ -661,17 +661,14 @@
     <div class="article-content">
         
         <h1 id="dynamic-programming">Dynamic Programming</h1>
-<p>动态规划的本质是递归，一切动态规划问题一定能写成递归的形式。递归的本质是原问题能拆解成子问题，子问题再推导出原问题。<br />
-最优子结构：用递归式处理掉后效性，使子问题不具有后效性。<br />
-重叠子问题：用空间换取时间，将中间结果记录下来，去除冗余。<br />
-问题共性： 套路：最大，最小，最优，最长，计数。<br />
-离散问题：用动态规划来解决，容易设计状态。<br />
-最优子结构：子问题的解能推导出原问题的解。N-1可以推导出N。<br />
+<p>递归，暴力搜索，写出暴力搜索之后可以找出冗余。<br />
+本质：递归<br />
+原问题（N）-&gt;子问题（N-1）-&gt;原问题（N）<br />
         
         
         <p class="article-more-link">
           
-            <a href="/2016/11/19/dynamic-programming-part-2/#more">Read More</a>
+            <a href="/2016/11/19/dynamic-programming-part-1/#more">Read More</a>
           
        </p>
     </div>
@@ -710,7 +707,7 @@
 
 
   <nav id="page-nav" class="clearfix">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next&lt;span&gt;&lt;&#x2F;span&gt;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next</a>
   </nav>
 
 </div>
@@ -822,11 +819,11 @@
 			
 		
 			
-				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
+				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
+				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
 			
@@ -842,7 +839,7 @@
 			
 		
 			
-				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
+				<li><a href="/tags/bubble-sort/" title="bubble sort">bubble sort<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -852,18 +849,6 @@
   <div class="linkslist">
   <p class="asidetitle">Links</p>
     <ul>
-        
-          <li>
-            
-            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
-            
-          </li>
-        
-          <li>
-            
-            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
-            
-          </li>
         
     </ul>
 </div>
@@ -893,8 +878,8 @@
 	
 	
 	<section class="info">
-		<p> Hello ,I&#39;m Larry Page in Google. <br/>
-			This is my blog,believe it or not.</p>
+		<p> Keep Learning. <br/>
+			Summary for fun.</p>
 	</section>
 	 
 	<div class="social-font" class="clearfix">
@@ -1036,6 +1021,35 @@ var _hmt = _hmt || [];
 
 <!-- MathJax Begin -->
 <!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 <!-- MathJax End -->
