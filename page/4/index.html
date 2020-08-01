@@ -170,16 +170,12 @@
 <p>本文适合那些使用过numpy一段时间的人阅读，记录一些numpy中的常用知识点和使用技巧。</p>
 <h2 id="note-1">1. note 1</h2>
 <p>当某个轴的元素为-1时，将根据数组元素的个数自动计算此轴的长度。<br />
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape</span><br><span class="line">(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape = <span class="number">3</span>,<span class="number">-1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">4</span>, <span class="number">5</span>]])</span><br></pre></td></tr></table></figure> ## 2. note 2</p>
-<p>使用bool数组筛选数据。当使用布尔数组b作为下标存取数组x中的元素时，将收集数组x中所有在数组b中对应下标为True的元素。使用布尔数组作为下标获得的数组不和原始数组共享数据空间，注意这种方式只对应于布尔数组，不能使用布尔列表。<br />
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = np.arange(<span class="number">5</span>,<span class="number">0</span>,<span class="number">-1</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">array([<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[np.array([<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>])]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 布尔数组中下标为0，2的元素为True，因此获取x中下标为0,2的元素</span></span><br><span class="line">array([<span class="number">5</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[[<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 如果是布尔列表，则把True当作1, False当作0，按照整数序列方式获取x中的元素</span></span><br><span class="line">array([<span class="number">4</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[np.array([<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">True</span>])]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 布尔数组的长度不够时，不够的部分都当作False</span></span><br><span class="line">array([<span class="number">5</span>, <span class="number">3</span>, <span class="number">2</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[np.array([<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">True</span>])] = <span class="number">-1</span>, <span class="number">-2</span>, <span class="number">-3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 布尔数组下标也可以用来修改元素</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">array([<span class="number">-1</span>,  <span class="number">4</span>, <span class="number">-2</span>, <span class="number">-3</span>,  <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = np.random.rand(<span class="number">10</span>) <span class="comment"># 产生一个长度为10，元素值为0-1的随机数的数组</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">array([ <span class="number">0.72223939</span>,  <span class="number">0.921226</span>  ,  <span class="number">0.7770805</span> ,  <span class="number">0.2055047</span> ,  <span class="number">0.17567449</span>,</span><br><span class="line">        <span class="number">0.95799412</span>,  <span class="number">0.12015178</span>,  <span class="number">0.7627083</span> ,  <span class="number">0.43260184</span>,  <span class="number">0.91379859</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x&gt;<span class="number">0.5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 数组x中的每个元素和0.5进行大小比较，得到一个布尔数组，True表示x中对应的值大于0.5</span></span><br><span class="line">array([ <span class="literal">True</span>,  <span class="literal">True</span>,  <span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>,  <span class="literal">True</span>, <span class="literal">False</span>,  <span class="literal">True</span>, <span class="literal">False</span>,  <span class="literal">True</span>], dtype=bool)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x[x&gt;<span class="number">0.5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="comment"># 使用x&gt;0.5返回的布尔数组收集x中的元素，因此得到的结果是x中所有大于0.5的元素的数组</span></span><br><span class="line">array([ <span class="number">0.72223939</span>,  <span class="number">0.921226</span>  ,  <span class="number">0.7770805</span> ,  <span class="number">0.95799412</span>,  <span class="number">0.7627083</span> ,</span><br><span class="line">        <span class="number">0.91379859</span>])</span><br></pre></td></tr></table></figure> ## 3. note 3</p>
-<p>上面的功能也可以将一个矩阵中的大于等于1的数变成1,等于0的数还是0. <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>]])</span><br><span class="line">bool = a&gt;=<span class="number">1</span></span><br><span class="line"><span class="keyword">print</span> bool.astype(np.int)</span><br></pre></td></tr></table></figure></p>
-<h2 id="参考资料">参考资料：</h2>
-<p>http://old.sebug.net/paper/books/scipydoc/numpy_intro.html</p>
-
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape</span><br><span class="line">(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape = <span class="number">3</span>,<span class="number">-1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">4</span>, <span class="number">5</span>]])</span><br></pre></td></tr></table></figure></p>
         
         
         <p class="article-more-link">
+          
+            <a href="/2016/06/27/numpy%E7%BB%8F%E5%85%B8%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C/#more">Read More</a>
           
        </p>
     </div>
@@ -254,7 +250,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/hmm/">hmm</a><a href="/tags/machine-learning/">machine learning</a>
+  <span></span> <a href="/tags/machine-learning/">machine learning</a><a href="/tags/hmm/">hmm</a>
   </div>
 
 </div>
@@ -317,91 +313,6 @@
   <div class="article-tags">
   
   <span></span> <a href="/tags/cmake-uninstall/">cmake-uninstall</a><a href="/tags/ubuntu/">ubuntu</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/06/01/data-mining-basic-knowlege/" title="data mining basic knowlege" itemprop="url">data mining basic knowlege</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2016-06-01T02:44:55.000Z" itemprop="datePublished"> Published 2016-06-01</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="data-mining-material">Data Mining Material</h1>
-<h2 id="introduction">1.Introduction</h2>
-<ol type="1">
-<li><p>Q: why data mining?<br />
-Answer: Data Rich, Information Poor<br />
-</p></li>
-<li><p>Q: what is big data?<br />
-Answer: volumn, velocity, varity, value.大量快速产生，多样化的数据需要花费很大的精力去处理以产生有用的信息和决策；数据量达到传统数据库所不能存储，处理和分析。<br />
-</p></li>
-<li><p>Q:what's data?<br />
-Answer: 数据是一条一条的信息，是一个属性的变量的定量或定性的表示。数据经常被视为从中可以抽取出知识和信息的最低级别的抽象。<br />
-</p></li>
-<li><p>Data Types: continuous binray, discrete, string, symbolic.<br />
-Storage: Physical, logical. Major issues: transformation, Errors and Corruption.<br />
-</p></li>
-<li><p>Relational Database<br />
-</p></li>
-<li><p>第一范式：https://www.1keydata.com/database-normalization/first-normal-form-1nf.php; A database is in first normal form if it satisfies the following conditions: Contains only atomic values; There are no repeating groups. An atomic value is a value that cannot be divided. For example, in the table shown below, the values in the [Color] column in the first row can be divided into "red" and "green", hence [TABLE_PRODUCT] is not in 1NF. A repeating group means that a table contains two or more columns that are closely related. For example, a table that records data on a book and its author(s) with the following columns: [Book ID], [Author 1], [Author 2], [Author 3] is not in 1NF because [Author 1], [Author 2], and [Author 3] are all repeating the same attribute.</p></li>
-<li><p>第二范式：https://www.1keydata.com/database-normalization/second-normal-form-2nf.php; A database is in second normal form if it satisfies the following conditions: It is in first normal form; All non-key attributes are fully functional dependent on the primary key. 第二范式在第一范式的基础上消除了非主属性对于码的部分函数依赖。如何判断一个表是否符合2NF?看数据表中是否存在非主属性对于码的部分函数依赖。3NF在2NF的基础之上，消除了非主属性对于码的传递函数依赖。BCNF在3NF的基础上消除了主属性对于码的部分与传递函数依赖。</p></li>
-<li><p>Data Warehouse Answer: 可操作的数据库，可以充分保持数据一致性和保证业务交易的速度，在数据仓库数据可以被很快的检索到。在数据仓库中存储公司的电子数据，以更好的利用这些数据仓库中的数据进行决策报告和分析。Subject-oriented, Time-variant, Non-volatile(挥发), Integrated.　数据仓库是一个业务智能工具。数据仓库是提取／转换,加载数据到一个仓库的工具。管理和检索元数据的工具。</p></li>
-<li><p>ETL: Extraction,Transformation,Loading.</p></li>
-<li><p>OLAP: Online Analytical Processing.　联机分析处理。</p></li>
-<li><p>To build a data warehouse?<br />
-</p></li>
-<li><p>数据挖掘是从大量的不完整和有噪声的数据中提取有意义的和隐藏的模式的自动化过程（并不是完全自动化的过程）。</p></li>
-</ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/data-mining/">data mining</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/data-mining/">data mining</a>
   </div>
 
 </div>
@@ -529,7 +440,7 @@ core-site.xml<br />
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/bigdata-system/">bigdata system</a><a href="/tags/spark/">spark</a><a href="/tags/hadoop/">hadoop</a>
+  <span></span> <a href="/tags/bigdata-system/">bigdata system</a><a href="/tags/hadoop/">hadoop</a><a href="/tags/spark/">spark</a>
   </div>
 
 </div>
@@ -723,7 +634,7 @@ core-site.xml<br />
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/hmm/">hmm</a><a href="/tags/machine-learning/">machine learning</a>
+  <span></span> <a href="/tags/machine-learning/">machine learning</a><a href="/tags/hmm/">hmm</a>
   </div>
 
 </div>
@@ -814,6 +725,77 @@ core-site.xml<br />
 
 
 
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/04/10/bayes/" title="bayes" itemprop="url">bayes</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
+		
+  <p class="article-time">
+    <time datetime="2016-04-10T02:32:50.000Z" itemprop="datePublished"> Published 2016-04-10</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><a href="https://github.com/yanruibo/machine-learning/tree/master/bayes" target="_blank" rel="noopener">code : https://github.com/yanruibo/machine-learning/tree/master/bayes</a></p>
+<h2 id="要求">1. 要求</h2>
+<p>实验目的：<br />
+　　掌握朴素贝叶斯分类方法的原理和应用<br />
+　　学会RSS数据集获取和数据解析<br />
+　　学习朴素贝叶斯分类方法的改进方法并应用<br />
+实验要求<br />
+　　1、课堂讲授的改进方法和paper方法，任一种即可<br />
+　　2、算法对比时以测试误差即错误率衡量，随机选取测试集时：或者a）固定随机选择的测试样本进行测试比较；或者b）随机选择多次，算出平均误差进行对比。<br />
+　　3、数据集：采用RSS方法获取数据集完成文本分类及书中所描述的应用；进行决策树算法对比时，建议采用前一章节数据集测试比对。<br />
+　　4、RSS下载英文高频词文件时，参考RSS应用教程。<br />
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/04/10/bayes/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/machine-learning/">machine learning</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bayes/">bayes</a><a href="/tags/machine-learning/">machine learning</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/page/3/">Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">Next</a>
@@ -843,7 +825,7 @@ core-site.xml<br />
 		  
 		
 		  
-			<li><a href="/categories/data-mining/" title="data mining">data mining<sup>3</sup></a></li>
+			<li><a href="/categories/data-mining/" title="data mining">data mining<sup>2</sup></a></li>
 		  
 		
 		  
@@ -928,15 +910,11 @@ core-site.xml<br />
 			
 		
 			
-				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/variable-types/" title="variable types">variable types<sup>1</sup></a></li>
+				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
 			
 		
 			
@@ -948,7 +926,11 @@ core-site.xml<br />
 			
 		
 			
-				<li><a href="/tags/bubble-sort/" title="bubble sort">bubble sort<sup>1</sup></a></li>
+				<li><a href="/tags/variable-types/" title="variable types">variable types<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
 			
 		
 		</ul>
