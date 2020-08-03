@@ -4,19 +4,27 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
   
-    <title>Blog</title>
+    <title>Wide and Deep Learning for Recommender Systems | Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="yrb">
     
 
     
-    <meta property="og:type" content="website">
-<meta property="og:title" content="Blog">
-<meta property="og:url" content="https://yanruibo.github.io/index.html">
+    <meta name="description" content="1. 简介 wide部分通过对特征根进行cross-product feature transformations来表达模型的记忆性，wide部分本质上是一个lr。 deep部分首先将id特征进行embedding，然后将所有特征的embedding拼接起来，作为一个多层神经网络的输入，用这个多层（深层）的神经网络来学习泛化性。这里的泛化性本质是通过embedding来实现的，与MF矩阵分解和FM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wide and Deep Learning for Recommender Systems">
+<meta property="og:url" content="https://yanruibo.github.io/2020/08/01/Wide-and-Deep-Learning-for-Recommender-Systems/index.html">
 <meta property="og:site_name" content="Blog">
+<meta property="og:description" content="1. 简介 wide部分通过对特征根进行cross-product feature transformations来表达模型的记忆性，wide部分本质上是一个lr。 deep部分首先将id特征进行embedding，然后将所有特征的embedding拼接起来，作为一个多层神经网络的输入，用这个多层（深层）的神经网络来学习泛化性。这里的泛化性本质是通过embedding来实现的，与MF矩阵分解和FM">
+<meta property="og:image" content="https://yanruibo.github.io/2020/08/01/Wide-and-Deep-Learning-for-Recommender-Systems/figure1.png">
+<meta property="article:published_time" content="2020-08-01T03:07:28.000Z">
+<meta property="article:modified_time" content="2020-08-03T12:01:10.814Z">
 <meta property="article:author" content="yrb">
+<meta property="article:tag" content="paper">
+<meta property="article:tag" content="machine learning">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yanruibo.github.io/2020/08/01/Wide-and-Deep-Learning-for-Recommender-Systems/figure1.png">
 
     
     <link rel="alternative" href="/atom.xml" title="Blog" type="application/atom+xml">
@@ -74,12 +82,10 @@
 </div>
     </header>
     <div id="container">
-      <div id="main">
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
   <h1 itemprop="name">
     
       <a href="/2020/08/01/Wide-and-Deep-Learning-for-Recommender-Systems/" title="Wide and Deep Learning for Recommender Systems" itemprop="url">Wide and Deep Learning for Recommender Systems</a>
@@ -93,9 +99,16 @@
     
   </p>
 </header>
-    <div class="article-content">
-        
-        <h2 id="简介">1. 简介</h2>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模型结构"><span class="toc-number">2.</span> <span class="toc-text">2. 模型结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码示例"><span class="toc-number">3.</span> <span class="toc-text">3. 代码示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">4.</span> <span class="toc-text">4. 参考资料</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="简介">1. 简介</h2>
 <p>wide部分通过对特征根进行cross-product feature transformations来表达模型的记忆性，wide部分本质上是一个lr。</p>
 <p>deep部分首先将id特征进行embedding，然后将所有特征的embedding拼接起来，作为一个多层神经网络的输入，用这个多层（深层）的神经网络来学习泛化性。这里的泛化性本质是通过embedding来实现的，与MF矩阵分解和FM类似。</p>
 <h2 id="模型结构">2. 模型结构</h2>
@@ -130,14 +143,9 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 <li>https://github.com/PaddlePaddle/models</li>
 <li>https://github.com/PaddlePaddle/models/blob/release/1.8/PaddleRec/ctr/wide_deep/net.py</li>
 </ol>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
+  
+	</div>
+		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 <div class="article-categories">
@@ -155,594 +163,45 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 
 
 
-
-<div class="comments-count">
+	<div class="article-share" id="share">
 	
-</div>
+	  <div data-url="https://yanruibo.github.io/2020/08/01/Wide-and-Deep-Learning-for-Recommender-Systems/" data-title="Wide and Deep Learning for Recommender Systems | Blog" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
 
 </footer>
 
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2018/11/30/strange-things/" title="strange_things" itemprop="url">strange_things</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2018-11-30T02:11:09.000Z" itemprop="datePublished"> Published 2018-11-30</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h4 id="1-c语言中将float直接赋值给double再进行一些乘乘除除有问题-要加static_castdoulbefloat"><a class="markdownIt-Anchor" href="#1-c语言中将float直接赋值给double再进行一些乘乘除除有问题-要加static_castdoulbefloat"></a> 1. c++语言中，将float直接赋值给double，再进行一些乘乘除除有问题。要加static_cast<doulbe>(float);</h4>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
+   	       
+	</article>
 	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2018/11/30/strange-things/"  title="strange_things">
+ <strong>下一篇：</strong><br/> 
+ <span>strange_things
+</span>
+</a>
 </div>
 
-</footer>
+</nav>
 
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2017/01/22/vtable/" title="vtable" itemprop="url">vtable</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2017-01-22T13:48:55.000Z" itemprop="datePublished"> Published 2017-01-22</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="vtable-notes-on-multiple-inheritance-in-gcc-c-compiler-v401"><a class="markdownIt-Anchor" href="#vtable-notes-on-multiple-inheritance-in-gcc-c-compiler-v401"></a> VTable Notes on Multiple Inheritance in GCC C++ Compiler v4.0.1</h1>
-<h2 id="1-the-basics-single-inheritance"><a class="markdownIt-Anchor" href="#1-the-basics-single-inheritance"></a> 1. The Basics: Single Inheritance</h2>
-<p>As we discussed in class, single inheritance leads to an object layout with base class data laid out before derived class data. So if classes A and B are defined thusly:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> a;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2017/01/22/vtable/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/cpp/">cpp</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/vtable/">vtable</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
 	
-</div>
 
-</footer>
 
 
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/12/02/algorithm-problems-20161202/" title="algorithm problems 20161202" itemprop="url">algorithm problems 20161202</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2016-12-02T02:14:26.000Z" itemprop="datePublished"> Published 2016-12-02</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>1.已知n个人（以编号1，2，3，…，n分别表示）围坐在一张圆桌周围，从编号为k的人开始报数，数到m的那个人出列，他的下一个人又从1开始报数，数到m的那个人出列，依次重复下去，直到圆桌的人全部出列。试用C++编写实现。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/12/02/algorithm-problems-20161202/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/data-structures-and-algorithms/">data structures and algorithms</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/stack/">stack</a><a href="/tags/queue/">queue</a><a href="/tags/circular-linked-list/">circular linked list</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/11/24/排列与组合/" title="排列与组合" itemprop="url">排列与组合</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2016-11-24T02:55:20.000Z" itemprop="datePublished"> Published 2016-11-24</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="排列与组合"><a class="markdownIt-Anchor" href="#排列与组合"></a> 排列与组合</h1>
-<h2 id="1-全排列"><a class="markdownIt-Anchor" href="#1-全排列"></a> 1. 全排列</h2>
-<p>求一个全排列函数：<br />
-如p([a,b,c])输出：[abc],[acb],[bac],[bca],[cba],[cab].</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/11/24/%E6%8E%92%E5%88%97%E4%B8%8E%E7%BB%84%E5%90%88/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/data-structures-and-algorithms/">data structures and algorithms</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/11/23/zombie-process/" title="zombie process" itemprop="url">zombie process</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2016-11-23T13:21:56.000Z" itemprop="datePublished"> Published 2016-11-23</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="僵尸进程"><a class="markdownIt-Anchor" href="#僵尸进程"></a> 僵尸进程</h2>
-<p>子进程已结束，但父进程未调用wait()函数等待</p>
-<ul>
-<li>子进程已终止，但没有被正确清除，成为僵尸进程</li>
-</ul>
-<p>清除子进程的手段</p>
-<ul>
-<li>父进程调用wait()函数可确保子进程被清除</li>
-<li>即使子进程在父进程调用wait()函数前已死亡（成为僵尸），其退出状态也可以被抽取出来，然后被清除</li>
-<li>未清除的子进程自动被init进程收养</li>
-<li>SIGCHLD信号: 子进程终止时，向父进程自动发送，编写此信号处理例程，异步清除子进程</li>
-</ul>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/11/23/zombie-process/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/zombie-process/">zombie process</a><a href="/tags/fork/">fork</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/11/22/inter-process-communication/" title="inter-process-communication" itemprop="url">inter-process-communication</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2016-11-22T00:55:04.000Z" itemprop="datePublished"> Published 2016-11-22</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="进程间通信"><a class="markdownIt-Anchor" href="#进程间通信"></a> 进程间通信</h1>
-<h2 id="1-进程间通信的所有方式"><a class="markdownIt-Anchor" href="#1-进程间通信的所有方式"></a> 1. 进程间通信的所有方式</h2>
-<ol>
-<li><font color="#FF7F50">管道(pipe)及有名管道(named pipe, FIFO)</font>:管道可用于具有亲缘关系进程间的通信，有名管道克服了管道没有名字的限制，因此，除具有管道所具有的功能外，它还允许无亲缘关系进程间的通信；</li>
-<li><font color="#FF7F50">信号(signal)</font>:信号是比较复杂的通信方式，用于通知接受进程有某种事件发生，除了用于进程间通信外，进程还可以发送信号给进程本身。</li>
-<li><font color="#FF7F50">进程信号量</font>:进程间通信的同步控制机制，主要作为进程间以及同一进程不同线程之间的同步手段。</li>
-<li><font color="#FF7F50">共享内存以及映射内存</font>:共享内存是允许多个进程读写同一片内存区域，使得多个进程可以访问同一块内存空间，是最快的可用IPC形式。针对其他通信机制运行效率较低而设计的。往往与其它通信机制，如信号量结合使用，来达到进程间的同步及互斥；映射内存与共享内存的意义相同，但与文件相关联。</li>
-<li><font color="#FF7F50">消息队列</font>:在进程间传递二进制块数据，消息队列是消息的链接表，包括Posix消息队列system V消息队列。有足够权限的进程可以向队列中添加消息，被赋予读权限的进程则可以读走队列中的消息。消息队列克服了信号承载信息量少，管道只能承载无格式字节流以及缓冲区大小受限等缺点。</li>
-<li><font color="#FF7F50">套接字</font>:支持无关进程，甚至不同的计算机进行通信(网络进程间通讯，network IPC)</li>
-</ol>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/11/22/inter-process-communication/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/linux/">linux</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/IPC/">IPC</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/11/21/infix-to-postfix/" title="infix to postfix" itemprop="url">infix to postfix</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2016-11-21T06:30:04.000Z" itemprop="datePublished"> Published 2016-11-21</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>如题，中缀表达式转后缀表达式。<br />
-求表达式<code>x=a+b*(c-d)/e</code>的后缀表达式。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/data-structures-and-algorithms/">data structures and algorithms</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/infix/">infix</a><a href="/tags/postfix/">postfix</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/11/20/dynamic-programming-part-3/" title="dynamic programming part3" itemprop="url">dynamic programming part3</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2016-11-20T13:48:55.000Z" itemprop="datePublished"> Published 2016-11-20</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>Ebay 面试题 | 把数组分成和大小一样的集合</p>
-<p><strong>题目描述</strong></p>
-<p>给定一个只包含正整数的非空数组，判断该数组能否分成两个和相等的子数组。</p>
-<p><strong>样例输入</strong></p>
-<p>输入[1,5,11,5] 返回 true . 可以分为[1,5,5]和[11]<br />
-输入[1,2,3,5]  返回false.  无法分为相等的两个子数组</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/11/20/dynamic-programming-part-3/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/data-structures-and-algorithms/">data structures and algorithms</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/algorithms/">algorithms</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/11/20/bit-operation/" title="bit operation" itemprop="url">bit operation</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2016-11-20T08:22:00.000Z" itemprop="datePublished"> Published 2016-11-20</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="位操作"><a class="markdownIt-Anchor" href="#位操作"></a> 位操作</h1>
-<h2 id="1-循环左移"><a class="markdownIt-Anchor" href="#1-循环左移"></a> 1. 循环左移</h2>
-<p>今天看邓俊辉的数据结构，在276页发现了一个循环左移五位的一小段代码是<code>(h&lt;&lt;5)|h&gt;&gt;27</code>，其中h是一个32 bit的整数。感觉很精妙。</p>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/11/20/bit-operation/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/data-structures-and-algorithms/">data structures and algorithms</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/bit-operation/">bit operation</a><a href="/tags/crol/">crol</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-
-  <nav id="page-nav" class="clearfix">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next</a>
-  </nav>
-
-</div>
+</div>  
       <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">1. 简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#模型结构"><span class="toc-number">2.</span> <span class="toc-text">2. 模型结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码示例"><span class="toc-number">3.</span> <span class="toc-text">3. 代码示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">4.</span> <span class="toc-text">4. 参考资料</span></a></li></ol>
+ 
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
@@ -987,12 +446,89 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
@@ -1094,4 +630,4 @@ var _hmt = _hmt || [];
 <!-- Tiny_search End --><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
   </body>
- </html>
+</html>

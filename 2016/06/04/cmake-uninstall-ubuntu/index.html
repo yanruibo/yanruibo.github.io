@@ -102,15 +102,16 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#cmake-uninstall"><span class="toc-number">1.</span> <span class="toc-text">CMake uninstall</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#cmake-uninstall"><span class="toc-number">1.</span> <span class="toc-text"> CMake uninstall</span></a></li></ol>
 		
 		</div>
 		
-		<h2 id="cmake-uninstall">CMake uninstall</h2>
+		<h2 id="cmake-uninstall"><a class="markdownIt-Anchor" href="#cmake-uninstall"></a> CMake uninstall</h2>
 <p>CMake is a great tool when building cross-plattform software. It offers also install target so you can build and install software this way:</p>
 <a id="more"></a>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># create of-of-source build directory</span><br><span class="line">mkdir bld</span><br><span class="line">cd bld</span><br><span class="line"># run CMake to generate a Makefile</span><br><span class="line">ccmake ..</span><br><span class="line"># Build in 4 cores</span><br><span class="line">make -j 4</span><br><span class="line"># Install into CMAKE_INSTALL_PREFIX (default is &#x2F;usr&#x2F;local)</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
-<p>However there is no uninstall target. But this is no problem as long as you have a shell and the xargs command (part of GNU findutils).</p>
+<p>However there is no uninstall target.<br />
+But this is no problem as long as you have a shell and the xargs command (part of GNU findutils).</p>
 <p>CMake creates a file called install_manifest.txt when executing the install target. This contains a list of all installed files. So for removing them you simply need to execute this command:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># uninstall</span><br><span class="line">xargs rm &lt; install_manifest.txt</span><br></pre></td></tr></table></figure>
 <p>该方法同样适用于其他从源码编译安装的软件，比如llvm等。</p>
@@ -178,7 +179,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#cmake-uninstall"><span class="toc-number">1.</span> <span class="toc-text">CMake uninstall</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#cmake-uninstall"><span class="toc-number">1.</span> <span class="toc-text"> CMake uninstall</span></a></li></ol>
  
   </div>
 
@@ -222,6 +223,10 @@
 			<li><a href="/categories/machine-learning/" title="machine learning">machine learning<sup>7</sup></a></li>
 		  
 		
+		  
+			<li><a href="/categories/paper/" title="paper">paper<sup>1</sup></a></li>
+		  
+		
 		</ul>
 </div>
 
@@ -232,7 +237,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/machine-learning/" title="machine learning">machine learning<sup>7</sup></a></li>
+				<li><a href="/tags/machine-learning/" title="machine learning">machine learning<sup>8</sup></a></li>
 			
 		
 			
@@ -280,6 +285,10 @@
 			
 		
 			
+				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/data-structure/" title="data structure">data structure<sup>1</sup></a></li>
 			
 		
@@ -296,19 +305,15 @@
 			
 		
 			
-				<li><a href="/tags/bit-operation/" title="bit operation">bit operation<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/crol/" title="crol">crol<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/variable-types/" title="variable types">variable types<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bit-operation/" title="bit operation">bit operation<sup>1</sup></a></li>
 			
 		
 		</ul>
