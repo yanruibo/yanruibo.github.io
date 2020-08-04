@@ -98,42 +98,11 @@
         <h2 id="简介">1. 简介</h2>
 <p>wide部分通过对特征根进行cross-product feature transformations来表达模型的记忆性，wide部分本质上是一个lr。</p>
 <p>deep部分首先将id特征进行embedding，然后将所有特征的embedding拼接起来，作为一个多层神经网络的输入，用这个多层（深层）的神经网络来学习泛化性。这里的泛化性本质是通过embedding来实现的，与MF矩阵分解和FM类似。</p>
-<h2 id="模型结构">2. 模型结构</h2>
-<figure>
-<img src="figure1.png" alt="" /><figcaption>Wide &amp; Deep Model</figcaption>
-</figure>
-<p>wide部分本质上是一个lr，输入包含raw input features和transformed features。cross-product transformation操作产生交叉特征transformed features。</p>
-<p>wide部分是一个线性模型，线性模型的表示如下： <span class="math display">\[
-y=\mathbf{w}^{T} \mathbf{x}+b
-\]</span></p>
-<p>交叉积变换详细如下：</p>
-<p><span class="math display">\[
-\phi_{k}(\mathbf{x})=\prod_{i=1}^{d} x_{i}^{c_{k i}} \quad c_{k i} \in\{0,1\}
-\]</span></p>
-<p><span class="math inline">\(c_{k i}\)</span> 是一个布尔变量，当第i个特征属于第k个组合特征时，<span class="math inline">\(c_{k i}\)</span> 的值为1，否则为0； <span class="math inline">\(x_{i}\)</span> 是第i个特征的值。例如， 对于 "AND(user_installed_app=netflix, impression_app=pandora)" 这个组合特征来说，只有当 "user_installed_app=netflix" 和 "impression_app=pandora" 这两个特征同时为1时，其对应的交叉积变换层的结果才为1，否则为0。</p>
-<p>这样的交叉积变换能捕获二值特征的交互，即组合特征，同时能给lr这样的线性模型增加非线性的特征。</p>
-<p>deep部分就是一个深度的神经网络，输入是类别特征的embedding和一些连续性特征。Embedding size的数量级是 O(10) 到 O(100)。</p>
-<p>深度神经网络的表示如下：</p>
-<p><span class="math display">\[
-a^{(l+1)}=f\left(W^{(l)} a^{(l)}+b^{(l)}\right)
-\]</span></p>
-<p>wide &amp; deep整体的目标函数如下：</p>
-<p><span class="math display">\[
-P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\mathbf{x})]+\mathbf{w}_{deep}^{T} a^{\left(l_{f}\right)}+b\right)
-\]</span></p>
-<p>Y是二值的标签， <span class="math inline">\(\sigma(.)\)</span> 是sigmoid函数，<span class="math inline">\(\phi(\mathbf{x})\)</span> 是原始特征x经过交叉积变换之后的特征信息，<span class="math inline">\(b\)</span> 是偏置，<span class="math inline">\(\mathbf{w}_{wide}\)</span> 是wide部分的参数，<span class="math inline">\(\mathbf{w}_{deep}\)</span> 是deep部分的最后一个隐层的参数。</p>
-<h2 id="代码示例">3. 代码示例</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> paddle.fluid <span class="keyword">as</span> fluid</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">wide_deep</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wide_part</span><span class="params">(self, data)</span>:</span></span><br><span class="line"></span><br><span class="line">        out = fluid.layers.fc(input=data,</span><br><span class="line">                            size=<span class="number">1</span>, </span><br><span class="line">                            param_attr=fluid.ParamAttr(initializer=fluid.initializer.TruncatedNormal(loc=<span class="number">0.0</span>, scale=<span class="number">1.0</span> / math.sqrt(data.shape[<span class="number">1</span>])),</span><br><span class="line">                                                       regularizer=fluid.regularizer.L2DecayRegularizer(regularization_coeff=<span class="number">1e-4</span>)),</span><br><span class="line">                            act=<span class="literal">None</span>,</span><br><span class="line">                            name=<span class="string">'wide'</span>)</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fc</span><span class="params">(self, data, hidden_units, active, tag)</span>:</span></span><br><span class="line">        </span><br><span class="line">        output = fluid.layers.fc(input=data,</span><br><span class="line">                            size=hidden_units, </span><br><span class="line">                            param_attr=fluid.ParamAttr(initializer=fluid.initializer.TruncatedNormal(loc=<span class="number">0.0</span>, scale=<span class="number">1.0</span> / math.sqrt(data.shape[<span class="number">1</span>]))),</span><br><span class="line">                            act=active,</span><br><span class="line">                            name=tag)</span><br><span class="line">                            </span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deep_part</span><span class="params">(self, data, hidden1_units, hidden2_units, hidden3_units)</span>:</span></span><br><span class="line">        </span><br><span class="line">        l1 = self.fc(data, hidden1_units, <span class="string">'relu'</span>, <span class="string">'l1'</span>)</span><br><span class="line">        l2 = self.fc(l1, hidden2_units, <span class="string">'relu'</span>, <span class="string">'l2'</span>)</span><br><span class="line">        l3 = self.fc(l2, hidden3_units, <span class="string">'relu'</span>, <span class="string">'l3'</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> l3</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_data</span><span class="params">(self)</span>:</span></span><br><span class="line">        wide_input = fluid.data(name=<span class="string">'wide_input'</span>, shape=[<span class="literal">None</span>, <span class="number">8</span>], dtype=<span class="string">'float32'</span>)</span><br><span class="line">        deep_input = fluid.data(name=<span class="string">'deep_input'</span>, shape=[<span class="literal">None</span>, <span class="number">58</span>], dtype=<span class="string">'float32'</span>)</span><br><span class="line">        label = fluid.data(name=<span class="string">'label'</span>, shape=[<span class="literal">None</span>, <span class="number">1</span>], dtype=<span class="string">'float32'</span>)</span><br><span class="line">        inputs = [wide_input] + [deep_input] + [label]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> inputs</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">model</span><span class="params">(self, inputs, hidden1_units, hidden2_units, hidden3_units)</span>:</span></span><br><span class="line"></span><br><span class="line">        wide_output = self.wide_part(inputs[<span class="number">0</span>])</span><br><span class="line">        deep_output = self.deep_part(inputs[<span class="number">1</span>], hidden1_units, hidden2_units, hidden3_units)</span><br><span class="line">        </span><br><span class="line">        wide_model = fluid.layers.fc(input=wide_output,</span><br><span class="line">                        size=<span class="number">1</span>, </span><br><span class="line">                        param_attr=fluid.ParamAttr(initializer=fluid.initializer.TruncatedNormal(loc=<span class="number">0.0</span>, scale=<span class="number">1.0</span>)),</span><br><span class="line">                        act=<span class="literal">None</span>,</span><br><span class="line">                        name=<span class="string">'w_wide'</span>)</span><br><span class="line">                        </span><br><span class="line">        deep_model = fluid.layers.fc(input=deep_output,</span><br><span class="line">                        size=<span class="number">1</span>, </span><br><span class="line">                        param_attr=fluid.ParamAttr(initializer=fluid.initializer.TruncatedNormal(loc=<span class="number">0.0</span>, scale=<span class="number">1.0</span>)),</span><br><span class="line">                        act=<span class="literal">None</span>,</span><br><span class="line">                        name=<span class="string">'w_deep'</span>)</span><br><span class="line">                    </span><br><span class="line">        prediction = fluid.layers.elementwise_add(wide_model, deep_model)</span><br><span class="line">        pred = fluid.layers.sigmoid(fluid.layers.clip(prediction, min=<span class="number">-15.0</span>, max=<span class="number">15.0</span>), name=<span class="string">"prediction"</span>)</span><br><span class="line"></span><br><span class="line">        num_seqs = fluid.layers.create_tensor(dtype=<span class="string">'int64'</span>)</span><br><span class="line">        acc = fluid.layers.accuracy(input=pred, label=fluid.layers.cast(x=inputs[<span class="number">2</span>], dtype=<span class="string">'int64'</span>), total=num_seqs)</span><br><span class="line">        auc_val, batch_auc, auc_states = fluid.layers.auc(input=pred, label=fluid.layers.cast(x=inputs[<span class="number">2</span>], dtype=<span class="string">'int64'</span>))</span><br><span class="line">        </span><br><span class="line">        cost = fluid.layers.sigmoid_cross_entropy_with_logits(x=prediction, label=inputs[<span class="number">2</span>]) </span><br><span class="line">        avg_cost = fluid.layers.mean(cost)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> avg_cost, acc,auc_val, batch_auc, auc_states</span><br></pre></td></tr></table></figure>
-<h2 id="参考资料">4. 参考资料</h2>
-<ol type="1">
-<li>https://arxiv.org/abs/1606.07792</li>
-<li>https://github.com/PaddlePaddle/models</li>
-<li>https://github.com/PaddlePaddle/models/blob/release/1.8/PaddleRec/ctr/wide_deep/net.py</li>
-</ol>
-
         
         
         <p class="article-more-link">
+          
+            <a href="/2020/08/01/Wide-and-Deep-Learning-for-Recommender-Systems/#more">Read More</a>
           
        </p>
     </div>
@@ -189,7 +158,7 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 </header>
     <div class="article-content">
         
-        <h4 id="1-c语言中将float直接赋值给double再进行一些乘乘除除有问题-要加static_castdoulbefloat"><a class="markdownIt-Anchor" href="#1-c语言中将float直接赋值给double再进行一些乘乘除除有问题-要加static_castdoulbefloat"></a> 1. c++语言中，将float直接赋值给double，再进行一些乘乘除除有问题。要加static_cast<doulbe>(float);</h4>
+        <h4 id="c语言中将float直接赋值给double再进行一些乘乘除除有问题要加static_castfloat">1. c++语言中，将float直接赋值给double，再进行一些乘乘除除有问题。要加static_cast<doulbe>(float);</h4>
 
         
         
@@ -239,8 +208,8 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 </header>
     <div class="article-content">
         
-        <h1 id="vtable-notes-on-multiple-inheritance-in-gcc-c-compiler-v401"><a class="markdownIt-Anchor" href="#vtable-notes-on-multiple-inheritance-in-gcc-c-compiler-v401"></a> VTable Notes on Multiple Inheritance in GCC C++ Compiler v4.0.1</h1>
-<h2 id="1-the-basics-single-inheritance"><a class="markdownIt-Anchor" href="#1-the-basics-single-inheritance"></a> 1. The Basics: Single Inheritance</h2>
+        <h1 id="vtable-notes-on-multiple-inheritance-in-gcc-c-compiler-v4.0.1">VTable Notes on Multiple Inheritance in GCC C++ Compiler v4.0.1</h1>
+<h2 id="the-basics-single-inheritance">1. The Basics: Single Inheritance</h2>
 <p>As we discussed in class, single inheritance leads to an object layout with base class data laid out before derived class data. So if classes A and B are defined thusly:</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> a;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> :</span> <span class="keyword">public</span> A &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
         
@@ -303,7 +272,7 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 </header>
     <div class="article-content">
         
-        <p>1.已知n个人（以编号1，2，3，…，n分别表示）围坐在一张圆桌周围，从编号为k的人开始报数，数到m的那个人出列，他的下一个人又从1开始报数，数到m的那个人出列，依次重复下去，直到圆桌的人全部出列。试用C++编写实现。</p>
+        <p>1.已知n个人（以编号1，2，3，...，n分别表示）围坐在一张圆桌周围，从编号为k的人开始报数，数到m的那个人出列，他的下一个人又从1开始报数，数到m的那个人出列，依次重复下去，直到圆桌的人全部出列。试用C++编写实现。
         
         
         <p class="article-more-link">
@@ -364,8 +333,8 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 </header>
     <div class="article-content">
         
-        <h1 id="排列与组合"><a class="markdownIt-Anchor" href="#排列与组合"></a> 排列与组合</h1>
-<h2 id="1-全排列"><a class="markdownIt-Anchor" href="#1-全排列"></a> 1. 全排列</h2>
+        <h1 id="排列与组合">排列与组合</h1>
+<h2 id="全排列">1. 全排列</h2>
 <p>求一个全排列函数：<br />
 如p([a,b,c])输出：[abc],[acb],[bac],[bca],[cba],[cab].</p>
         
@@ -423,7 +392,7 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 </header>
     <div class="article-content">
         
-        <h2 id="僵尸进程"><a class="markdownIt-Anchor" href="#僵尸进程"></a> 僵尸进程</h2>
+        <h2 id="僵尸进程">僵尸进程</h2>
 <p>子进程已结束，但父进程未调用wait()函数等待</p>
 <ul>
 <li>子进程已终止，但没有被正确清除，成为僵尸进程</li>
@@ -495,9 +464,9 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 </header>
     <div class="article-content">
         
-        <h1 id="进程间通信"><a class="markdownIt-Anchor" href="#进程间通信"></a> 进程间通信</h1>
-<h2 id="1-进程间通信的所有方式"><a class="markdownIt-Anchor" href="#1-进程间通信的所有方式"></a> 1. 进程间通信的所有方式</h2>
-<ol>
+        <h1 id="进程间通信">进程间通信</h1>
+<h2 id="进程间通信的所有方式">1. 进程间通信的所有方式</h2>
+<ol type="1">
 <li><font color="#FF7F50">管道(pipe)及有名管道(named pipe, FIFO)</font>:管道可用于具有亲缘关系进程间的通信，有名管道克服了管道没有名字的限制，因此，除具有管道所具有的功能外，它还允许无亲缘关系进程间的通信；</li>
 <li><font color="#FF7F50">信号(signal)</font>:信号是比较复杂的通信方式，用于通知接受进程有某种事件发生，除了用于进程间通信外，进程还可以发送信号给进程本身。</li>
 <li><font color="#FF7F50">进程信号量</font>:进程间通信的同步控制机制，主要作为进程间以及同一进程不同线程之间的同步手段。</li>
@@ -565,8 +534,7 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 </header>
     <div class="article-content">
         
-        <p>如题，中缀表达式转后缀表达式。<br />
-求表达式<code>x=a+b*(c-d)/e</code>的后缀表达式。</p>
+        <p>如题，中缀表达式转后缀表达式。 求表达式<code>x=a+b*(c-d)/e</code>的后缀表达式。</p>
 
         
         
@@ -631,7 +599,7 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 <p>给定一个只包含正整数的非空数组，判断该数组能否分成两个和相等的子数组。</p>
 <p><strong>样例输入</strong></p>
 <p>输入[1,5,11,5] 返回 true . 可以分为[1,5,5]和[11]<br />
-输入[1,2,3,5]  返回false.  无法分为相等的两个子数组</p>
+输入[1,2,3,5] 返回false. 无法分为相等的两个子数组<br />
         
         
         <p class="article-more-link">
@@ -692,9 +660,9 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 </header>
     <div class="article-content">
         
-        <h1 id="位操作"><a class="markdownIt-Anchor" href="#位操作"></a> 位操作</h1>
-<h2 id="1-循环左移"><a class="markdownIt-Anchor" href="#1-循环左移"></a> 1. 循环左移</h2>
-<p>今天看邓俊辉的数据结构，在276页发现了一个循环左移五位的一小段代码是<code>(h&lt;&lt;5)|h&gt;&gt;27</code>，其中h是一个32 bit的整数。感觉很精妙。</p>
+        <h1 id="位操作">位操作</h1>
+<h2 id="循环左移">1. 循环左移</h2>
+<p>今天看邓俊辉的数据结构，在276页发现了一个循环左移五位的一小段代码是<code>(h&lt;&lt;5)|h&gt;&gt;27</code>，其中h是一个32 bit的整数。感觉很精妙。
         
         
         <p class="article-more-link">
@@ -846,10 +814,6 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 			
 		
 			
-				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/data-structure/" title="data structure">data structure<sup>1</sup></a></li>
 			
 		
@@ -858,11 +822,15 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 			
 		
 			
-				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
+				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
 			

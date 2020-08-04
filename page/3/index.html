@@ -95,9 +95,9 @@
 </header>
     <div class="article-content">
         
-        <h1 id="尾递归"><a class="markdownIt-Anchor" href="#尾递归"></a> 尾递归</h1>
+        <h1 id="尾递归">尾递归</h1>
 <p>尾递归的形式，不难将算法改写为迭代形式。<br />
-在线性递归算法中，若递归调用在递归实例中恰好以最后一步操作的形式出现，则称作尾递归。比如如下代码中reverse(A, lo, hi)算法的最后一步操作，是对去除了首末元素之后总长缩减两个单元的字数组进行递归倒置，即属于典型的尾递归。实际上属于尾递归形式的算法，均可以简捷地转换为等效的迭代版本。</p>
+在线性递归算法中，若递归调用在递归实例中恰好以最后一步操作的形式出现，则称作尾递归。比如如下代码中reverse(A, lo, hi)算法的最后一步操作，是对去除了首末元素之后总长缩减两个单元的字数组进行递归倒置，即属于典型的尾递归。实际上属于尾递归形式的算法，均可以简捷地转换为等效的迭代版本。
         
         
         <p class="article-more-link">
@@ -158,13 +158,13 @@
 </header>
     <div class="article-content">
         
-        <h1 id="sorting"><a class="markdownIt-Anchor" href="#sorting"></a> Sorting</h1>
-<h2 id="1-introduction"><a class="markdownIt-Anchor" href="#1-introduction"></a> 1. Introduction</h2>
+        <h1 id="sorting">Sorting</h1>
+<h2 id="introduction">1. Introduction</h2>
 <p><strong>stable</strong>:<br />
-if <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mo>&lt;</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">i &lt; j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69862em;vertical-align:-0.0391em;"></span><span class="mord mathdefault">i</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.05724em;">j</span></span></span></span> and <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>K</mi><mi>i</mi></msub><mo>=</mo><msub><mi>K</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">K_i = K_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.07153em;">K</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.07153em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span>, then <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>R</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">R_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> precedes <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>R</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">R_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.00773em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span> in the sorted list.</p>
+if <span class="math inline">\(i &lt; j\)</span> and <span class="math inline">\(K_i = K_j\)</span>, then <span class="math inline">\(R_i\)</span> precedes <span class="math inline">\(R_j\)</span> in the sorted list.</p>
 <p><strong>Internal sort vs. external sort</strong>:<br />
-In internal sorting all the data to sort is stored in memory at all times while sorting is in progress. In external sorting data is stored outside memory (like on disk) and only loaded into memory in small chunks. External sorting is usually applied in cases when data can’t fit into memory entirely.</p>
-<p>So in internal sorting you can do something like shell sort - just access whatever array elements you want at whatever moment you want. You can’t do that in external sorting - the array is not entirely in memory, so you can’t just randomly access any element in memory and accessing it randomly on disk is usually extremely slow. The external sorting algorithm has to deal with loading and unloading chunks of data in optimal manner.</p>
+In internal sorting all the data to sort is stored in memory at all times while sorting is in progress. In external sorting data is stored outside memory (like on disk) and only loaded into memory in small chunks. External sorting is usually applied in cases when data can't fit into memory entirely.</p>
+<p>So in internal sorting you can do something like shell sort - just access whatever array elements you want at whatever moment you want. You can't do that in external sorting - the array is not entirely in memory, so you can't just randomly access any element in memory and accessing it randomly on disk is usually extremely slow. The external sorting algorithm has to deal with loading and unloading chunks of data in optimal manner.<br />
         
         
         <p class="article-more-link">
@@ -225,11 +225,11 @@ In internal sorting all the data to sort is stored in memory at all times while 
 </header>
     <div class="article-content">
         
-        <h1 id="using-gnus-gdb-debugger"><a class="markdownIt-Anchor" href="#using-gnus-gdb-debugger"></a> Using GNU’s GDB Debugger</h1>
-<h2 id="1-memory-layout-and-the-stack"><a class="markdownIt-Anchor" href="#1-memory-layout-and-the-stack"></a> 1. Memory Layout And The Stack</h2>
+        <h1 id="using-gnus-gdb-debugger">Using GNU's GDB Debugger</h1>
+<h2 id="memory-layout-and-the-stack">1. Memory Layout And The Stack</h2>
 <p>From: <a href="http://www.dirac.org/linux/gdb/02a-Memory_Layout_And_The_Stack.php?printable=yes" target="_blank" rel="noopener">http://www.dirac.org/linux/gdb/02a-Memory_Layout_And_The_Stack.php?</a></p>
-<h2 id="2-breakpoints-and-watchpoints"><a class="markdownIt-Anchor" href="#2-breakpoints-and-watchpoints"></a> 2. Breakpoints And Watchpoints</h2>
-<p>So far you know how to list source code and run a program from within gdb. But you already knew how to do that without gdb. What else does gdb give us? To do anything really useful with gdb, you need to set breakpoints which temporarily pause your program’s execution so you can do useful debugging work like inspecting variables and watching the program’s execution in an atomic line-by-line fashion. This right here is the magic of a symbolic debugger.</p>
+<h2 id="breakpoints-and-watchpoints">2. Breakpoints And Watchpoints</h2>
+<p>So far you know how to list source code and run a program from within gdb. But you already knew how to do that without gdb. What else does gdb give us? To do anything really useful with gdb, you need to set breakpoints which temporarily pause your program's execution so you can do useful debugging work like inspecting variables and watching the program's execution in an atomic line-by-line fashion. This right here is the magic of a symbolic debugger.<br />
         
         
         <p class="article-more-link">
@@ -351,11 +351,11 @@ In internal sorting all the data to sort is stored in memory at all times while 
 </header>
     <div class="article-content">
         
-        <h1 id="const"><a class="markdownIt-Anchor" href="#const"></a> const</h1>
-<h2 id="1-const-in-c-and-cpp"><a class="markdownIt-Anchor" href="#1-const-in-c-and-cpp"></a> 1. const in c and cpp</h2>
+        <h1 id="const">const</h1>
+<h2 id="const-in-c-and-cpp">1. const in c and cpp</h2>
 <p><code>const char* a</code>: 指向常量字符的指针，const限定的是char；<br />
 <code>char const* a</code>：指向字符的常量指针，const限定的是指针a；<br />
-<code>char *const a</code>:因为const int a与int const a等价，说明const放在类型和变量之前是一样的效果。</p>
+<code>char *const a</code>:因为const int a与int const a等价，说明const放在类型和变量之前是一样的效果。<br />
         
         
         <p class="article-more-link">
@@ -416,12 +416,12 @@ In internal sorting all the data to sort is stored in memory at all times while 
 </header>
     <div class="article-content">
         
-        <h1 id="全局变量-局部变量和静态变量"><a class="markdownIt-Anchor" href="#全局变量-局部变量和静态变量"></a> 全局变量、局部变量和静态变量</h1>
+        <h1 id="全局变量局部变量和静态变量">全局变量、局部变量和静态变量</h1>
 <p>转一篇很好的介绍自动变量，局部变量，静态变量的博文，原文链接：<br />
 <a href="http://www.eefocus.com/jinshaomin/blog/14-02/302032_c5e28.html" target="_blank" rel="noopener">http://www.eefocus.com/jinshaomin/blog/14-02/302032_c5e28.html</a></p>
 <p>众所周知，C中的变量主要有全局变量、局部变量和静态变量。</p>
-<h2 id="1-全局变量"><a class="markdownIt-Anchor" href="#1-全局变量"></a> 1. 全局变量</h2>
-<p>全局变量：在函数外面定义的变量为全局变量，工程内的所有文件都可以访问他；但是它在整个工程内只能定义一次，不能有重复的定义，不然就会发生错误，而其他的文件要想使用这个变量，必须用extern来声明这个变量，这个声明叫做引用声明。这一点很重要，如果你没有用extern来声明在其他文件中已经定义的全局变量，就来使用它，就会发生错误。<font color="purple">如果你只是想在定义他的文件中使用它，而不允许在其他的文件中使用它，那么就用关键字static来在函数外面声明变量。这样这个变量在其他文件中将不可见，即它的连接性而内部链接。有一点是我们只得注意的像：如果你在函数外这样声明一个变量，const int a ; 变量a的连接性为内部链接，只能在定义他的文件内使用。还有如果你在定义静态变量的时候并没有给变量初始化，则静态变量将被自动初始化为0；</font></p>
+<h2 id="全局变量">1. 全局变量</h2>
+<p>　　全局变量：在函数外面定义的变量为全局变量，工程内的所有文件都可以访问他；但是它在整个工程内只能定义一次，不能有重复的定义，不然就会发生错误，而其他的文件要想使用这个变量，必须用extern来声明这个变量，这个声明叫做引用声明。这一点很重要，如果你没有用extern来声明在其他文件中已经定义的全局变量，就来使用它，就会发生错误。<font color="purple">如果你只是想在定义他的文件中使用它，而不允许在其他的文件中使用它，那么就用关键字static来在函数外面声明变量。这样这个变量在其他文件中将不可见，即它的连接性而内部链接。有一点是我们只得注意的像：如果你在函数外这样声明一个变量，const int a ; 变量a的连接性为内部链接，只能在定义他的文件内使用。还有如果你在定义静态变量的时候并没有给变量初始化，则静态变量将被自动初始化为0；</font><br />
         
         
         <p class="article-more-link">
@@ -482,12 +482,11 @@ In internal sorting all the data to sort is stored in memory at all times while 
 </header>
     <div class="article-content">
         
-        <h1 id="gnus-gdb-debugger"><a class="markdownIt-Anchor" href="#gnus-gdb-debugger"></a> GNU’s GDB Debugger</h1>
-<h2 id="1-chapter-1"><a class="markdownIt-Anchor" href="#1-chapter-1"></a> 1. chapter 1</h2>
+        <h1 id="gnus-gdb-debugger">GNU's GDB Debugger</h1>
+<h2 id="chapter-1">1. chapter 1</h2>
 <p>To use gdb, do the following:<br />
-<strong>Compile your program with the -g flag e.g.</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall -Wstrict-prototypes -ansi -pedantic -g myprog.c -o myprog</span><br></pre></td></tr></table></figure>
-<p>(Note that we’re using a lot of warning options as well, which are the “-Wall -Wstrict-prototypes -ansi -pedantic” options; these force the compiler to complain if your code isn’t ANSI-compliant or if it has other suspicious features. It’s a good habit to always use these options.) The “-g” option puts debugging information into the executable. Most importantly, it puts the text of the source code file into the executable so you can examine it as the program executes (we’ll see how below).</p>
+<strong>Compile your program with the -g flag e.g.</strong><br />
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall -Wstrict-prototypes -ansi -pedantic -g myprog.c -o myprog</span><br></pre></td></tr></table></figure> (Note that we're using a lot of warning options as well, which are the "-Wall -Wstrict-prototypes -ansi -pedantic" options; these force the compiler to complain if your code isn't ANSI-compliant or if it has other suspicious features. It's a good habit to always use these options.) The "-g" option puts debugging information into the executable. Most importantly, it puts the text of the source code file into the executable so you can examine it as the program executes (we'll see how below).<br />
         
         
         <p class="article-more-link">
@@ -548,8 +547,8 @@ In internal sorting all the data to sort is stored in memory at all times while 
 </header>
     <div class="article-content">
         
-        <h1 id="冒泡排序"><a class="markdownIt-Anchor" href="#冒泡排序"></a> 冒泡排序</h1>
-<p>交换排序的基本思想是：两两比较待排序记录的关键字，发现两个记录的次序相反时即进行交换，直到没有反序的记录为止。应用交换排序基本思想的主要排序方法有：冒泡排序和快速排序。</p>
+        <h1 id="冒泡排序">冒泡排序</h1>
+<p>交换排序的基本思想是：两两比较待排序记录的关键字，发现两个记录的次序相反时即进行交换，直到没有反序的记录为止。应用交换排序基本思想的主要排序方法有：冒泡排序和快速排序。<br />
         
         
         <p class="article-more-link">
@@ -611,13 +610,11 @@ In internal sorting all the data to sort is stored in memory at all times while 
     <div class="article-content">
         
         <p>note 1:<br />
-一个派生类对象如果是public继承的，那么可以被当做一个基类对象来使用</p>
-<ul>
-<li>基类对象可以使用派生类对象赋值</li>
-<li>基类的引用可以用派生类对象初始化</li>
-<li>基类的指针可以用派生类指针赋值</li>
-<li>通过基类指针，对象名只能使用从基类继承的成员</li>
-</ul>
+一个派生类对象如果是public继承的，那么可以被当做一个基类对象来使用<br />
+- 基类对象可以使用派生类对象赋值<br />
+- 基类的引用可以用派生类对象初始化<br />
+- 基类的指针可以用派生类指针赋值<br />
+- 通过基类指针，对象名只能使用从基类继承的成员</p>
         
         
         <p class="article-more-link">
@@ -678,11 +675,11 @@ In internal sorting all the data to sort is stored in memory at all times while 
 </header>
     <div class="article-content">
         
-        <h1 id="深拷贝和浅拷贝"><a class="markdownIt-Anchor" href="#深拷贝和浅拷贝"></a> 深拷贝和浅拷贝</h1>
+        <h1 id="深拷贝和浅拷贝">深拷贝和浅拷贝</h1>
 <p><strong>shallow copy: copy the pointer;</strong><br />
 <strong>deep copy: copy the resource that the pointer pointing to;</strong></p>
 <p>言简意赅，下面我们来看几个例子。<br />
-针对struct和class的例子：</p>
+针对struct和class的例子：<br />
         
         
         <p class="article-more-link">
@@ -834,10 +831,6 @@ In internal sorting all the data to sort is stored in memory at all times while 
 			
 		
 			
-				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/data-structure/" title="data structure">data structure<sup>1</sup></a></li>
 			
 		
@@ -846,11 +839,15 @@ In internal sorting all the data to sort is stored in memory at all times while 
 			
 		
 			
-				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
+				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
 			

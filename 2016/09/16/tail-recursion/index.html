@@ -101,15 +101,13 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#尾递归"><span class="toc-number">1.</span> <span class="toc-text"> 尾递归</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#尾递归"><span class="toc-number">1.</span> <span class="toc-text">尾递归</span></a></li></ol>
 		
 		</div>
 		
-		<h1 id="尾递归"><a class="markdownIt-Anchor" href="#尾递归"></a> 尾递归</h1>
+		<h1 id="尾递归">尾递归</h1>
 <p>尾递归的形式，不难将算法改写为迭代形式。<br />
-在线性递归算法中，若递归调用在递归实例中恰好以最后一步操作的形式出现，则称作尾递归。比如如下代码中reverse(A, lo, hi)算法的最后一步操作，是对去除了首末元素之后总长缩减两个单元的字数组进行递归倒置，即属于典型的尾递归。实际上属于尾递归形式的算法，均可以简捷地转换为等效的迭代版本。</p>
-<a id="more"></a>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//尾递归版</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(lo &lt; hi)</span><br><span class="line">    &#123;</span><br><span class="line">    	swap(A[lo], A[hi]);</span><br><span class="line">        reverse(A, lo+<span class="number">1</span>, hi<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//迭代版1</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">next:</span><br><span class="line">	<span class="keyword">if</span>(lo &lt; hi)</span><br><span class="line">    &#123;</span><br><span class="line">	    swap(A[lo], A[hi]);</span><br><span class="line">        lo++; hi--;</span><br><span class="line">        <span class="keyword">goto</span> next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//迭代版2</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(lo &lt; hi)</span><br><span class="line">    &#123;</span><br><span class="line">    	swap(A[lo++], A[hi--]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+在线性递归算法中，若递归调用在递归实例中恰好以最后一步操作的形式出现，则称作尾递归。比如如下代码中reverse(A, lo, hi)算法的最后一步操作，是对去除了首末元素之后总长缩减两个单元的字数组进行递归倒置，即属于典型的尾递归。实际上属于尾递归形式的算法，均可以简捷地转换为等效的迭代版本。 <a id="more"></a> <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//尾递归版</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(lo &lt; hi)</span><br><span class="line">    &#123;</span><br><span class="line">    	swap(A[lo], A[hi]);</span><br><span class="line">        reverse(A, lo+<span class="number">1</span>, hi<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//迭代版1</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">next:</span><br><span class="line">	<span class="keyword">if</span>(lo &lt; hi)</span><br><span class="line">    &#123;</span><br><span class="line">	    swap(A[lo], A[hi]);</span><br><span class="line">        lo++; hi--;</span><br><span class="line">        <span class="keyword">goto</span> next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//迭代版2</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(lo &lt; hi)</span><br><span class="line">    &#123;</span><br><span class="line">    	swap(A[lo++], A[hi--]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -174,7 +172,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#尾递归"><span class="toc-number">1.</span> <span class="toc-text"> 尾递归</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#尾递归"><span class="toc-number">1.</span> <span class="toc-text">尾递归</span></a></li></ol>
  
   </div>
 
@@ -280,10 +278,6 @@
 			
 		
 			
-				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/data-structure/" title="data structure">data structure<sup>1</sup></a></li>
 			
 		
@@ -292,11 +286,15 @@
 			
 		
 			
-				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
+				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
 			

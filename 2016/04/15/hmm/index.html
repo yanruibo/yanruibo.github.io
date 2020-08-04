@@ -11,12 +11,12 @@
     
 
     
-    <meta name="description" content="code:https:&#x2F;&#x2F;github.com&#x2F;yanruibo&#x2F;machine-learning&#x2F;tree&#x2F;master&#x2F;hmm  1. 要求 隐马尔科夫模型应用 实验要求:  学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。 既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。 实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces">
+    <meta name="description" content="code:https:&#x2F;&#x2F;github.com&#x2F;yanruibo&#x2F;machine-learning&#x2F;tree&#x2F;master&#x2F;hmm 1. 要求 隐马尔科夫模型应用 实验要求:  学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。 既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。 实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hmm">
 <meta property="og:url" content="https://yanruibo.github.io/2016/04/15/hmm/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="code:https:&#x2F;&#x2F;github.com&#x2F;yanruibo&#x2F;machine-learning&#x2F;tree&#x2F;master&#x2F;hmm  1. 要求 隐马尔科夫模型应用 实验要求:  学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。 既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。 实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces">
+<meta property="og:description" content="code:https:&#x2F;&#x2F;github.com&#x2F;yanruibo&#x2F;machine-learning&#x2F;tree&#x2F;master&#x2F;hmm 1. 要求 隐马尔科夫模型应用 实验要求:  学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。 既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。 实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是">
 <meta property="article:published_time" content="2016-04-15T13:12:53.000Z">
 <meta property="article:modified_time" content="2016-12-19T14:00:45.000Z">
 <meta property="article:author" content="yrb">
@@ -102,104 +102,92 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-要求"><span class="toc-number">1.</span> <span class="toc-text"> 1. 要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-相关知识"><span class="toc-number">2.</span> <span class="toc-text"> 2. 相关知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#21-hmm"><span class="toc-number">2.1.</span> <span class="toc-text"> 2.1 HMM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#22-论文human-face-identification"><span class="toc-number">2.2.</span> <span class="toc-text"> 2.2 论文Human Face Identification</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1采样"><span class="toc-number">2.2.1.</span> <span class="toc-text"> (1).采样</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2训练"><span class="toc-number">2.2.2.</span> <span class="toc-text"> (2).训练</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3测试"><span class="toc-number">2.2.3.</span> <span class="toc-text"> (3).测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-实验过程"><span class="toc-number">3.</span> <span class="toc-text"> 3. 实验过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-总结"><span class="toc-number">4.</span> <span class="toc-text"> 4. 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-参考文献"><span class="toc-number">5.</span> <span class="toc-text"> 5. 参考文献：</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#要求"><span class="toc-number">1.</span> <span class="toc-text">1. 要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#相关知识"><span class="toc-number">2.</span> <span class="toc-text">2. 相关知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hmm"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 HMM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#论文human-face-identification"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 论文Human Face Identification</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#采样"><span class="toc-number">2.2.1.</span> <span class="toc-text">(1).采样</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#训练"><span class="toc-number">2.2.2.</span> <span class="toc-text">(2).训练</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#测试"><span class="toc-number">2.2.3.</span> <span class="toc-text">(3).测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实验过程"><span class="toc-number">3.</span> <span class="toc-text">3. 实验过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">4. 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-number">5.</span> <span class="toc-text">5. 参考文献：</span></a></li></ol>
 		
 		</div>
 		
 		<p><a href="https://github.com/yanruibo/machine-learning/tree/master/hmm" target="_blank" rel="noopener">code:https://github.com/yanruibo/machine-learning/tree/master/hmm</a></p>
-<h2 id="1-要求"><a class="markdownIt-Anchor" href="#1-要求"></a> 1. 要求</h2>
+<h2 id="要求">1. 要求</h2>
 <p>隐马尔科夫模型应用<br />
 实验要求:</p>
-<ol>
+<ol type="1">
 <li>学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。</li>
 <li>既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。</li>
 <li>实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是上传的一个小实验库，有需要的同学可找助教要较大的人脸库，或自行搜索下载）。</li>
 </ol>
 <a id="more"></a>
-<h2 id="2-相关知识"><a class="markdownIt-Anchor" href="#2-相关知识"></a> 2. 相关知识</h2>
-<p>这里把重点放在介绍论文的人脸识别方法上。</p>
-<h3 id="21-hmm"><a class="markdownIt-Anchor" href="#21-hmm"></a> 2.1 HMM</h3>
-<p>隐马尔科夫模型是关于时序的概率模型，描述由一个隐藏的马尔科夫链随机生成不可观测的状态的随机序列，再由各个状态生成一个观测而产生观测随机序列的过程，隐藏的马尔科夫链随机生成的状态的序列称为状态序列，每个状态生成一个观测，而由此产生的观测的随机序列，称为观测序列，序列的每一个位置又可以看做是一个时刻。<br />
+<h2 id="相关知识">2. 相关知识</h2>
+<p>　　这里把重点放在介绍论文的人脸识别方法上。</p>
+<h3 id="hmm">2.1 HMM</h3>
+<p>　　隐马尔科夫模型是关于时序的概率模型，描述由一个隐藏的马尔科夫链随机生成不可观测的状态的随机序列，再由各个状态生成一个观测而产生观测随机序列的过程，隐藏的马尔科夫链随机生成的状态的序列称为状态序列，每个状态生成一个观测，而由此产生的观测的随机序列，称为观测序列，序列的每一个位置又可以看做是一个时刻。<br />
 　　隐马尔科夫模型由初始概率分布，状态转移概率分布以及观测概率分布确定。其余内容还有概率的前向和后向计算算法，学习算法中的Baum-Welch算法和预测算法的维特比算法，这些知识在统计学习方法第10章中有详细的介绍。</p>
-<h3 id="22-论文human-face-identification"><a class="markdownIt-Anchor" href="#22-论文human-face-identification"></a> 2.2 论文Human Face Identification</h3>
+<h3 id="论文human-face-identification">2.2 论文Human Face Identification</h3>
 <p>Parameterisation of a Stochastic Model for Human Face Identification</p>
-<h4 id="1采样"><a class="markdownIt-Anchor" href="#1采样"></a> (1).采样</h4>
-<p>将每一个人脸的图像从上到下进行分块，每个分块的像素层数（行数）为L，块与块之前需要重叠一下，重叠的像素层数（行数）为M，那么状态序列的长度用下面的公式来计算：</p>
-<p class='katex-block'><span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>T</mi><mo>=</mo><mi>ϕ</mi><mo stretchy="false">(</mo><mfrac><mrow><mi>Y</mi><mo>−</mo><mi>L</mi></mrow><mrow><mi>L</mi><mo>−</mo><mi>M</mi></mrow></mfrac><mo stretchy="false">)</mo><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">T=\phi(\frac{Y-L}{L-M})+1
-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.1296600000000003em;vertical-align:-0.7693300000000001em;"></span><span class="mord mathdefault">ϕ</span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.36033em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">L</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">M</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.22222em;">Y</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathdefault">L</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span></span></p>
-<p>在代码中我对每一个块的图像进行了图像特征提取，一方面是为了降维，另一方面是为了突出主要特征，常见的图像特征提取方法有LBP(Local Binary Pattern)和HOG(Histogram of Oriented Gradients),由于在模式识别课上已经自己实现了LBP算法，在这里就直接把模式识别课上写过的LBP算法拿过来直接用了。而论文中的操作只是把每一块图像的每一行首尾连接拼成一个很长的向量，这里对论文中的方法做了改进。</p>
-<p>具体代码如下所示：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">对每一张图片生成观测序列，该方法是把图片每一块的图像进行LBP提取特征之后变成36维的向量，然后按行放到一个矩阵中</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_observations_lbp</span><span class="params">(imagepath, L=<span class="number">10</span>, M=<span class="number">4</span>)</span>:</span></span><br><span class="line">    <span class="comment"># './att_faces/s1/1.pgm'</span></span><br><span class="line">    image = cv2.imread(imagepath)</span><br><span class="line">    <span class="comment"># (112,92)</span></span><br><span class="line">    <span class="comment"># print image.shape</span></span><br><span class="line">    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">    Y = gray_image.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># L = 10</span></span><br><span class="line">    <span class="comment"># M = 4</span></span><br><span class="line">    obs_length = np.floor((Y - L) / (L - M)) + <span class="number">1</span></span><br><span class="line">    obs_list = []</span><br><span class="line">    counter = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span>(counter &lt; obs_length):</span><br><span class="line">        begin = counter * (L - M)</span><br><span class="line">        end = (counter + <span class="number">1</span>) * L - counter * M</span><br><span class="line">        sub_mat = gray_image[range(begin, end), :]</span><br><span class="line">        obsith = LBP(sub_mat)</span><br><span class="line">        <span class="comment"># print sub_mat.shape</span></span><br><span class="line">        <span class="comment"># obsith = sub_mat.reshape(sub_mat.shape[0] * sub_mat.shape[1])</span></span><br><span class="line">        <span class="comment"># obsith = obsith.reshape((obsith.shape[0], 1))</span></span><br><span class="line">        obs_list.append(obsith)</span><br><span class="line">        counter = counter + <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> np.array(obs_list)</span><br></pre></td></tr></table></figure>
-<h4 id="2训练"><a class="markdownIt-Anchor" href="#2训练"></a> (2).训练</h4>
-<p>对每一张图片进行采样过后得到一个观测序列，这个观测序列中的一个值也是一个向量，这就和书上写的一般的HMM有所不同了，这里需要用到GaussianHMM，就是把每个观测序列的观测值训练为一个高斯模型。</p>
-<p>具体代码如下所示：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">models = []</span><br><span class="line"><span class="keyword">print</span> <span class="string">"begin training models"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(train_labels)):</span><br><span class="line">    <span class="keyword">if</span>(i % <span class="number">5</span> == <span class="number">0</span>):</span><br><span class="line">        <span class="comment"># 0 5 10 15 : 1 2 3 4</span></span><br><span class="line">        <span class="comment"># 选取同一个人的五张图片训练一个Model</span></span><br><span class="line">        X1 = generate_observations_lbp(train_imagepathes[i], L, M);</span><br><span class="line">        X2 = generate_observations_lbp(train_imagepathes[i + <span class="number">1</span>], L, M);</span><br><span class="line">        X3 = generate_observations_lbp(train_imagepathes[i + <span class="number">2</span>], L, M);</span><br><span class="line">        X4 = generate_observations_lbp(train_imagepathes[i + <span class="number">3</span>], L, M);</span><br><span class="line">        X5 = generate_observations_lbp(train_imagepathes[i + <span class="number">4</span>], L, M);</span><br><span class="line">        model = GaussianHMM(n_components, covariance_type=<span class="string">"diag"</span>, n_iter=<span class="number">1000</span>).fit([X1, X2, X3, X4, X5])</span><br><span class="line">        models.append(model)</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"training models %s%%"</span> % str(float(i+<span class="number">5</span>)/len(train_imagepathes)*<span class="number">100</span>)</span><br><span class="line">model_labels = range(<span class="number">1</span>, <span class="number">41</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="3测试"><a class="markdownIt-Anchor" href="#3测试"></a> (3).测试</h4>
-<p>训练完成之后，进行测试，这里我们选用的是论文中的数据集。该数据集共有40个不同的人脸，每个人脸有10个，我们选用每个人脸的前五个作为训练，后五个作为测试，这样就得到了40个GaussianHMM的model，然后在测试的时候，对每一张待测试的图片先生成观测序列，然后计算一下<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><msub><mi>O</mi><mrow><mi>t</mi><mi>e</mi><mi>s</mi><mi>t</mi></mrow></msub><mi mathvariant="normal">∣</mi><msup><mi>λ</mi><mrow><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">P(O_{test}|\lambda^{(k)})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.138em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2805559999999999em;"><span style="top:-2.5500000000000003em;margin-left:-0.02778em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathdefault mtight">t</span><span class="mord mathdefault mtight">e</span><span class="mord mathdefault mtight">s</span><span class="mord mathdefault mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathdefault">λ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8879999999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mopen mtight">(</span><span class="mord mathdefault mtight" style="margin-right:0.03148em;">k</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>（调用一下model.score函数），然后找到最大概率的模型所对应的类别就是预测的类别。</p>
-<p>具体代码如下所示：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">correct_count = <span class="number">0</span></span><br><span class="line">   <span class="keyword">for</span> j <span class="keyword">in</span> range(len(test_imagepathes)):</span><br><span class="line">       test_one = generate_observations_lbp(test_imagepathes[j], L, M)</span><br><span class="line">       max_score = -sys.maxint</span><br><span class="line">       max_label = <span class="literal">None</span></span><br><span class="line">       <span class="keyword">for</span> k <span class="keyword">in</span> range(len(models)):</span><br><span class="line">           current_score = models[k].score(test_one)</span><br><span class="line">           <span class="keyword">if</span>(current_score &gt; max_score):</span><br><span class="line">               max_score = current_score</span><br><span class="line">               max_label = model_labels[k]</span><br><span class="line">       <span class="keyword">if</span>(max_label == test_labels[j]):</span><br><span class="line">           <span class="keyword">print</span> <span class="string">"correct: real"</span>,test_labels[j],<span class="string">"predict"</span>,max_label</span><br><span class="line">           correct_count += <span class="number">1</span></span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           <span class="keyword">print</span> <span class="string">"error: real"</span>,test_labels[j],<span class="string">"predict"</span>,max_label</span><br><span class="line">   accracy = float(correct_count)/len(test_imagepathes)</span><br><span class="line">   <span class="keyword">print</span> <span class="string">"Accracy is"</span>,accracy</span><br><span class="line">   <span class="keyword">return</span> accracy</span><br></pre></td></tr></table></figure>
-<h2 id="3-实验过程"><a class="markdownIt-Anchor" href="#3-实验过程"></a> 3. 实验过程</h2>
-<p><font color="#FF7F50">注意跑本实验代码需要scikit-learn0.14版本。因为最新版本的scikit-learn库把hmm模块移除了。</font><br />
-这里总结一下GaussianHMM的用法：<br />
-1.scikit-learn中的GaussianHMM(我的是scikit-learn 0.14.1版本)<br />
-from sklearn.hmm import GaussianHMM<br />
-model = GaussianHMM(n_components, covariance_type=“diag”, n_iter=1000).fit([X1, X2, X3, X4, X5])<br />
-2.助教给的hmmlearn包<br />
-from hmmlearn.hmm import GaussianHMM<br />
-model = GaussianHMM(n_components, covariance_type=“diag”, n_iter=1000).fit(X)<br />
-上面的X是五个图片矩阵按行堆叠形成的大矩阵。</p>
+<h4 id="采样">(1).采样</h4>
+<p>　　将每一个人脸的图像从上到下进行分块，每个分块的像素层数（行数）为L，块与块之前需要重叠一下，重叠的像素层数（行数）为M，那么状态序列的长度用下面的公式来计算： <span class="math display">\[
+T=\phi(\frac{Y-L}{L-M})+1
+\]</span> 　　在代码中我对每一个块的图像进行了图像特征提取，一方面是为了降维，另一方面是为了突出主要特征，常见的图像特征提取方法有LBP(Local Binary Pattern)和HOG(Histogram of Oriented Gradients),由于在模式识别课上已经自己实现了LBP算法，在这里就直接把模式识别课上写过的LBP算法拿过来直接用了。而论文中的操作只是把每一块图像的每一行首尾连接拼成一个很长的向量，这里对论文中的方法做了改进。</p>
+<p>具体代码如下所示： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">对每一张图片生成观测序列，该方法是把图片每一块的图像进行LBP提取特征之后变成36维的向量，然后按行放到一个矩阵中</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_observations_lbp</span><span class="params">(imagepath, L=<span class="number">10</span>, M=<span class="number">4</span>)</span>:</span></span><br><span class="line">    <span class="comment"># './att_faces/s1/1.pgm'</span></span><br><span class="line">    image = cv2.imread(imagepath)</span><br><span class="line">    <span class="comment"># (112,92)</span></span><br><span class="line">    <span class="comment"># print image.shape</span></span><br><span class="line">    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line">    Y = gray_image.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># L = 10</span></span><br><span class="line">    <span class="comment"># M = 4</span></span><br><span class="line">    obs_length = np.floor((Y - L) / (L - M)) + <span class="number">1</span></span><br><span class="line">    obs_list = []</span><br><span class="line">    counter = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span>(counter &lt; obs_length):</span><br><span class="line">        begin = counter * (L - M)</span><br><span class="line">        end = (counter + <span class="number">1</span>) * L - counter * M</span><br><span class="line">        sub_mat = gray_image[range(begin, end), :]</span><br><span class="line">        obsith = LBP(sub_mat)</span><br><span class="line">        <span class="comment"># print sub_mat.shape</span></span><br><span class="line">        <span class="comment"># obsith = sub_mat.reshape(sub_mat.shape[0] * sub_mat.shape[1])</span></span><br><span class="line">        <span class="comment"># obsith = obsith.reshape((obsith.shape[0], 1))</span></span><br><span class="line">        obs_list.append(obsith)</span><br><span class="line">        counter = counter + <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> np.array(obs_list)</span><br></pre></td></tr></table></figure></p>
+<h4 id="训练">(2).训练</h4>
+<p>　　对每一张图片进行采样过后得到一个观测序列，这个观测序列中的一个值也是一个向量，这就和书上写的一般的HMM有所不同了，这里需要用到GaussianHMM，就是把每个观测序列的观测值训练为一个高斯模型。</p>
+<p>具体代码如下所示： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">models = []</span><br><span class="line"><span class="keyword">print</span> <span class="string">"begin training models"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(train_labels)):</span><br><span class="line">    <span class="keyword">if</span>(i % <span class="number">5</span> == <span class="number">0</span>):</span><br><span class="line">        <span class="comment"># 0 5 10 15 : 1 2 3 4</span></span><br><span class="line">        <span class="comment"># 选取同一个人的五张图片训练一个Model</span></span><br><span class="line">        X1 = generate_observations_lbp(train_imagepathes[i], L, M);</span><br><span class="line">        X2 = generate_observations_lbp(train_imagepathes[i + <span class="number">1</span>], L, M);</span><br><span class="line">        X3 = generate_observations_lbp(train_imagepathes[i + <span class="number">2</span>], L, M);</span><br><span class="line">        X4 = generate_observations_lbp(train_imagepathes[i + <span class="number">3</span>], L, M);</span><br><span class="line">        X5 = generate_observations_lbp(train_imagepathes[i + <span class="number">4</span>], L, M);</span><br><span class="line">        model = GaussianHMM(n_components, covariance_type=<span class="string">"diag"</span>, n_iter=<span class="number">1000</span>).fit([X1, X2, X3, X4, X5])</span><br><span class="line">        models.append(model)</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"training models %s%%"</span> % str(float(i+<span class="number">5</span>)/len(train_imagepathes)*<span class="number">100</span>)</span><br><span class="line">model_labels = range(<span class="number">1</span>, <span class="number">41</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="测试">(3).测试</h4>
+<p>　　训练完成之后，进行测试，这里我们选用的是论文中的数据集。该数据集共有40个不同的人脸，每个人脸有10个，我们选用每个人脸的前五个作为训练，后五个作为测试，这样就得到了40个GaussianHMM的model，然后在测试的时候，对每一张待测试的图片先生成观测序列，然后计算一下<span class="math inline">\(P(O_{test}|\lambda^{(k)})\)</span>（调用一下model.score函数），然后找到最大概率的模型所对应的类别就是预测的类别。</p>
+<p>具体代码如下所示： <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">correct_count = <span class="number">0</span></span><br><span class="line">   <span class="keyword">for</span> j <span class="keyword">in</span> range(len(test_imagepathes)):</span><br><span class="line">       test_one = generate_observations_lbp(test_imagepathes[j], L, M)</span><br><span class="line">       max_score = -sys.maxint</span><br><span class="line">       max_label = <span class="literal">None</span></span><br><span class="line">       <span class="keyword">for</span> k <span class="keyword">in</span> range(len(models)):</span><br><span class="line">           current_score = models[k].score(test_one)</span><br><span class="line">           <span class="keyword">if</span>(current_score &gt; max_score):</span><br><span class="line">               max_score = current_score</span><br><span class="line">               max_label = model_labels[k]</span><br><span class="line">       <span class="keyword">if</span>(max_label == test_labels[j]):</span><br><span class="line">           <span class="keyword">print</span> <span class="string">"correct: real"</span>,test_labels[j],<span class="string">"predict"</span>,max_label</span><br><span class="line">           correct_count += <span class="number">1</span></span><br><span class="line">       <span class="keyword">else</span>:</span><br><span class="line">           <span class="keyword">print</span> <span class="string">"error: real"</span>,test_labels[j],<span class="string">"predict"</span>,max_label</span><br><span class="line">   accracy = float(correct_count)/len(test_imagepathes)</span><br><span class="line">   <span class="keyword">print</span> <span class="string">"Accracy is"</span>,accracy</span><br><span class="line">   <span class="keyword">return</span> accracy</span><br></pre></td></tr></table></figure></p>
+<h2 id="实验过程">3. 实验过程</h2>
+<p>　　<font color="#FF7F50">注意跑本实验代码需要scikit-learn0.14版本。因为最新版本的scikit-learn库把hmm模块移除了。</font> 这里总结一下GaussianHMM的用法： 1.scikit-learn中的GaussianHMM(我的是scikit-learn 0.14.1版本) from sklearn.hmm import GaussianHMM model = GaussianHMM(n_components, covariance_type="diag", n_iter=1000).fit([X1, X2, X3, X4, X5]) 2.助教给的hmmlearn包 from hmmlearn.hmm import GaussianHMM model = GaussianHMM(n_components, covariance_type="diag", n_iter=1000).fit(X) 上面的X是五个图片矩阵按行堆叠形成的大矩阵。</p>
 <p>代码目录结构说明：<br />
 att_faces论文中所用到的数据库<br />
-<a href="http://face-identification.py" target="_blank" rel="noopener">face-identification.py</a>，选用每个类别的前五张作为训练集后五张作为测试集进行人脸识别代码。<br />
-<a href="http://face-indentification-random.py" target="_blank" rel="noopener">face-indentification-random.py</a>。从每个类别的10张图片中任意选择五张作为训练集，剩余的作为测试集进行人脸识别。<br />
+face-identification.py，选用每个类别的前五张作为训练集后五张作为测试集进行人脸识别代码。<br />
+face-indentification-random.py。从每个类别的10张图片中任意选择五张作为训练集，剩余的作为测试集进行人脸识别。<br />
 log的txt文件是调参过程中的输出的参数的准确率的信息。<br />
 mainLBP.py是提取图像特征的LBP算法。</p>
 <p>固定L和M,观察states的影响：</p>
 <table>
 <thead>
-<tr>
-<th style="text-align:center">states</th>
-<th style="text-align:center">L</th>
-<th style="text-align:center">M</th>
-<th style="text-align:center">Accuracy</th>
+<tr class="header">
+<th style="text-align: center;">states</th>
+<th style="text-align: center;">L</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">Accuracy</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:center">4</td>
-<td style="text-align:center">14</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.695</td>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.695</td>
 </tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">14</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.695</td>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.695</td>
 </tr>
-<tr>
-<td style="text-align:center">6</td>
-<td style="text-align:center">14</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.7</td>
+<tr class="odd">
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.7</td>
 </tr>
-<tr>
-<td style="text-align:center">7</td>
-<td style="text-align:center">14</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.69</td>
+<tr class="even">
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.69</td>
 </tr>
-<tr>
-<td style="text-align:center">8</td>
-<td style="text-align:center">14</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.58</td>
+<tr class="odd">
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.58</td>
 </tr>
-<tr>
-<td style="text-align:center">9</td>
-<td style="text-align:center">14</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.605</td>
+<tr class="even">
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.605</td>
 </tr>
 </tbody>
 </table>
@@ -207,43 +195,43 @@ mainLBP.py是提取图像特征的LBP算法。</p>
 <p>固定states和M,观察L的影响：</p>
 <table>
 <thead>
-<tr>
-<th style="text-align:center">states</th>
-<th style="text-align:center">L</th>
-<th style="text-align:center">M</th>
-<th style="text-align:center">Accuracy</th>
+<tr class="header">
+<th style="text-align: center;">states</th>
+<th style="text-align: center;">L</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">Accuracy</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">12</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.675</td>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.675</td>
 </tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">13</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.62</td>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.62</td>
 </tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">14</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.685</td>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.685</td>
 </tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">15</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.67</td>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.67</td>
 </tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">16</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.675</td>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.675</td>
 </tr>
 </tbody>
 </table>
@@ -251,37 +239,37 @@ mainLBP.py是提取图像特征的LBP算法。</p>
 <p>固定states和L,观察M的影响：</p>
 <table>
 <thead>
-<tr>
-<th style="text-align:center">states</th>
-<th style="text-align:center">L</th>
-<th style="text-align:center">M</th>
-<th style="text-align:center">Accuracy</th>
+<tr class="header">
+<th style="text-align: center;">states</th>
+<th style="text-align: center;">L</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">Accuracy</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">14</td>
-<td style="text-align:center">5</td>
-<td style="text-align:center">0.585</td>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">0.585</td>
 </tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">14</td>
-<td style="text-align:center">6</td>
-<td style="text-align:center">0.59</td>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">0.59</td>
 </tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">14</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.695</td>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.695</td>
 </tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">14</td>
-<td style="text-align:center">8</td>
-<td style="text-align:center">0.64</td>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">0.64</td>
 </tr>
 </tbody>
 </table>
@@ -289,47 +277,46 @@ mainLBP.py是提取图像特征的LBP算法。</p>
 <p>比较好的运行结果：</p>
 <table>
 <thead>
-<tr>
-<th style="text-align:center">states</th>
-<th style="text-align:center">L</th>
-<th style="text-align:center">M</th>
-<th style="text-align:center">Accuracy</th>
+<tr class="header">
+<th style="text-align: center;">states</th>
+<th style="text-align: center;">L</th>
+<th style="text-align: center;">M</th>
+<th style="text-align: center;">Accuracy</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:center">4</td>
-<td style="text-align:center">9</td>
-<td style="text-align:center">5</td>
-<td style="text-align:center">0.73</td>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">0.73</td>
 </tr>
-<tr>
-<td style="text-align:center">4</td>
-<td style="text-align:center">12</td>
-<td style="text-align:center">8</td>
-<td style="text-align:center">0.765</td>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;">0.765</td>
 </tr>
-<tr>
-<td style="text-align:center">4</td>
-<td style="text-align:center">13</td>
-<td style="text-align:center">11</td>
-<td style="text-align:center">0.75</td>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">0.75</td>
 </tr>
-<tr>
-<td style="text-align:center">5</td>
-<td style="text-align:center">10</td>
-<td style="text-align:center">7</td>
-<td style="text-align:center">0.745</td>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">0.745</td>
 </tr>
 </tbody>
 </table>
 <p>虽然准确率比较低，但是和论文中是差不多的，论文中的错误率也是在0.2-0.3之间。另外精确率比较高，比较好的结果可以见log-random6.txt文件。</p>
-<h2 id="4-总结"><a class="markdownIt-Anchor" href="#4-总结"></a> 4. 总结</h2>
-<p>通过这次实验对用HMM进行人脸识别有了比较深入的了解，有一个缺点就是所有的函数都是通过调用库函数实现的，由于自己实现HMM已经非常复杂，而且用于人脸识别的每个观测点又是一个向量，因此要实现GaussianHMM，而且对于同一个人的人脸要用五张进行训练得到一个GaussianHMM模型，还要实现接收multi observation sequences的GaussianHMM，需要有一个迭代更新GaussianHMM参数的过程，这个方法在下面参考文献的硕士论文中有提到，因为时间紧张而且还要写老师的论文，就没有自己编写算法。就采用了调库的方式。</p>
-<h2 id="5-参考文献"><a class="markdownIt-Anchor" href="#5-参考文献"></a> 5. 参考文献：</h2>
+<h2 id="总结">4. 总结</h2>
+<p>　　通过这次实验对用HMM进行人脸识别有了比较深入的了解，有一个缺点就是所有的函数都是通过调用库函数实现的，由于自己实现HMM已经非常复杂，而且用于人脸识别的每个观测点又是一个向量，因此要实现GaussianHMM，而且对于同一个人的人脸要用五张进行训练得到一个GaussianHMM模型，还要实现接收multi observation sequences的GaussianHMM，需要有一个迭代更新GaussianHMM参数的过程，这个方法在下面参考文献的硕士论文中有提到，因为时间紧张而且还要写老师的论文，就没有自己编写算法。就采用了调库的方式。</p>
+<h2 id="参考文献">5. 参考文献：</h2>
 <p>1.Parameterisation of a Stochastic Model for Human Face Identification<br />
-2.基于隐马尔科夫模型的人脸识别　李增劲<br />
-哈哈哈哈</p>
+2.基于隐马尔科夫模型的人脸识别　李增劲 哈哈哈哈</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -394,7 +381,7 @@ mainLBP.py是提取图像特征的LBP算法。</p>
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-要求"><span class="toc-number">1.</span> <span class="toc-text"> 1. 要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-相关知识"><span class="toc-number">2.</span> <span class="toc-text"> 2. 相关知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#21-hmm"><span class="toc-number">2.1.</span> <span class="toc-text"> 2.1 HMM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#22-论文human-face-identification"><span class="toc-number">2.2.</span> <span class="toc-text"> 2.2 论文Human Face Identification</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1采样"><span class="toc-number">2.2.1.</span> <span class="toc-text"> (1).采样</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2训练"><span class="toc-number">2.2.2.</span> <span class="toc-text"> (2).训练</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3测试"><span class="toc-number">2.2.3.</span> <span class="toc-text"> (3).测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-实验过程"><span class="toc-number">3.</span> <span class="toc-text"> 3. 实验过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-总结"><span class="toc-number">4.</span> <span class="toc-text"> 4. 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-参考文献"><span class="toc-number">5.</span> <span class="toc-text"> 5. 参考文献：</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#要求"><span class="toc-number">1.</span> <span class="toc-text">1. 要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#相关知识"><span class="toc-number">2.</span> <span class="toc-text">2. 相关知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#hmm"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 HMM</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#论文human-face-identification"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 论文Human Face Identification</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#采样"><span class="toc-number">2.2.1.</span> <span class="toc-text">(1).采样</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#训练"><span class="toc-number">2.2.2.</span> <span class="toc-text">(2).训练</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#测试"><span class="toc-number">2.2.3.</span> <span class="toc-text">(3).测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实验过程"><span class="toc-number">3.</span> <span class="toc-text">3. 实验过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">4. 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-number">5.</span> <span class="toc-text">5. 参考文献：</span></a></li></ol>
  
   </div>
 
@@ -500,10 +487,6 @@ mainLBP.py是提取图像特征的LBP算法。</p>
 			
 		
 			
-				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/data-structure/" title="data structure">data structure<sup>1</sup></a></li>
 			
 		
@@ -512,11 +495,15 @@ mainLBP.py是提取图像特征的LBP算法。</p>
 			
 		
 			
-				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
+				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
 			

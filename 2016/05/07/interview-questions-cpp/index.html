@@ -106,40 +106,40 @@
 		
 		</div>
 		
-		<ol>
+		<ol type="1">
 <li>排序</li>
-<li>线程和进程的区别，Linux中线程的实现（Linux内核的知识）<a href="http://www.ibm.com/developerworks/cn/linux/kernel/l-thread/" target="_blank" rel="noopener">http://www.ibm.com/developerworks/cn/linux/kernel/l-thread/</a></li>
+<li>线程和进程的区别，Linux中线程的实现（Linux内核的知识）http://www.ibm.com/developerworks/cn/linux/kernel/l-thread/</li>
 <li>Linux如何进行线程间通信</li>
 <li>如何查找二叉树上距离最远的两个节点</li>
 <li>Linux下C++的开发环境，makefile和gdb</li>
 <li>计算机网络OSI七层模型，TCP/IP模型（各层的功能，比如链路层的功能）</li>
 <li>在C++程序中开辟1M的内存空间来存储数据有几种方法？（除了new和malloc之外还有没），new和malloc的区别，</li>
 <li>一个程序的内存是怎么分配的？比如全局变量在什么地方http://www.cnblogs.com/daocaoren/archive/2011/06/29/2092957.html</li>
-<li>C++类的内存分布（虚表） <a href="http://www.cnblogs.com/jerry19880126/p/3616999.html" target="_blank" rel="noopener">http://www.cnblogs.com/jerry19880126/p/3616999.html</a>           <a href="http://blog.csdn.net/weitian826/article/details/6913482" target="_blank" rel="noopener">http://blog.csdn.net/weitian826/article/details/6913482</a></li>
-<li>hash的冲突避免机制  <a href="http://www.cnblogs.com/jillzhang/archive/2006/11/03/548671.html" target="_blank" rel="noopener">http://www.cnblogs.com/jillzhang/archive/2006/11/03/548671.html</a></li>
+<li>C++类的内存分布（虚表） http://www.cnblogs.com/jerry19880126/p/3616999.html http://blog.csdn.net/weitian826/article/details/6913482</li>
+<li>hash的冲突避免机制 http://www.cnblogs.com/jillzhang/archive/2006/11/03/548671.html</li>
 <li>C和C++中static的作用</li>
 <li>如果有一段代码比较短，但是经常用，C和C++中分别会怎么做（extern和inline）</li>
 <li>C++中存在继承关系时，构造函数和析构函数的执行</li>
-<li>拷贝构造函数的写法以及什么时候调用拷贝构造函数？<a href="http://blog.csdn.net/iceshirley/article/details/4152602" target="_blank" rel="noopener">http://blog.csdn.net/iceshirley/article/details/4152602</a></li>
+<li>拷贝构造函数的写法以及什么时候调用拷贝构造函数？http://blog.csdn.net/iceshirley/article/details/4152602</li>
 <li>shallow copy &amp; deep copy</li>
 <li>socket 创建过程</li>
 <li>atoi函数自己实现算法</li>
 <li>数组中存有1-1000个数，从中抽出一个数，设计一个算法，找出抽出的数是多少？</li>
-<li>比如有一个1万个单词的词典，比如map是一个正规的词，amp也是一个正规的词，给一个词求出类此的词在词典中的个数。类似于map[‘map’]=int求int值</li>
+<li>比如有一个1万个单词的词典，比如map是一个正规的词，amp也是一个正规的词，给一个词求出类此的词在词典中的个数。类似于map['map']=int求int值</li>
 <li>有一个文件特别大，颠倒其中的内容，比如最后一行存到第一行，倒数第二行存到第二行</li>
 <li>找出一个字符串中连着重复的字符的最大个数，比如aabbbcccddddd 输出5</li>
 <li>有一个特别大的文件中存储一些整数值，比如有128G，你的电脑内存只有4G，如何找出文件中前十大的数（hash和min heap）</li>
 <li>select和epoll</li>
 </ol>
 <p>notes:</p>
-<ol>
+<ol type="1">
 <li>我们一般认为两个浮点数相等，当且当他们之间的误差不超过1e-8。</li>
-<li>保留两位小数，C++用 printf(&quot;%.2lf&quot;,a);</li>
+<li>保留两位小数，C++用 printf("%.2lf",a);</li>
 <li>cpp四舍五入到整数</li>
 </ol>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th></th>
 <th>2.1</th>
 <th>2.6</th>
@@ -148,21 +148,21 @@
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>floor:不大于自变量的最大整数</td>
 <td>2</td>
 <td>2</td>
 <td>-3</td>
 <td>-3</td>
 </tr>
-<tr>
+<tr class="even">
 <td>ceil: 不小于自变量的最小整数</td>
 <td>3</td>
 <td>3</td>
 <td>-2</td>
 <td>-2</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>round:四舍五入到最邻近的整数</td>
 <td>2</td>
 <td>3</td>
@@ -171,8 +171,7 @@
 </tr>
 </tbody>
 </table>
-<p>floor和ceil需要加math.h头文件。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">round</span><span class="params">(<span class="keyword">double</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (r &gt; <span class="number">0.0</span>)? <span class="built_in">floor</span>(r+<span class="number">0.5</span>):<span class="built_in">ceil</span>(r<span class="number">-0.5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">round</span><span class="params">(<span class="keyword">float</span> f)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">floor</span>(f * <span class="number">5</span> + <span class="number">0.5</span>) / <span class="number">5</span>;</span><br><span class="line">    <span class="comment">// return std::round(f * 5) / 5; // C++11</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>floor和ceil需要加math.h头文件。 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">round</span><span class="params">(<span class="keyword">double</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (r &gt; <span class="number">0.0</span>)? <span class="built_in">floor</span>(r+<span class="number">0.5</span>):<span class="built_in">ceil</span>(r<span class="number">-0.5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">round</span><span class="params">(<span class="keyword">float</span> f)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">floor</span>(f * <span class="number">5</span> + <span class="number">0.5</span>) / <span class="number">5</span>;</span><br><span class="line">    <span class="comment">// return std::round(f * 5) / 5; // C++11</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -343,10 +342,6 @@
 			
 		
 			
-				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/data-structure/" title="data structure">data structure<sup>1</sup></a></li>
 			
 		
@@ -355,11 +350,15 @@
 			
 		
 			
-				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
+				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
 			

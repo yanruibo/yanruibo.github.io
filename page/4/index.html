@@ -95,7 +95,7 @@
 </header>
     <div class="article-content">
         
-        <ol>
+        <ol type="1">
 <li>分级页面，概率论，LRU，单链表数据结构及其接口，前1000大的整数及其时间复杂度分析。</li>
 <li>两个大文件A，B，文件内容都不能直接读入内存，A，B中存的是一行一行的url，如何找出两个文件中同时存在的url?思路：字符串哈希分块。</li>
 <li>进程和线程的区别?</li>
@@ -177,15 +177,17 @@
 </header>
     <div class="article-content">
         
-        <h1 id="第一章-绪论"><a class="markdownIt-Anchor" href="#第一章-绪论"></a> 第一章　绪论</h1>
-<ol>
-<li>本书用模型泛指从数据中学得的结果。有文献用模型指全局性结果，例如一棵决策树，而用模式指局部性结果。</li>
-<li>记录的集合称为dataset，每条记录是关于一个事件或者对象的描述，称为一个示例instance或样本，sample。反应事件或对象的某方面的表现或性质的事项，例如色泽，根蒂，敲声，称为属性，attribute，或特征feature。属性上的取值，称为属性值，属性张成的空间称为属性空间，样本空间或者输入空间。把每一个属性作为一个坐标轴，每个对象都可以在空间中找到自己的坐标位置，空间中的每个点对应一个坐标向量，因此我们也把一个示例称为一个特征向量feature vector。示例结果的信息称为标记，label,拥有了标记信息的示例称为样例，sample。所有标记的集合称为标记空间或输出空间。</li>
+        <h1 id="第一章-绪论">第一章　绪论</h1>
+<ol type="1">
+<li>本书用模型泛指从数据中学得的结果。有文献用模型指全局性结果，例如一棵决策树，而用模式指局部性结果。<br />
+</li>
+<li>记录的集合称为dataset，每条记录是关于一个事件或者对象的描述，称为一个示例instance或样本，sample。反应事件或对象的某方面的表现或性质的事项，例如色泽，根蒂，敲声，称为属性，attribute，或特征feature。属性上的取值，称为属性值，属性张成的空间称为属性空间，样本空间或者输入空间。把每一个属性作为一个坐标轴，每个对象都可以在空间中找到自己的坐标位置，空间中的每个点对应一个坐标向量，因此我们也把一个示例称为一个特征向量feature vector。示例结果的信息称为标记，label,拥有了标记信息的示例称为样例，sample。所有标记的集合称为标记空间或输出空间。<br />
+</li>
 <li>现实问题中，我们常面临很大的假设空间，但学习过程是基于有限样本训练集进行的，因此，有可能有多个假设与训练集一致，即存在着一个与训练集一致的假设集合，我们称之为版本空间。</li>
 </ol>
-<h1 id="第二章-模型评估与选择"><a class="markdownIt-Anchor" href="#第二章-模型评估与选择"></a> 第二章　模型评估与选择</h1>
-<ol>
-<li>我们只有一个包含m个样例的数据集<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>D</mi><mo>=</mo><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>y</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mo stretchy="false">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo separator="true">,</mo><msub><mi>y</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><mo stretchy="false">(</mo><msub><mi>x</mi><mi>m</mi></msub><mo separator="true">,</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">D = {(x_1,y_1),(x_2,y_2),...,(x_m,y_m)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">.</span><span class="mord">.</span><span class="mord">.</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathdefault">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span>，既要训练又要测试，怎样才能做到呢？答案是通过对D进行适当的处理，从中产生训练集S和测试集T。下面介绍常见的做法。</li>
+<h1 id="第二章-模型评估与选择">第二章　模型评估与选择</h1>
+<ol type="1">
+<li>我们只有一个包含m个样例的数据集<span class="math inline">\(D = {(x_1,y_1),(x_2,y_2),...,(x_m,y_m)}\)</span>，既要训练又要测试，怎样才能做到呢？答案是通过对D进行适当的处理，从中产生训练集S和测试集T。下面介绍常见的做法。</li>
 </ol>
 
         
@@ -246,11 +248,11 @@
 </header>
     <div class="article-content">
         
-        <h1 id="numpy常用的操作"><a class="markdownIt-Anchor" href="#numpy常用的操作"></a> numpy常用的操作</h1>
+        <h1 id="numpy常用的操作">numpy常用的操作</h1>
 <p>本文适合那些使用过numpy一段时间的人阅读，记录一些numpy中的常用知识点和使用技巧。</p>
-<h2 id="1-note-1"><a class="markdownIt-Anchor" href="#1-note-1"></a> 1. note 1</h2>
-<p>当某个轴的元素为-1时，将根据数组元素的个数自动计算此轴的长度。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape</span><br><span class="line">(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape = <span class="number">3</span>,<span class="number">-1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">4</span>, <span class="number">5</span>]])</span><br></pre></td></tr></table></figure>
+<h2 id="note-1">1. note 1</h2>
+<p>当某个轴的元素为-1时，将根据数组元素的个数自动计算此轴的长度。<br />
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape</span><br><span class="line">(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape = <span class="number">3</span>,<span class="number">-1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">4</span>, <span class="number">5</span>]])</span><br></pre></td></tr></table></figure></p>
         
         
         <p class="article-more-link">
@@ -371,7 +373,7 @@
 </header>
     <div class="article-content">
         
-        <h2 id="cmake-uninstall"><a class="markdownIt-Anchor" href="#cmake-uninstall"></a> CMake uninstall</h2>
+        <h2 id="cmake-uninstall">CMake uninstall</h2>
 <p>CMake is a great tool when building cross-plattform software. It offers also install target so you can build and install software this way:</p>
         
         
@@ -433,8 +435,8 @@
 </header>
     <div class="article-content">
         
-        <h2 id="1-spark开发环境配置"><a class="markdownIt-Anchor" href="#1-spark开发环境配置"></a> 1. spark开发环境配置</h2>
-<h3 id="11-下载所需文件"><a class="markdownIt-Anchor" href="#11-下载所需文件"></a> 1.1 下载所需文件</h3>
+        <h2 id="spark开发环境配置">1. spark开发环境配置</h2>
+<h3 id="下载所需文件">1.1 下载所需文件</h3>
 <p>下载spark-1.5.1-bin-hadoop2.6.tgz，支持hadoop2.6.0 or later,故可支持hadoop2.7.1。下载scala-2.11.7。如果不使用scala语言，就不用下载scala语言的编译器和解释环境。</p>
         
         
@@ -496,10 +498,10 @@
 </header>
     <div class="article-content">
         
-        <h2 id="1-实验前准备工作"><a class="markdownIt-Anchor" href="#1-实验前准备工作"></a> 1. 实验前准备工作</h2>
-<h3 id="11-安装hadoop伪分布式系统"><a class="markdownIt-Anchor" href="#11-安装hadoop伪分布式系统"></a> 1.1 安装hadoop伪分布式系统</h3>
+        <h2 id="实验前准备工作">1. 实验前准备工作</h2>
+<h3 id="安装hadoop伪分布式系统">1.1 安装hadoop伪分布式系统</h3>
 <p>1.下载hadoop源文件，hadoop-2.7.1.tar.gz，将其解压在一个文件夹中，这里我解压到了我的电脑的主目录下面，配置参数，主要修改一下几个文件：<br />
-core-site.xml</p>
+core-site.xml<br />
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  	<span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        	<span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        	<span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://localhost:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"> 	<span class="tag">&lt;<span class="name">property</span>&gt;</span>  </span><br><span class="line">        	<span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">        	<span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/yanruibo/hadoop-2.7.1/tmp<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  </span><br><span class="line">    	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
         
         
@@ -561,40 +563,40 @@ core-site.xml</p>
 </header>
     <div class="article-content">
         
-        <ol>
+        <ol type="1">
 <li>排序</li>
-<li>线程和进程的区别，Linux中线程的实现（Linux内核的知识）<a href="http://www.ibm.com/developerworks/cn/linux/kernel/l-thread/" target="_blank" rel="noopener">http://www.ibm.com/developerworks/cn/linux/kernel/l-thread/</a></li>
+<li>线程和进程的区别，Linux中线程的实现（Linux内核的知识）http://www.ibm.com/developerworks/cn/linux/kernel/l-thread/</li>
 <li>Linux如何进行线程间通信</li>
 <li>如何查找二叉树上距离最远的两个节点</li>
 <li>Linux下C++的开发环境，makefile和gdb</li>
 <li>计算机网络OSI七层模型，TCP/IP模型（各层的功能，比如链路层的功能）</li>
 <li>在C++程序中开辟1M的内存空间来存储数据有几种方法？（除了new和malloc之外还有没），new和malloc的区别，</li>
 <li>一个程序的内存是怎么分配的？比如全局变量在什么地方http://www.cnblogs.com/daocaoren/archive/2011/06/29/2092957.html</li>
-<li>C++类的内存分布（虚表） <a href="http://www.cnblogs.com/jerry19880126/p/3616999.html" target="_blank" rel="noopener">http://www.cnblogs.com/jerry19880126/p/3616999.html</a>           <a href="http://blog.csdn.net/weitian826/article/details/6913482" target="_blank" rel="noopener">http://blog.csdn.net/weitian826/article/details/6913482</a></li>
-<li>hash的冲突避免机制  <a href="http://www.cnblogs.com/jillzhang/archive/2006/11/03/548671.html" target="_blank" rel="noopener">http://www.cnblogs.com/jillzhang/archive/2006/11/03/548671.html</a></li>
+<li>C++类的内存分布（虚表） http://www.cnblogs.com/jerry19880126/p/3616999.html http://blog.csdn.net/weitian826/article/details/6913482</li>
+<li>hash的冲突避免机制 http://www.cnblogs.com/jillzhang/archive/2006/11/03/548671.html</li>
 <li>C和C++中static的作用</li>
 <li>如果有一段代码比较短，但是经常用，C和C++中分别会怎么做（extern和inline）</li>
 <li>C++中存在继承关系时，构造函数和析构函数的执行</li>
-<li>拷贝构造函数的写法以及什么时候调用拷贝构造函数？<a href="http://blog.csdn.net/iceshirley/article/details/4152602" target="_blank" rel="noopener">http://blog.csdn.net/iceshirley/article/details/4152602</a></li>
+<li>拷贝构造函数的写法以及什么时候调用拷贝构造函数？http://blog.csdn.net/iceshirley/article/details/4152602</li>
 <li>shallow copy &amp; deep copy</li>
 <li>socket 创建过程</li>
 <li>atoi函数自己实现算法</li>
 <li>数组中存有1-1000个数，从中抽出一个数，设计一个算法，找出抽出的数是多少？</li>
-<li>比如有一个1万个单词的词典，比如map是一个正规的词，amp也是一个正规的词，给一个词求出类此的词在词典中的个数。类似于map[‘map’]=int求int值</li>
+<li>比如有一个1万个单词的词典，比如map是一个正规的词，amp也是一个正规的词，给一个词求出类此的词在词典中的个数。类似于map['map']=int求int值</li>
 <li>有一个文件特别大，颠倒其中的内容，比如最后一行存到第一行，倒数第二行存到第二行</li>
 <li>找出一个字符串中连着重复的字符的最大个数，比如aabbbcccddddd 输出5</li>
 <li>有一个特别大的文件中存储一些整数值，比如有128G，你的电脑内存只有4G，如何找出文件中前十大的数（hash和min heap）</li>
 <li>select和epoll</li>
 </ol>
 <p>notes:</p>
-<ol>
+<ol type="1">
 <li>我们一般认为两个浮点数相等，当且当他们之间的误差不超过1e-8。</li>
-<li>保留两位小数，C++用 printf(&quot;%.2lf&quot;,a);</li>
+<li>保留两位小数，C++用 printf("%.2lf",a);</li>
 <li>cpp四舍五入到整数</li>
 </ol>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th></th>
 <th>2.1</th>
 <th>2.6</th>
@@ -603,21 +605,21 @@ core-site.xml</p>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>floor:不大于自变量的最大整数</td>
 <td>2</td>
 <td>2</td>
 <td>-3</td>
 <td>-3</td>
 </tr>
-<tr>
+<tr class="even">
 <td>ceil: 不小于自变量的最小整数</td>
 <td>3</td>
 <td>3</td>
 <td>-2</td>
 <td>-2</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>round:四舍五入到最邻近的整数</td>
 <td>2</td>
 <td>3</td>
@@ -626,8 +628,7 @@ core-site.xml</p>
 </tr>
 </tbody>
 </table>
-<p>floor和ceil需要加math.h头文件。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">round</span><span class="params">(<span class="keyword">double</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (r &gt; <span class="number">0.0</span>)? <span class="built_in">floor</span>(r+<span class="number">0.5</span>):<span class="built_in">ceil</span>(r<span class="number">-0.5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">round</span><span class="params">(<span class="keyword">float</span> f)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">floor</span>(f * <span class="number">5</span> + <span class="number">0.5</span>) / <span class="number">5</span>;</span><br><span class="line">    <span class="comment">// return std::round(f * 5) / 5; // C++11</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>floor和ceil需要加math.h头文件。 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">round</span><span class="params">(<span class="keyword">double</span> r)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (r &gt; <span class="number">0.0</span>)? <span class="built_in">floor</span>(r+<span class="number">0.5</span>):<span class="built_in">ceil</span>(r<span class="number">-0.5</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">round</span><span class="params">(<span class="keyword">float</span> f)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">floor</span>(f * <span class="number">5</span> + <span class="number">0.5</span>) / <span class="number">5</span>;</span><br><span class="line">    <span class="comment">// return std::round(f * 5) / 5; // C++11</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
         
         
@@ -688,10 +689,10 @@ core-site.xml</p>
     <div class="article-content">
         
         <p><a href="https://github.com/yanruibo/machine-learning/tree/master/hmm" target="_blank" rel="noopener">code:https://github.com/yanruibo/machine-learning/tree/master/hmm</a></p>
-<h2 id="1-要求"><a class="markdownIt-Anchor" href="#1-要求"></a> 1. 要求</h2>
+<h2 id="要求">1. 要求</h2>
 <p>隐马尔科夫模型应用<br />
 实验要求:</p>
-<ol>
+<ol type="1">
 <li>学习课件、课本和其它相关资料，掌握HMM的原理和应用方法。</li>
 <li>既可以根据网络课堂给的参考文章，也可以自己选定问题，采用HMM方法进行应用。</li>
 <li>实验相关资料包括：SAMARIA的文章，HMM编程示例，人脸库（yelefaces是上传的一个小实验库，有需要的同学可找助教要较大的人脸库，或自行搜索下载）。</li>
@@ -757,17 +758,14 @@ core-site.xml</p>
     <div class="article-content">
         
         <p><a href="https://github.com/yanruibo/machine-learning/tree/master/svm" target="_blank" rel="noopener">code:https://github.com/yanruibo/machine-learning/tree/master/svm</a></p>
-<h2 id="1-要求"><a class="markdownIt-Anchor" href="#1-要求"></a> 1. 要求</h2>
-<p>SVM算法改进<br />
-1.实验目的</p>
+<h2 id="要求">1. 要求</h2>
+<p>SVM算法改进 1.实验目的</p>
 <pre><code>1.1--掌握SVM基本原理和算法
 1.2--掌握基于SVM的实际问题建模和应用
-1.3--自学SVM的改进算法并应用
-</code></pre>
+1.3--自学SVM的改进算法并应用</code></pre>
 <p>2.实验内容</p>
 <pre><code>2.1--对课本案例进行实验，调整SVM参数，如C和核函数参数等，对比实验结果并分析。
-2.2--编程实现SVM改进算法，分析实验结果，注意样本的Fussy的属性值加入。
-</code></pre>
+2.2--编程实现SVM改进算法，分析实验结果，注意样本的Fussy的属性值加入。</code></pre>
         
         
         <p class="article-more-link">
@@ -919,10 +917,6 @@ core-site.xml</p>
 			
 		
 			
-				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/data-structure/" title="data structure">data structure<sup>1</sup></a></li>
 			
 		
@@ -931,11 +925,15 @@ core-site.xml</p>
 			
 		
 			
-				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
+				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
 			
