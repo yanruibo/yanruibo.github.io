@@ -11,16 +11,16 @@
     
 
     
-    <meta name="description" content="1. 简介 wide部分通过对特征根进行cross-product feature transformations来表达模型的记忆性，wide部分本质上是一个lr。 deep部分首先将id特征进行embedding，然后将所有特征的embedding拼接起来，作为一个多层神经网络的输入，用这个多层（深层）的神经网络来学习泛化性。这里的泛化性本质是通过embedding来实现的，与MF矩阵分解和FM">
+    <meta name="description" content="1. 简介 wide部分通过对特征进行cross-product feature transformations来表达模型的记忆性，wide部分本质上是一个lr。 deep部分首先将id特征进行embedding，然后将所有特征的embedding拼接起来，作为一个多层神经网络的输入，用这个多层（深层）的神经网络来学习泛化性。这里的泛化性本质是通过embedding来实现的，与MF矩阵分解和FM类">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Wide and Deep Learning for Recommender Systems">
 <meta property="og:url" content="https://yanruibo.github.io/2020/08/01/Wide-and-Deep-Learning-for-Recommender-Systems/index.html">
 <meta property="og:site_name" content="Blog">
-<meta property="og:description" content="1. 简介 wide部分通过对特征根进行cross-product feature transformations来表达模型的记忆性，wide部分本质上是一个lr。 deep部分首先将id特征进行embedding，然后将所有特征的embedding拼接起来，作为一个多层神经网络的输入，用这个多层（深层）的神经网络来学习泛化性。这里的泛化性本质是通过embedding来实现的，与MF矩阵分解和FM">
+<meta property="og:description" content="1. 简介 wide部分通过对特征进行cross-product feature transformations来表达模型的记忆性，wide部分本质上是一个lr。 deep部分首先将id特征进行embedding，然后将所有特征的embedding拼接起来，作为一个多层神经网络的输入，用这个多层（深层）的神经网络来学习泛化性。这里的泛化性本质是通过embedding来实现的，与MF矩阵分解和FM类">
 <meta property="og:image" content="https://yanruibo.github.io/2020/08/01/Wide-and-Deep-Learning-for-Recommender-Systems/figure1.png">
 <meta property="og:image" content="https://yanruibo.github.io/2020/08/01/Wide-and-Deep-Learning-for-Recommender-Systems/figure2.png">
 <meta property="article:published_time" content="2020-08-01T03:07:28.000Z">
-<meta property="article:modified_time" content="2020-08-04T02:40:59.123Z">
+<meta property="article:modified_time" content="2020-08-05T14:39:45.200Z">
 <meta property="article:author" content="yrb">
 <meta property="article:tag" content="paper">
 <meta property="article:tag" content="machine learning">
@@ -110,7 +110,7 @@
 		</div>
 		
 		<h2 id="简介">1. 简介</h2>
-<p>wide部分通过对特征根进行cross-product feature transformations来表达模型的记忆性，wide部分本质上是一个lr。</p>
+<p>wide部分通过对特征进行cross-product feature transformations来表达模型的记忆性，wide部分本质上是一个lr。</p>
 <p>deep部分首先将id特征进行embedding，然后将所有特征的embedding拼接起来，作为一个多层神经网络的输入，用这个多层（深层）的神经网络来学习泛化性。这里的泛化性本质是通过embedding来实现的，与MF矩阵分解和FM类似。</p>
 <a id="more"></a>
 <h2 id="模型结构">2. 模型结构</h2>
@@ -146,6 +146,7 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 <p>Wide部分使模型具有记忆性，即用户的历史统计信息，比如具体的某一个用户历史点击过的物品，比如用户下载过netflix这个app。Deep部分使模型具有泛化性，泛化性是指模型能发现用户历史点击之外的泛化信息。Wide and Deep模型融合了Wide和Deep的优点，使模型既有记忆性也具有泛化性。</p>
 <p>下面这段话摘自论文，对记忆性和泛化性表述的很清楚，感觉一翻译就变味了。</p>
 <p>One challenge in recommender systems, similar to the gen- eral search ranking problem, is to achieve both memorization and generalization. Memorization can be loosely defined as learning the frequent co-occurrence of items or features and exploiting the correlation available in the historical data. Generalization, on the other hand, is based on transitivity of correlation and explores new feature combinations that have never or rarely occurred in the past. Recommenda- tions based on memorization are usually more topical and directly relevant to the items on which users have already performed actions. Compared with memorization, generalization tends to improve the diversity of the recommended items.</p>
+<p>论文很短，总共4页。建议大家去读一下，大概花不到一个小时就能读完。</p>
 <p>推荐系统里面有Exploitation-exploration trade-off的问题，简言之，两者的含义如下：</p>
 <ul>
 <li>exploitation：根据当前信息，由训练的模型做出最佳的决策。</li>
@@ -293,19 +294,19 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 			
 		
 			
-				<li><a href="/tags/stack/" title="stack">stack<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/queue/" title="queue">queue<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/bigdata-system/" title="bigdata system">bigdata system<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/spark/" title="spark">spark<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/stack/" title="stack">stack<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/queue/" title="queue">queue<sup>2</sup></a></li>
 			
 		
 			
@@ -321,11 +322,11 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 			
 		
 			
-				<li><a href="/tags/data-structure/" title="data structure">data structure<sup>1</sup></a></li>
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>1</sup></a></li>
+				<li><a href="/tags/data-structure/" title="data structure">data structure<sup>1</sup></a></li>
 			
 		
 			
@@ -337,19 +338,19 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 			
 		
 			
+				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/variable-types/" title="variable types">variable types<sup>1</sup></a></li>
 			
 		
 			
+				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/bit-operation/" title="bit operation">bit operation<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/crol/" title="crol">crol<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/bubble-sort/" title="bubble sort">bubble sort<sup>1</sup></a></li>
 			
 		
 		</ul>
