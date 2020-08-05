@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://yanruibo.github.io/2020/08/01/Wide-and-Deep-Learning-for-Recommender-Systems/figure1.png">
 <meta property="og:image" content="https://yanruibo.github.io/2020/08/01/Wide-and-Deep-Learning-for-Recommender-Systems/figure2.png">
 <meta property="article:published_time" content="2020-08-01T03:07:28.000Z">
-<meta property="article:modified_time" content="2020-08-05T14:39:45.200Z">
+<meta property="article:modified_time" content="2020-08-05T14:43:46.685Z">
 <meta property="article:author" content="yrb">
 <meta property="article:tag" content="paper">
 <meta property="article:tag" content="machine learning">
@@ -143,7 +143,7 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 <h2 id="代码示例">3. 代码示例</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> paddle.fluid <span class="keyword">as</span> fluid</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">wide_deep</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wide_part</span><span class="params">(self, data)</span>:</span></span><br><span class="line"></span><br><span class="line">        out = fluid.layers.fc(input=data,</span><br><span class="line">                            size=<span class="number">1</span>, </span><br><span class="line">                            param_attr=fluid.ParamAttr(initializer=fluid.initializer.TruncatedNormal(loc=<span class="number">0.0</span>, scale=<span class="number">1.0</span> / math.sqrt(data.shape[<span class="number">1</span>])),</span><br><span class="line">                                                       regularizer=fluid.regularizer.L2DecayRegularizer(regularization_coeff=<span class="number">1e-4</span>)),</span><br><span class="line">                            act=<span class="literal">None</span>,</span><br><span class="line">                            name=<span class="string">'wide'</span>)</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fc</span><span class="params">(self, data, hidden_units, active, tag)</span>:</span></span><br><span class="line">        </span><br><span class="line">        output = fluid.layers.fc(input=data,</span><br><span class="line">                            size=hidden_units, </span><br><span class="line">                            param_attr=fluid.ParamAttr(initializer=fluid.initializer.TruncatedNormal(loc=<span class="number">0.0</span>, scale=<span class="number">1.0</span> / math.sqrt(data.shape[<span class="number">1</span>]))),</span><br><span class="line">                            act=active,</span><br><span class="line">                            name=tag)</span><br><span class="line">                            </span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deep_part</span><span class="params">(self, data, hidden1_units, hidden2_units, hidden3_units)</span>:</span></span><br><span class="line">        </span><br><span class="line">        l1 = self.fc(data, hidden1_units, <span class="string">'relu'</span>, <span class="string">'l1'</span>)</span><br><span class="line">        l2 = self.fc(l1, hidden2_units, <span class="string">'relu'</span>, <span class="string">'l2'</span>)</span><br><span class="line">        l3 = self.fc(l2, hidden3_units, <span class="string">'relu'</span>, <span class="string">'l3'</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> l3</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_data</span><span class="params">(self)</span>:</span></span><br><span class="line">        wide_input = fluid.data(name=<span class="string">'wide_input'</span>, shape=[<span class="literal">None</span>, <span class="number">8</span>], dtype=<span class="string">'float32'</span>)</span><br><span class="line">        deep_input = fluid.data(name=<span class="string">'deep_input'</span>, shape=[<span class="literal">None</span>, <span class="number">58</span>], dtype=<span class="string">'float32'</span>)</span><br><span class="line">        label = fluid.data(name=<span class="string">'label'</span>, shape=[<span class="literal">None</span>, <span class="number">1</span>], dtype=<span class="string">'float32'</span>)</span><br><span class="line">        inputs = [wide_input] + [deep_input] + [label]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> inputs</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">model</span><span class="params">(self, inputs, hidden1_units, hidden2_units, hidden3_units)</span>:</span></span><br><span class="line"></span><br><span class="line">        wide_output = self.wide_part(inputs[<span class="number">0</span>])</span><br><span class="line">        deep_output = self.deep_part(inputs[<span class="number">1</span>], hidden1_units, hidden2_units, hidden3_units)</span><br><span class="line">        </span><br><span class="line">        wide_model = fluid.layers.fc(input=wide_output,</span><br><span class="line">                        size=<span class="number">1</span>, </span><br><span class="line">                        param_attr=fluid.ParamAttr(initializer=fluid.initializer.TruncatedNormal(loc=<span class="number">0.0</span>, scale=<span class="number">1.0</span>)),</span><br><span class="line">                        act=<span class="literal">None</span>,</span><br><span class="line">                        name=<span class="string">'w_wide'</span>)</span><br><span class="line">                        </span><br><span class="line">        deep_model = fluid.layers.fc(input=deep_output,</span><br><span class="line">                        size=<span class="number">1</span>, </span><br><span class="line">                        param_attr=fluid.ParamAttr(initializer=fluid.initializer.TruncatedNormal(loc=<span class="number">0.0</span>, scale=<span class="number">1.0</span>)),</span><br><span class="line">                        act=<span class="literal">None</span>,</span><br><span class="line">                        name=<span class="string">'w_deep'</span>)</span><br><span class="line">                    </span><br><span class="line">        prediction = fluid.layers.elementwise_add(wide_model, deep_model)</span><br><span class="line">        pred = fluid.layers.sigmoid(fluid.layers.clip(prediction, min=<span class="number">-15.0</span>, max=<span class="number">15.0</span>), name=<span class="string">"prediction"</span>)</span><br><span class="line"></span><br><span class="line">        num_seqs = fluid.layers.create_tensor(dtype=<span class="string">'int64'</span>)</span><br><span class="line">        acc = fluid.layers.accuracy(input=pred, label=fluid.layers.cast(x=inputs[<span class="number">2</span>], dtype=<span class="string">'int64'</span>), total=num_seqs)</span><br><span class="line">        auc_val, batch_auc, auc_states = fluid.layers.auc(input=pred, label=fluid.layers.cast(x=inputs[<span class="number">2</span>], dtype=<span class="string">'int64'</span>))</span><br><span class="line">        </span><br><span class="line">        cost = fluid.layers.sigmoid_cross_entropy_with_logits(x=prediction, label=inputs[<span class="number">2</span>]) </span><br><span class="line">        avg_cost = fluid.layers.mean(cost)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> avg_cost, acc,auc_val, batch_auc, auc_states</span><br></pre></td></tr></table></figure>
 <h2 id="总结">4. 总结</h2>
-<p>Wide部分使模型具有记忆性，即用户的历史统计信息，比如具体的某一个用户历史点击过的物品，比如用户下载过netflix这个app。Deep部分使模型具有泛化性，泛化性是指模型能发现用户历史点击之外的泛化信息。Wide and Deep模型融合了Wide和Deep的优点，使模型既有记忆性也具有泛化性。</p>
+<p>Wide部分使模型具有记忆性，即学习用户的历史统计信息，比如具体的某一个用户历史点击过的物品，比如用户下载过netflix这个app。Deep部分使模型具有泛化性，泛化性是指模型能学习到用户历史点击之外的泛化信息。Wide and Deep模型融合了Wide和Deep的优点，使模型既有记忆性也具有泛化性。</p>
 <p>下面这段话摘自论文，对记忆性和泛化性表述的很清楚，感觉一翻译就变味了。</p>
 <p>One challenge in recommender systems, similar to the gen- eral search ranking problem, is to achieve both memorization and generalization. Memorization can be loosely defined as learning the frequent co-occurrence of items or features and exploiting the correlation available in the historical data. Generalization, on the other hand, is based on transitivity of correlation and explores new feature combinations that have never or rarely occurred in the past. Recommenda- tions based on memorization are usually more topical and directly relevant to the items on which users have already performed actions. Compared with memorization, generalization tends to improve the diversity of the recommended items.</p>
 <p>论文很短，总共4页。建议大家去读一下，大概花不到一个小时就能读完。</p>
@@ -294,19 +294,19 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 			
 		
 			
-				<li><a href="/tags/bigdata-system/" title="bigdata system">bigdata system<sup>2</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/spark/" title="spark">spark<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/stack/" title="stack">stack<sup>2</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/queue/" title="queue">queue<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/bigdata-system/" title="bigdata system">bigdata system<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>2</sup></a></li>
 			
 		
 			
@@ -322,11 +322,11 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 			
 		
 			
-				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>1</sup></a></li>
+				<li><a href="/tags/data-structure/" title="data structure">data structure<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/data-structure/" title="data structure">data structure<sup>1</sup></a></li>
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>1</sup></a></li>
 			
 		
 			
@@ -338,19 +338,19 @@ P(Y=1 \mid \mathbf{x})=\sigma\left(\mathbf{w}_{w i d e}^{T}[\mathbf{x}, \phi(\ma
 			
 		
 			
-				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/variable-types/" title="variable types">variable types<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/bit-operation/" title="bit operation">bit operation<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/crol/" title="crol">crol<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
 			
 		
 		</ul>
