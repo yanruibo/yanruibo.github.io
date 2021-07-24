@@ -17,6 +17,7 @@
 <meta property="og:url" content="https://yanruibo.github.io/2016/09/05/gdb-part1/index.html">
 <meta property="og:site_name" content="Blog">
 <meta property="og:description" content="GNU&#39;s GDB Debugger 1. chapter 1 To use gdb, do the following: Compile your program with the -g flag e.g. 1gcc -Wall -Wstrict-prototypes -ansi -pedantic -g myprog.c -o myprog (Note that we&#39;re using a l">
+<meta property="og:locale">
 <meta property="article:published_time" content="2016-09-05T08:18:21.000Z">
 <meta property="article:modified_time" content="2016-09-17T07:49:22.000Z">
 <meta property="article:author" content="yrb">
@@ -40,7 +41,7 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<meta name="generator" content="Hexo 5.4.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -111,8 +112,8 @@
 <h2 id="chapter-1">1. chapter 1</h2>
 <p>To use gdb, do the following:<br />
 <strong>Compile your program with the -g flag e.g.</strong><br />
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall -Wstrict-prototypes -ansi -pedantic -g myprog.c -o myprog</span><br></pre></td></tr></table></figure> (Note that we're using a lot of warning options as well, which are the "-Wall -Wstrict-prototypes -ansi -pedantic" options; these force the compiler to complain if your code isn't ANSI-compliant or if it has other suspicious features. It's a good habit to always use these options.) The "-g" option puts debugging information into the executable. Most importantly, it puts the text of the source code file into the executable so you can examine it as the program executes (we'll see how below).<br />
-<a id="more"></a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Wall -Wstrict-prototypes -ansi -pedantic -g myprog.c -o myprog</span><br></pre></td></tr></table></figure> (Note that we're using a lot of warning options as well, which are the "-Wall -Wstrict-prototypes -ansi -pedantic" options; these force the compiler to complain if your code isn't ANSI-compliant or if it has other suspicious features. It's a good habit to always use these options.) The "-g" option puts debugging information into the executable. Most importantly, it puts the text of the source code file into the executable so you can examine it as the program executes (we'll see how below).<br />
+<span id="more"></span></p>
 <p>Type gdb myprog (for the example above). This will start the interactive debugger. It's basically an interpreter-like environment in which you can run your program line-by-line and do useful debugging tasks as well.</p>
 <p>When in the debugger, you have a choice of lots of commands. Do "info" to get a list of commands. Here are some of the most important ones:<br />
 <strong> <code>run</code>: runs the program<br />
@@ -160,16 +161,16 @@ We can ask GDB to tell us which frame its context is in by giving the <code>fram
 <li>filename and function name: <strong>(gdb) list derivative.c:ForwardDiff</strong></li>
 </ul>
 <h4 id="listing-by-memory-address-advanced">2.1.2 Listing By Memory Address (advanced)</h4>
-<p>Every function begins at some memory address. You can find this address with the print function (which we'll cover later). For instance, we'll find the address for main(): <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) print *main</span><br><span class="line">$1 &#x3D; &#123;int (int, char **)&#125; 0x8048647 &lt;main&gt;</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure> So main() lives at 0x8048647. We can use list using memory locations as well; the syntax is very C'ish: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(gdb) list *0x8048647</span><br><span class="line">0x8048647 is in main (driver.c:17).</span><br><span class="line">12     &#125;</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16     int main(int argc, char *argv[])</span><br><span class="line">17     &#123;</span><br><span class="line">18          double x, dx, ans;</span><br><span class="line">19          double Forw, ForwDelta, Cent, CentDelta, Extr, ExtrDelta;</span><br><span class="line">20</span><br><span class="line">21          if (argc !&#x3D; 1) &#123;</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure></p>
+<p>Every function begins at some memory address. You can find this address with the print function (which we'll cover later). For instance, we'll find the address for main(): <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) print *main</span><br><span class="line">$1 = &#123;int (int, char **)&#125; 0x8048647 &lt;main&gt;</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure> So main() lives at 0x8048647. We can use list using memory locations as well; the syntax is very C'ish: <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">(gdb) list *0x8048647</span><br><span class="line">0x8048647 is in main (driver.c:17).</span><br><span class="line">12     &#125;</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16     int main(int argc, char *argv[])</span><br><span class="line">17     &#123;</span><br><span class="line">18          double x, dx, ans;</span><br><span class="line">19          double Forw, ForwDelta, Cent, CentDelta, Extr, ExtrDelta;</span><br><span class="line">20</span><br><span class="line">21          if (argc != 1) &#123;</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure></p>
 <h4 id="setting-the-list-size">2.1.3 Setting The List Size</h4>
-<p>GDB lists code in increments of 10 lines. Maybe that's too much. Or maybe that's too little. You can tell GDB to change the listing size with the set command and listsize variable: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(gdb) set listsize 5</span><br><span class="line">(gdb) list main</span><br><span class="line">15</span><br><span class="line">16     int main(int argc, char *argv[])</span><br><span class="line">17     &#123;</span><br><span class="line">18          double x, dx, ans;</span><br><span class="line">19          double Forw, ForwDelta, Cent, CentDelta, Extr, ExtrDelta;</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure></p>
+<p>GDB lists code in increments of 10 lines. Maybe that's too much. Or maybe that's too little. You can tell GDB to change the listing size with the set command and listsize variable: <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(gdb) set listsize 5</span><br><span class="line">(gdb) list main</span><br><span class="line">15</span><br><span class="line">16     int main(int argc, char *argv[])</span><br><span class="line">17     &#123;</span><br><span class="line">18          double x, dx, ans;</span><br><span class="line">19          double Forw, ForwDelta, Cent, CentDelta, Extr, ExtrDelta;</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure></p>
 <h3 id="the-.gdbinit-file">2.2 The .gdbinit File</h3>
 <p>Upon startup, GDB reads and executes an initialization file named <code>.gdbinit</code>. It can contain any command (eg <code>set</code> and <code>break</code>), and more. For example, "set listsize" and "set prompt" can go into <code>.gdbinit</code>. There are two locations where GDB will look for this file (in order): - In your home directory - In the current directory</p>
 <p>You can put commands to be executed for all your programming projects in <code>$HOME/.gdbinit</code> and project-specific commands in <code>$PWD/.gdbinit</code>.</p>
 <p>You can comment your <code>.gdbinit</code> files with bash's "#". And blank lines, of course, are ignored.</p>
 <h3 id="run-command">2.3 run command</h3>
 <p>Running A Program In GDB</p>
-<p>Let's properly introduce the run command. <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; argc; ++i)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Argument %d: %s\n"</span>, i, argv[i]);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> The run command with no arguments runs your program without command line arguments. If you want to give the program arguments, use the run command with whatever arguments you want to pass to the program: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ gdb arguments</span><br><span class="line">(gdb) run 1 2</span><br><span class="line">Starting program: try2 1 2</span><br><span class="line">Argument 0: arguments</span><br><span class="line">Argument 1: 1</span><br><span class="line">Argument 2: 2</span><br><span class="line"></span><br><span class="line">Program exited normally.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure> Nothing could be simpler. From now on, whenever you use run again, it will automatically use the arguments you just used (ie, "1 2"): <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(gdb) run</span><br><span class="line">Starting program: arguments 1 2</span><br><span class="line">Argument 0: arguments</span><br><span class="line">Argument 1: 1</span><br><span class="line">Argument 2: 2</span><br><span class="line"></span><br><span class="line">Program exited normally.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure> until you tell it to use different arguments: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(gdb) run testing one two three</span><br><span class="line">Starting program: arguments testing one two three</span><br><span class="line">Argument 0: testing</span><br><span class="line">Argument 1: one</span><br><span class="line">Argument 2: two</span><br><span class="line">Argument 3: three</span><br><span class="line"></span><br><span class="line">Program exited normally.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure> Suppose you want to run the program without command line arguments? How do you get run to stop automatically passing them? There is a "set args" command. If you give this command without any parameters, run will no longer automatically pass command line arguments to the program: <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(gdb) set args</span><br><span class="line">(gdb) run</span><br><span class="line">Starting program: arguments </span><br><span class="line">Argument 0: try2</span><br><span class="line"></span><br><span class="line">Program exited normally.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure> If you do give an argument to set args, those arguments will be passed to the program the next time you use run, just as if you had given those arguments directly to run.</p>
+<p>Let's properly introduce the run command. <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; argc; ++i)</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Argument %d: %s\n&quot;</span>, i, argv[i]);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> The run command with no arguments runs your program without command line arguments. If you want to give the program arguments, use the run command with whatever arguments you want to pass to the program: <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ gdb arguments</span><br><span class="line">(gdb) run 1 2</span><br><span class="line">Starting program: try2 1 2</span><br><span class="line">Argument 0: arguments</span><br><span class="line">Argument 1: 1</span><br><span class="line">Argument 2: 2</span><br><span class="line"></span><br><span class="line">Program exited normally.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure> Nothing could be simpler. From now on, whenever you use run again, it will automatically use the arguments you just used (ie, "1 2"): <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(gdb) run</span><br><span class="line">Starting program: arguments 1 2</span><br><span class="line">Argument 0: arguments</span><br><span class="line">Argument 1: 1</span><br><span class="line">Argument 2: 2</span><br><span class="line"></span><br><span class="line">Program exited normally.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure> until you tell it to use different arguments: <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(gdb) run testing one two three</span><br><span class="line">Starting program: arguments testing one two three</span><br><span class="line">Argument 0: testing</span><br><span class="line">Argument 1: one</span><br><span class="line">Argument 2: two</span><br><span class="line">Argument 3: three</span><br><span class="line"></span><br><span class="line">Program exited normally.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure> Suppose you want to run the program without command line arguments? How do you get run to stop automatically passing them? There is a "set args" command. If you give this command without any parameters, run will no longer automatically pass command line arguments to the program: <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(gdb) set args</span><br><span class="line">(gdb) run</span><br><span class="line">Starting program: arguments </span><br><span class="line">Argument 0: try2</span><br><span class="line"></span><br><span class="line">Program exited normally.</span><br><span class="line">(gdb)</span><br></pre></td></tr></table></figure> If you do give an argument to set args, those arguments will be passed to the program the next time you use run, just as if you had given those arguments directly to run.</p>
 <p>There is one more use for set args. If you intend on passing the same arguments to a program every time you begin a debugging session, you can put it in your .gdbinit file. This will make run pass your arguments to the program without you having to specify them every time you start GDB on a given project.</p>
 <h3 id="restarting-a-program-in-gdb">2.4 Restarting A Program In GDB</h3>
 <p>Sometimes you'll want to re-start a program in GDB from the beginning. One reason why you'd want to do this is if you find that the breakpoint you set is too late in the program execution and you want to set the breakpoint earlier. There are three ways of restarting a program in GDB.</p>
@@ -181,7 +182,7 @@ We can ask GDB to tell us which frame its context is in by giving the <code>fram
 <p>The last two options will leave everything intact: breakpoints, watchpoints, commands, convenience variables, etc. However, if you don't mind starting fresh with nothing saved from your previous debugging session, quitting GDB is certainly an option.</p>
 <p>You might be wondering why there's a <code>kill</code> command when you can either <code>quit</code> GDB with quit or re-run the program with <code>run</code>. The <code>kill</code> command seems kind of superfluous. There are some reasons why you'd use this command, and you can read about them here. Thanks to Suresh Babu for pointing out that the <code>kill</code> command may also be useful when you are remote debugging or if a process is debugged via the <code>attach</code> command. That said, I've never used <code>kill</code> myself.</p>
 <h2 id="reference">3. reference:</h2>
-<p><font color="purple"> <a href="http://www.dirac.org/linux/gdb/02a-Memory_Layout_And_The_Stack.php" target="_blank" rel="noopener">http://www.dirac.org/linux/gdb/02a-Memory_Layout_And_The_Stack.php</a><br />
+<p><font color="purple"> <a target="_blank" rel="noopener" href="http://www.dirac.org/linux/gdb/02a-Memory_Layout_And_The_Stack.php">http://www.dirac.org/linux/gdb/02a-Memory_Layout_And_The_Stack.php</a><br />
 非常好的gdb学习资料 </font></p>
   
 	</div>
@@ -292,7 +293,7 @@ We can ask GDB to tell us which frame its context is in by giving the <code>fram
 		  
 		
 		  
-			<li><a href="/categories/paper/" title="paper">paper<sup>1</sup></a></li>
+			<li><a href="/categories/paper/" title="paper">paper<sup>4</sup></a></li>
 		  
 		
 		</ul>
@@ -305,7 +306,7 @@ We can ask GDB to tell us which frame its context is in by giving the <code>fram
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/machine-learning/" title="machine learning">machine learning<sup>8</sup></a></li>
+				<li><a href="/tags/machine-learning/" title="machine learning">machine learning<sup>11</sup></a></li>
 			
 		
 			
@@ -314,6 +315,10 @@ We can ask GDB to tell us which frame its context is in by giving the <code>fram
 		
 			
 				<li><a href="/tags/cpp/" title="cpp">cpp<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/paper/" title="paper">paper<sup>4</sup></a></li>
 			
 		
 			
@@ -361,15 +366,15 @@ We can ask GDB to tell us which frame its context is in by giving the <code>fram
 			
 		
 			
-				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
+				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variable-types/" title="variable types">variable types<sup>1</sup></a></li>
 			
 		
 			
@@ -378,10 +383,6 @@ We can ask GDB to tell us which frame its context is in by giving the <code>fram
 		
 			
 				<li><a href="/tags/crol/" title="crol">crol<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -442,7 +443,7 @@ We can ask GDB to tell us which frame its context is in by giving the <code>fram
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2021 
 		
 		<a href="/about" target="_blank" title="yrb">yrb</a>
 		

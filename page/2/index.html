@@ -15,6 +15,7 @@
 <meta property="og:title" content="Blog">
 <meta property="og:url" content="https://yanruibo.github.io/page/2/index.html">
 <meta property="og:site_name" content="Blog">
+<meta property="og:locale">
 <meta property="article:author" content="yrb">
 <meta name="twitter:card" content="summary">
 
@@ -33,7 +34,7 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<meta name="generator" content="Hexo 5.4.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -82,31 +83,90 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/11/19/dynamic-programming-part-2/" title="dynamic programming part2" itemprop="url">dynamic programming part2</a>
+      <a href="/2016/11/21/infix-to-postfix/" title="infix to postfix" itemprop="url">infix to postfix</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
 		
   <p class="article-time">
-    <time datetime="2016-11-19T13:48:55.000Z" itemprop="datePublished"> Published 2016-11-19</time>
+    <time datetime="2016-11-21T06:30:04.000Z" itemprop="datePublished"> Published 2016-11-21</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <h1 id="dynamic-programming">Dynamic Programming</h1>
-<p>动态规划的本质是递归，一切动态规划问题一定能写成递归的形式。递归的本质是原问题能拆解成子问题，子问题再推导出原问题。<br />
-最优子结构：用递归式处理掉后效性，使子问题不具有后效性。<br />
-重叠子问题：用空间换取时间，将中间结果记录下来，去除冗余。<br />
-问题共性： 套路：最大，最小，最优，最长，计数。<br />
-离散问题：用动态规划来解决，容易设计状态。<br />
-最优子结构：子问题的解能推导出原问题的解。N-1可以推导出N。<br />
+        <p>如题，中缀表达式转后缀表达式。 求表达式<code>x=a+b*(c-d)/e</code>的后缀表达式。</p>
+
         
         
         <p class="article-more-link">
           
-            <a href="/2016/11/19/dynamic-programming-part-2/#more">Read More</a>
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/data-structures-and-algorithms/">data structures and algorithms</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/infix/">infix</a><a href="/tags/postfix/">postfix</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/11/20/dynamic-programming-part-3/" title="dynamic programming part3" itemprop="url">dynamic programming part3</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
+		
+  <p class="article-time">
+    <time datetime="2016-11-20T13:48:55.000Z" itemprop="datePublished"> Published 2016-11-20</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p>Ebay 面试题 | 把数组分成和大小一样的集合</p>
+<p><strong>题目描述</strong></p>
+<p>给定一个只包含正整数的非空数组，判断该数组能否分成两个和相等的子数组。</p>
+<p><strong>样例输入</strong></p>
+<p>输入[1,5,11,5] 返回 true . 可以分为[1,5,5]和[11]<br />
+输入[1,2,3,5] 返回false. 无法分为相等的两个子数组<br />
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/11/20/dynamic-programming-part-3/#more">Read More</a>
           
        </p>
     </div>
@@ -122,6 +182,69 @@
   <div class="article-tags">
   
   <span></span> <a href="/tags/algorithms/">algorithms</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/11/20/bit-operation/" title="bit operation" itemprop="url">bit operation</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
+		
+  <p class="article-time">
+    <time datetime="2016-11-20T08:22:00.000Z" itemprop="datePublished"> Published 2016-11-20</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h1 id="位操作">位操作</h1>
+<h2 id="循环左移">1. 循环左移</h2>
+<p>今天看邓俊辉的数据结构，在276页发现了一个循环左移五位的一小段代码是<code>(h&lt;&lt;5)|h&gt;&gt;27</code>，其中h是一个32 bit的整数。感觉很精妙。
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/11/20/bit-operation/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/data-structures-and-algorithms/">data structures and algorithms</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/bit-operation/">bit operation</a><a href="/tags/crol/">crol</a>
   </div>
 
 </div>
@@ -213,7 +336,7 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/11/19/graph-search-part1/" title="graph search part1" itemprop="url">graph search part1</a>
+      <a href="/2016/11/19/dynamic-programming-part-2/" title="dynamic programming part2" itemprop="url">dynamic programming part2</a>
   </h1>
   <p class="article-author">By
        
@@ -226,14 +349,18 @@
 </header>
     <div class="article-content">
         
-        <h2 id="leetcode-78-subsets">1. LeetCode 78: Subsets</h2>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; ans;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; one_answer;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">subset</span><span class="params">(<span class="keyword">int</span> idx, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&amp; choose)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(idx&gt;=nums.size())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nums.size();++i)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(choose[i])</span><br><span class="line">                &#123;</span><br><span class="line">                    one_answer.push_back(nums[i]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            ans.push_back(one_answer);</span><br><span class="line">            one_answer.clear();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">       </span><br><span class="line">        choose[idx] = <span class="literal">true</span>;</span><br><span class="line">        subset(idx+<span class="number">1</span>,nums,choose);</span><br><span class="line">        choose[idx] = <span class="literal">false</span>;</span><br><span class="line">        subset(idx+<span class="number">1</span>,nums,choose);</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; subsets(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; choose(nums.size(),<span class="literal">false</span>);</span><br><span class="line">        subset(<span class="number">0</span>,nums,choose);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; ans;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; one_answer;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">subset</span><span class="params">(<span class="keyword">int</span> idx, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&amp; choose)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(idx&gt;=nums.size())</span><br><span class="line">        &#123;</span><br><span class="line">            ans.push_back(one_answer);</span><br><span class="line">            one_answer.clear();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">       </span><br><span class="line">        subset(idx+<span class="number">1</span>,nums,choose);</span><br><span class="line"></span><br><span class="line">        one_answer.push_back(nums[idx]);</span><br><span class="line">        subset(idx+<span class="number">1</span>,nums,choose);</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; subsets(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        subset(<span class="number">0</span>,nums);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>深度优先，优先往深处走，广度优先，优先往最近的走。 时间复杂度是一样的，邻接矩阵<code>O(n^2)</code>;邻接表<code>O(n+e)</code>;
+        <h1 id="dynamic-programming">Dynamic Programming</h1>
+<p>动态规划的本质是递归，一切动态规划问题一定能写成递归的形式。递归的本质是原问题能拆解成子问题，子问题再推导出原问题。<br />
+最优子结构：用递归式处理掉后效性，使子问题不具有后效性。<br />
+重叠子问题：用空间换取时间，将中间结果记录下来，去除冗余。<br />
+问题共性： 套路：最大，最小，最优，最长，计数。<br />
+离散问题：用动态规划来解决，容易设计状态。<br />
+最优子结构：子问题的解能推导出原问题的解。N-1可以推导出N。<br />
         
         
         <p class="article-more-link">
           
-            <a href="/2016/11/19/graph-search-part1/#more">Read More</a>
+            <a href="/2016/11/19/dynamic-programming-part-2/#more">Read More</a>
           
        </p>
     </div>
@@ -296,6 +423,69 @@
         <p class="article-more-link">
           
             <a href="/2016/11/19/graph-search-part2/#more">Read More</a>
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/data-structures-and-algorithms/">data structures and algorithms</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/algorithms/">algorithms</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/11/19/graph-search-part1/" title="graph search part1" itemprop="url">graph search part1</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
+		
+  <p class="article-time">
+    <time datetime="2016-11-19T13:48:55.000Z" itemprop="datePublished"> Published 2016-11-19</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="leetcode-78-subsets">1. LeetCode 78: Subsets</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; ans;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; one_answer;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">subset</span><span class="params">(<span class="keyword">int</span> idx, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&amp; choose)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(idx&gt;=nums.size())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nums.size();++i)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(choose[i])</span><br><span class="line">                &#123;</span><br><span class="line">                    one_answer.push_back(nums[i]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            ans.push_back(one_answer);</span><br><span class="line">            one_answer.clear();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">       </span><br><span class="line">        choose[idx] = <span class="literal">true</span>;</span><br><span class="line">        subset(idx+<span class="number">1</span>,nums,choose);</span><br><span class="line">        choose[idx] = <span class="literal">false</span>;</span><br><span class="line">        subset(idx+<span class="number">1</span>,nums,choose);</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; subsets(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="title">choose</span><span class="params">(nums.size(),<span class="literal">false</span>)</span></span>;</span><br><span class="line">        subset(<span class="number">0</span>,nums,choose);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; ans;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; one_answer;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">subset</span><span class="params">(<span class="keyword">int</span> idx, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt;&amp; choose)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(idx&gt;=nums.size())</span><br><span class="line">        &#123;</span><br><span class="line">            ans.push_back(one_answer);</span><br><span class="line">            one_answer.clear();</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">       </span><br><span class="line">        subset(idx+<span class="number">1</span>,nums,choose);</span><br><span class="line"></span><br><span class="line">        one_answer.push_back(nums[idx]);</span><br><span class="line">        subset(idx+<span class="number">1</span>,nums,choose);</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; subsets(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        subset(<span class="number">0</span>,nums);</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>深度优先，优先往深处走，广度优先，优先往最近的走。 时间复杂度是一样的，邻接矩阵<code>O(n^2)</code>;邻接表<code>O(n+e)</code>;
+        
+        
+        <p class="article-more-link">
+          
+            <a href="/2016/11/19/graph-search-part1/#more">Read More</a>
           
        </p>
     </div>
@@ -539,209 +729,6 @@
 
 
 
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/10/11/list/" title="list" itemprop="url">list</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2016-10-11T08:51:29.000Z" itemprop="datePublished"> Published 2016-10-11</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="linked-list">Linked List</h1>
-<h2 id="introduction">1. Introduction</h2>
-<ul>
-<li>An data item plus its pointer is called a node</li>
-<li>A node contains data item and one or more links.
-<ul>
-<li>The link is a reference to a node.</li>
-<li>The link of last node is set to NULL</li>
-</ul></li>
-<li>a “head” which is a pointer to the first node in the linked list</li>
-<li>We can access all nodes through pointer “head”</li>
-</ul>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/10/11/list/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/data-structures-and-algorithms/">data structures and algorithms</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/dsa/">dsa</a><a href="/tags/linked-list/">linked list</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/09/25/array/" title="array" itemprop="url">array</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2016-09-25T02:54:50.000Z" itemprop="datePublished"> Published 2016-09-25</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="introduction">1. Introduction</h2>
-<ol type="1">
-<li>存储相同数据类型</li>
-<li>线性结构</li>
-<li>除了第一个元素都有一个唯一的前驱，除了最后一个元素都有一个唯一的后继。</li>
-<li>给定元素的大小和起始地址，可以知道任何一个元素的地址。</li>
-</ol>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/09/25/array/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/data-structures-and-algorithms/">data structures and algorithms</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/dsa/">dsa</a><a href="/tags/array/">array</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/09/19/dsa-notes/" title="dsa notes" itemprop="url">dsa notes</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="yrb" target="_blank" itemprop="author">yrb</a>
-		
-  <p class="article-time">
-    <time datetime="2016-09-19T03:32:04.000Z" itemprop="datePublished"> Published 2016-09-19</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h1 id="dsa-notes">dsa notes</h1>
-<h2 id="note-1">1. note 1</h2>
-<h3 id="渐进复杂度">渐进复杂度</h3>
-<p>针对足够大的输入规模n,算法执行时间T(n)的渐进增长速度，应如何度量和评价呢?
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2016/09/19/dsa-notes/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/data-structures-and-algorithms/">data structures and algorithms</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/dsa/">dsa</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
 
   <nav id="page-nav" class="clearfix">
     <a class="extend prev" rel="prev" href="/">Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next</a>
@@ -791,7 +778,7 @@
 		  
 		
 		  
-			<li><a href="/categories/paper/" title="paper">paper<sup>1</sup></a></li>
+			<li><a href="/categories/paper/" title="paper">paper<sup>4</sup></a></li>
 		  
 		
 		</ul>
@@ -804,7 +791,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/machine-learning/" title="machine learning">machine learning<sup>8</sup></a></li>
+				<li><a href="/tags/machine-learning/" title="machine learning">machine learning<sup>11</sup></a></li>
 			
 		
 			
@@ -813,6 +800,10 @@
 		
 			
 				<li><a href="/tags/cpp/" title="cpp">cpp<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/paper/" title="paper">paper<sup>4</sup></a></li>
 			
 		
 			
@@ -860,15 +851,15 @@
 			
 		
 			
-				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
+				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variable-types/" title="variable types">variable types<sup>1</sup></a></li>
 			
 		
 			
@@ -877,10 +868,6 @@
 		
 			
 				<li><a href="/tags/crol/" title="crol">crol<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -941,7 +928,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2021 
 		
 		<a href="/about" target="_blank" title="yrb">yrb</a>
 		

@@ -17,6 +17,7 @@
 <meta property="og:url" content="https://yanruibo.github.io/2016/10/15/tree/index.html">
 <meta property="og:site_name" content="Blog">
 <meta property="og:description" content="Tree 1. Tree Terminology  Root: node without parent (A) Siblings(兄弟): nodes share the same parent Internal node(内部结点): node with at least one child (A, B, C, F) External node (leaf ): node without chi">
+<meta property="og:locale">
 <meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/tree-terminology.png">
 <meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/tree-terminology-2.png">
 <meta property="og:image" content="https://yanruibo.github.io/2016/10/15/tree/problem-of-tree-1.png">
@@ -47,7 +48,7 @@
 <link rel="stylesheet" href="/%02.css">
 <link rel="stylesheet" href="/.css">
 
-<meta name="generator" content="Hexo 4.2.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+<meta name="generator" content="Hexo 5.4.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
 
   <body>
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
@@ -110,7 +111,7 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#tree"><span class="toc-number">1.</span> <span class="toc-text">Tree</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tree-terminology"><span class="toc-number">1.1.</span> <span class="toc-text">1. Tree Terminology</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-problem-often-in-exam-of-data-structure"><span class="toc-number">1.2.</span> <span class="toc-text">2. A problem often in exam of data structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#print-arithmetic-expressions"><span class="toc-number">1.3.</span> <span class="toc-text">3. Print Arithmetic Expressions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#求表达式的值"><span class="toc-number">1.4.</span> <span class="toc-text">4. 求表达式的值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#create-a-binary-tree-through-preorder-sequence"><span class="toc-number">1.5.</span> <span class="toc-text">5. Create a Binary Tree through Preorder Sequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pathlength"><span class="toc-number">1.6.</span> <span class="toc-text">6. PathLength</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#numberoftree-and-numberofleaf"><span class="toc-number">1.7.</span> <span class="toc-text">7. NumberofTree and NumberofLeaf</span></a></li></ol></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#tree"><span class="toc-number">1.</span> <span class="toc-text">Tree</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tree-terminology"><span class="toc-number">1.1.</span> <span class="toc-text">1. Tree Terminology</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-problem-often-in-exam-of-data-structure"><span class="toc-number">1.2.</span> <span class="toc-text">2. A problem often in exam of data structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#print-arithmetic-expressions"><span class="toc-number">1.3.</span> <span class="toc-text">3. Print Arithmetic Expressions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E5%80%BC"><span class="toc-number">1.4.</span> <span class="toc-text">4. 求表达式的值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#create-a-binary-tree-through-preorder-sequence"><span class="toc-number">1.5.</span> <span class="toc-text">5. Create a Binary Tree through Preorder Sequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pathlength"><span class="toc-number">1.6.</span> <span class="toc-text">6. PathLength</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#numberoftree-and-numberofleaf"><span class="toc-number">1.7.</span> <span class="toc-text">7. NumberofTree and NumberofLeaf</span></a></li></ol></li></ol>
 		
 		</div>
 		
@@ -124,9 +125,9 @@
 <li>Ancestors (祖先)of a node: parent, grandparent, grand-grandparent, etc.</li>
 <li>Descendant(后裔) of a node: child, grandchild, grand-grandchild, etc.</li>
 </ul>
-<a id="more"></a>
+<span id="more"></span>
 <figure>
-<img src="tree-terminology.png" alt="" /><figcaption>Tree Terminology</figcaption>
+<img src="tree-terminology.png" alt="Tree Terminology" /><figcaption aria-hidden="true">Tree Terminology</figcaption>
 </figure>
 <ul>
 <li>Depth of a node: number of ancestors</li>
@@ -136,30 +137,30 @@
 <li>Subtree: tree consisting of a node and its descendants</li>
 </ul>
 <figure>
-<img src="tree-terminology-2.png" alt="" /><figcaption>Tree Terminology</figcaption>
+<img src="tree-terminology-2.png" alt="Tree Terminology" /><figcaption aria-hidden="true">Tree Terminology</figcaption>
 </figure>
 <h2 id="a-problem-often-in-exam-of-data-structure">2. A problem often in exam of data structure</h2>
 <figure>
-<img src="problem-of-tree-1.png" alt="" /><figcaption>Tree Problem</figcaption>
+<img src="problem-of-tree-1.png" alt="Tree Problem" /><figcaption aria-hidden="true">Tree Problem</figcaption>
 </figure>
 <p>solution:</p>
 <h2 id="print-arithmetic-expressions">3. Print Arithmetic Expressions</h2>
 <figure>
-<img src="print-arithmetic-expressions.png" alt="" /><figcaption>Print Arithmetic Expression</figcaption>
+<img src="print-arithmetic-expressions.png" alt="Print Arithmetic Expression" /><figcaption aria-hidden="true">Print Arithmetic Expression</figcaption>
 </figure>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">void</span> <span class="title">BinaryTree</span>&lt;Type&gt; :</span>: Outputexpress ( <span class="keyword">const</span> BinTreeNode &lt;Type&gt; *T )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (T)</span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">if</span>(T-&gt;leftChild != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"("</span>);</span><br><span class="line">			Outputexpress(T-&gt;leftChild);</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; T-&gt;data;</span><br><span class="line">	    <span class="keyword">if</span>(T-&gt;rightChild != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">			Outputexpress(T-&gt;rightChild);</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">")"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span> <span class="keyword">void</span> BinaryTree&lt;Type&gt; :: <span class="built_in">Outputexpress</span> ( <span class="keyword">const</span> BinTreeNode &lt;Type&gt; *T )</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (T)</span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">if</span>(T-&gt;leftChild != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;(&quot;</span>);</span><br><span class="line">			<span class="built_in">Outputexpress</span>(T-&gt;leftChild);</span><br><span class="line">		&#125;</span><br><span class="line">        cout &lt;&lt; T-&gt;data;</span><br><span class="line">	    <span class="keyword">if</span>(T-&gt;rightChild != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">			<span class="built_in">Outputexpress</span>(T-&gt;rightChild);</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;)&quot;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="求表达式的值">4. 求表达式的值</h2>
 <figure>
-<img src="evaluate-arithmetic-expressions.png" alt="" /><figcaption>Evaluate Arithmetic Expressions</figcaption>
+<img src="evaluate-arithmetic-expressions.png" alt="Evaluate Arithmetic Expressions" /><figcaption aria-hidden="true">Evaluate Arithmetic Expressions</figcaption>
 </figure>
 <h2 id="create-a-binary-tree-through-preorder-sequence">5. Create a Binary Tree through Preorder Sequence</h2>
 <figure>
-<img src="create-a-btree-through-preorder-sequence.png" alt="" /><figcaption>Create a Binary Tree through Preorder Sequence</figcaption>
+<img src="create-a-btree-through-preorder-sequence.png" alt="Create a Binary Tree through Preorder Sequence" /><figcaption aria-hidden="true">Create a Binary Tree through Preorder Sequence</figcaption>
 </figure>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">void</span> <span class="title">BinaryTree</span>&lt;Type&gt;:</span>: CreateBinaryTree()</span><br><span class="line">&#123;</span><br><span class="line">   CreateBinaryTree(root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt; <span class="title">void</span> <span class="title">BinaryTree</span>&lt;Type&gt;:</span>: CreateBinaryTree(BiTreeNode *T)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(&amp;ch);                    <span class="comment">//get a char</span></span><br><span class="line">    <span class="keyword">if</span> (ch==‘*’)</span><br><span class="line">    &#123;</span><br><span class="line">    	T=<span class="literal">NULL</span>;       <span class="comment">//if it denotes an empty tree</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">if</span>(!(T= <span class="keyword">new</span> BiTreeNode&lt;Type&gt;()))</span><br><span class="line">        &#123;</span><br><span class="line">        	<span class="built_in">exit</span>(<span class="number">1</span>);              <span class="comment">//allocated failed</span></span><br><span class="line">        &#125;</span><br><span class="line">        T-&gt;data = ch;</span><br><span class="line">        CreateBiTree(T-&gt;leftChild); <span class="comment">//creates its left subtree</span></span><br><span class="line">        CreateBiTree(T-&gt;rightChild); <span class="comment">//creates its right subtree</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span> <span class="keyword">void</span> BinaryTree&lt;Type&gt;:: <span class="built_in">CreateBinaryTree</span>()</span><br><span class="line">&#123;</span><br><span class="line">   <span class="built_in">CreateBinaryTree</span>(root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Type</span>&gt;</span> <span class="keyword">void</span> BinaryTree&lt;Type&gt;:: <span class="built_in">CreateBinaryTree</span>(BiTreeNode *T)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(&amp;ch);                    <span class="comment">//get a char</span></span><br><span class="line">    <span class="keyword">if</span> (ch==‘*’)</span><br><span class="line">    &#123;</span><br><span class="line">    	T=<span class="literal">NULL</span>;       <span class="comment">//if it denotes an empty tree</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">    	<span class="keyword">if</span>(!(T= <span class="keyword">new</span> BiTreeNode&lt;Type&gt;()))</span><br><span class="line">        &#123;</span><br><span class="line">        	<span class="built_in">exit</span>(<span class="number">1</span>);              <span class="comment">//allocated failed</span></span><br><span class="line">        &#125;</span><br><span class="line">        T-&gt;data = ch;</span><br><span class="line">        <span class="built_in">CreateBiTree</span>(T-&gt;leftChild); <span class="comment">//creates its left subtree</span></span><br><span class="line">        <span class="built_in">CreateBiTree</span>(T-&gt;rightChild); <span class="comment">//creates its right subtree</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> OK;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h2 id="pathlength">6. PathLength</h2>
 <figure>
-<img src="path-length.png" alt="" /><figcaption>Path Length</figcaption>
+<img src="path-length.png" alt="Path Length" /><figcaption aria-hidden="true">Path Length</figcaption>
 </figure>
 <h2 id="numberoftree-and-numberofleaf">7. NumberofTree and NumberofLeaf</h2>
 <p>Algorithm NumberofTree(v, n) Input: a tree node v and an initial value n Output: the number of nodes with root v Usage: leafn = NumberofTree(root, 0);</p>
@@ -228,7 +229,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#tree"><span class="toc-number">1.</span> <span class="toc-text">Tree</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tree-terminology"><span class="toc-number">1.1.</span> <span class="toc-text">1. Tree Terminology</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-problem-often-in-exam-of-data-structure"><span class="toc-number">1.2.</span> <span class="toc-text">2. A problem often in exam of data structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#print-arithmetic-expressions"><span class="toc-number">1.3.</span> <span class="toc-text">3. Print Arithmetic Expressions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#求表达式的值"><span class="toc-number">1.4.</span> <span class="toc-text">4. 求表达式的值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#create-a-binary-tree-through-preorder-sequence"><span class="toc-number">1.5.</span> <span class="toc-text">5. Create a Binary Tree through Preorder Sequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pathlength"><span class="toc-number">1.6.</span> <span class="toc-text">6. PathLength</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#numberoftree-and-numberofleaf"><span class="toc-number">1.7.</span> <span class="toc-text">7. NumberofTree and NumberofLeaf</span></a></li></ol></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#tree"><span class="toc-number">1.</span> <span class="toc-text">Tree</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tree-terminology"><span class="toc-number">1.1.</span> <span class="toc-text">1. Tree Terminology</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#a-problem-often-in-exam-of-data-structure"><span class="toc-number">1.2.</span> <span class="toc-text">2. A problem often in exam of data structure</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#print-arithmetic-expressions"><span class="toc-number">1.3.</span> <span class="toc-text">3. Print Arithmetic Expressions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E5%80%BC"><span class="toc-number">1.4.</span> <span class="toc-text">4. 求表达式的值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#create-a-binary-tree-through-preorder-sequence"><span class="toc-number">1.5.</span> <span class="toc-text">5. Create a Binary Tree through Preorder Sequence</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pathlength"><span class="toc-number">1.6.</span> <span class="toc-text">6. PathLength</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#numberoftree-and-numberofleaf"><span class="toc-number">1.7.</span> <span class="toc-text">7. NumberofTree and NumberofLeaf</span></a></li></ol></li></ol>
  
   </div>
 
@@ -273,7 +274,7 @@
 		  
 		
 		  
-			<li><a href="/categories/paper/" title="paper">paper<sup>1</sup></a></li>
+			<li><a href="/categories/paper/" title="paper">paper<sup>4</sup></a></li>
 		  
 		
 		</ul>
@@ -286,7 +287,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/machine-learning/" title="machine learning">machine learning<sup>8</sup></a></li>
+				<li><a href="/tags/machine-learning/" title="machine learning">machine learning<sup>11</sup></a></li>
 			
 		
 			
@@ -295,6 +296,10 @@
 		
 			
 				<li><a href="/tags/cpp/" title="cpp">cpp<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/paper/" title="paper">paper<sup>4</sup></a></li>
 			
 		
 			
@@ -342,15 +347,15 @@
 			
 		
 			
-				<li><a href="/tags/paper/" title="paper">paper<sup>1</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/circular-linked-list/" title="circular linked list">circular linked list<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/bayes/" title="bayes">bayes<sup>1</sup></a></li>
+				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/variable-types/" title="variable types">variable types<sup>1</sup></a></li>
 			
 		
 			
@@ -359,10 +364,6 @@
 		
 			
 				<li><a href="/tags/crol/" title="crol">crol<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/array/" title="array">array<sup>1</sup></a></li>
 			
 		
 		</ul>
@@ -423,7 +424,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2021 
 		
 		<a href="/about" target="_blank" title="yrb">yrb</a>
 		
